@@ -34,13 +34,13 @@ const Cabecalho: React.FC<CabecalhoProps> = ({ usuario }) => {
         <Link href="SejaCredenciado" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FiUser /> Seja Cadastrado
         </Link>
-        <Link href="/loginOficinas" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+        <Link href="LoginOficinas" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FiTool /> Oficinas Credenciadas
         </Link>
-        <Link href="/ConhecaAuto" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+        <Link href="ConhecaAutoCarePlus" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FaCar /> Conheça o AutoCarePlus
         </Link>
-        <Link href="/sobrenos" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+        <Link href="SobreNos" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FiInfo /> Sobre Nós
         </Link>
       </nav>

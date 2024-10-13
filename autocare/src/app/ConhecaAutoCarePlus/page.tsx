@@ -1,132 +1,6 @@
+"use client"; 
+
 import React, { useState } from 'react';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  padding: 2rem;
-  background-color: #f0f4f8;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  color: #002d72;
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-`;
-
-const Subtitle = styled.h2`
-  text-align: center;
-  color: #004a99;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-`;
-
-const DiagramSection = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 2rem;
-
-  @media (max-width: 430px) {
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-
-const DiagramContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
-
-const Step = styled.div`
-  background: #ffffff;
-  border: 1px solid #d1d9e6;
-  border-radius: 10px;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 200px;
-  position: relative;
-  z-index: 1; // Ensure steps are above arrows
-`;
-
-const Arrow = styled.div`
-  font-size: 2rem;
-  color: #004a99;
-  text-align: center;
-  width: 200px;
-  position: absolute;
-  top: 100%;
-  transform: translateY(0%);
-  z-index: 0; // Ensure arrows are below steps
-`;
-
-const Balloon = styled.div`
-  display: ${props => (props.visible ? 'block' : 'none')};
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #004a99;
-  border-radius: 5px;
-  padding: 0.5rem;
-  width: 200px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  top: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  text-align: center;
-`;
-
-const BalloonArrow = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #004a99;
-`;
-
-const FeatureCard = styled.div`
-  background: #ffffff;
-  border: 1px solid #d1d9e6;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const FeatureTitle = styled.h3`
-  font-size: 1.5rem;
-  color: #004a99;
-`;
-
-const FeatureDescription = styled.p`
-  color: #333333;
-`;
-
-const Details = styled.p`
-  margin-top: 1rem;
-  color: #666666;
-`;
-
-const Button = styled.button`
-  background-color: #0066cc;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin-top: 0.5rem;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #004a99;
-  }
-`;
 
 const ConhecaAuto = () => {
   const [openFeature, setOpenFeature] = useState<number | null>(null);
@@ -234,47 +108,53 @@ const ConhecaAuto = () => {
   };
 
   return (
-    <Container>
-      <Title>Conheça a AutoCarePlus</Title>
-      <Subtitle>Revolucionando o Acesso a Sistemas Automatizados para Oficinas</Subtitle>
+    <div className="p-8 bg-gray-100">
+      <h1 className="text-center text-blue-900 text-4xl mb-6">Conheça a AutoCarePlus</h1>
+      <h2 className="text-center text-blue-700 text-2xl mb-8">Revolucionando o Acesso a Sistemas Automatizados para Oficinas</h2>
 
-      <Subtitle>Como Funciona o Nosso Site</Subtitle>
-      <DiagramSection>
-        <DiagramContainer>
-          <h3>Cliente</h3>
+      <h2 className="text-center text-blue-700 text-2xl mb-8">Como Funciona o Nosso Site</h2>
+      <div className="flex justify-around mb-8 space-y-4 sm:space-y-0 sm:flex-row flex-col items-center">
+        <div className="flex flex-col items-center relative">
+          <h3 className="text-blue-900">Cliente</h3>
           {steps.map(step => (
-            <div key={step.id} style={{ position: 'relative', margin: '1rem 0' }} onMouseEnter={() => setHoveredStep(step.id)} onMouseLeave={() => setHoveredStep(null)}>
-              <Balloon visible={hoveredStep === step.id}>{step.explanation}<BalloonArrow /></Balloon>
-              <Step>{step.title}</Step>
-              {step.id < steps.length && <Arrow>↓</Arrow>}
+            <div key={step.id} className="relative my-4" onMouseEnter={() => setHoveredStep(step.id)} onMouseLeave={() => setHoveredStep(null)}>
+              <div className={`absolute w-48 p-2 bg-white border border-blue-500 rounded-lg shadow-md top-[-5rem] left-1/2 transform -translate-x-1/2 ${hoveredStep === step.id ? 'block' : 'hidden'}`}>
+                {step.explanation}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent border-t-4 border-blue-500"></div>
+              </div>
+              <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-md text-center w-48">{step.title}</div>
+              {step.id < steps.length && <div className="text-blue-700 text-2xl mt-4">↓</div>}
             </div>
           ))}
-        </DiagramContainer>
+        </div>
 
-        <DiagramContainer>
-          <h3>Oficina</h3>
+        <div className="flex flex-col items-center relative">
+          <h3 className="text-blue-900">Oficina</h3>
           {workshopSteps.map(step => (
-            <div key={step.id} style={{ position: 'relative', margin: '1rem 0' }} onMouseEnter={() => setHoveredStep(step.id + 10)} onMouseLeave={() => setHoveredStep(null)}>
-              <Balloon visible={hoveredStep === step.id + 10}>{step.explanation}<BalloonArrow /></Balloon>
-              <Step>{step.title}</Step>
-              {step.id < workshopSteps.length && <Arrow>↓</Arrow>}
+            <div key={step.id} className="relative my-4" onMouseEnter={() => setHoveredStep(step.id + 10)} onMouseLeave={() => setHoveredStep(null)}>
+              <div className={`absolute w-48 p-2 bg-white border border-blue-500 rounded-lg shadow-md top-[-5rem] left-1/2 transform -translate-x-1/2 ${hoveredStep === step.id + 10 ? 'block' : 'hidden'}`}>
+                {step.explanation}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent border-t-4 border-blue-500"></div>
+              </div>
+              <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-md text-center w-48">{step.title}</div>
+              {step.id < workshopSteps.length && <div className="text-blue-700 text-2xl mt-4">↓</div>}
             </div>
           ))}
-        </DiagramContainer>
-      </DiagramSection>
+        </div>
+      </div>
 
-      <Subtitle>Funcionalidades</Subtitle>
+      <h2 className="text-center text-blue-700 text-2xl mb-8">Funcionalidades</h2>
       {features.map(feature => (
-        <FeatureCard key={feature.id}>
-          <FeatureTitle>{feature.title}</FeatureTitle>
-          <FeatureDescription>{feature.description}</FeatureDescription>
-          {openFeature === feature.id && <Details>{feature.details}</Details>}
-          <Button onClick={() => handleToggle(feature.id)}>
+        <div key={feature.id} className="bg-white border border-gray-300 rounded-lg p-6 mb-6 shadow-md">
+          <h3 className="text-blue-700 text-xl">{feature.title}</h3>
+          <p className="text-gray-700">{feature.description}</p>
+          {openFeature === feature.id && <p className="text-gray-500 mt-2">{feature.details}</p>}
+          <button onClick={() => handleToggle(feature.id)} className="bg-blue-600 text-white py-2 px-4 rounded mt-4 hover:bg-blue-700 transition">
             {openFeature === feature.id ? 'Ocultar Detalhes' : 'Ver Detalhes'}
-          </Button>
-        </FeatureCard>
+          </button>
+        </div>
       ))}
-    </Container>
+    </div>
   );
 };
 

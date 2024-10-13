@@ -1,5 +1,7 @@
+"use client"; // Deve estar no topo do arquivo
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation'; // useRouter do Next.js
 import styled from 'styled-components';
 
 // Styled Components
@@ -33,6 +35,7 @@ const Title = styled.h2`
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   text-align: center;
+  color: black;
 `;
 
 const FormGroup = styled.div`
@@ -119,7 +122,7 @@ const OficinasLogin: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter(); // Use useRouter ao invés de useNavigate
 
   // Definição das oficinas com seus respectivos IDs
   const oficinasFixas = [
@@ -145,7 +148,7 @@ const OficinasLogin: React.FC = () => {
 
       setTimeout(() => {
         setShowSuccessMessage(false);
-        navigate('/Pagina_da_credenciada'); // Navegar após 3 segundos
+        router.push('/Pagina_da_credenciada'); // Navegar após 3 segundos
       }, 3000);
     } else {
       setSuccessMessage('');
