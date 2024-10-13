@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import styled, { createGlobalStyle } from 'styled-components';
+import Image from 'next/image';
 import icone from './Imagens/ia.png';  // Avatar do Chatbot
 import userAvatar from './Imagens/usuario.png';  // Avatar do Usuário
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 // Global styles including animations
 const GlobalStyle = createGlobalStyle`
@@ -48,7 +51,6 @@ const ChatContainer = styled.div`
   margin-top: -20cm;
 `;
 
-// Estilos para o cabeçalho do chatbot
 const ChatHeader = styled.div`
   width: 100%;
   background-color: #002cbb;
@@ -146,7 +148,7 @@ const Message = styled.div<{ isUser: boolean }>`
   white-space: pre-wrap;
 `;
 
-const Avatar = styled.img<{ isUser: boolean }>`
+const Avatar = styled(Image)<{ isUser: boolean }>`
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -154,27 +156,15 @@ const Avatar = styled.img<{ isUser: boolean }>`
   margin-left: ${({ isUser }) => (isUser ? '10px' : '0')};
 `;
 
-interface GenericItem {
-  text?: string;
-  response_type?: string;
-}
-
-interface WatsonResponse {
-  output: {
-    generic: GenericItem[];
-  };
-  context: any;
-}
-
 const Chatbot: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<{ text: string; isUser: boolean; name: string }[]>([]);
   const [context, setContext] = useState<any>({});
-  const [canTriggerNextStep, setCanTriggerNextStep] = useState<boolean>(false); // Controla quando a lógica pode rodar
+  const [canTriggerNextStep, setCanTriggerNextStep] = useState<boolean>(false);
   const chatBodyRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate(); // Hook para navegação
+  const router = useRouter(); 
 
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms)); // Função de delay
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms)); 
 
   useEffect(() => {
     if (chatBodyRef.current) {
@@ -184,7 +174,7 @@ const Chatbot: React.FC = () => {
 
   const sendMessageToWatson = async (text: string) => {
     try {
-      const response = await axios.post<WatsonResponse>(
+      const response = await axios.post(
         'https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/8a8032d0-e893-47de-a586-0398d3a35098/message?version=2021-06-14',
         {
           input: { text },
@@ -194,34 +184,31 @@ const Chatbot: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Basic ${btoa('apikey:r_suOM3Fo1tcsPUKukbkHjkltOBjiJGYFdPx2mtIHb-8')}`,
-        },
+          },
         }
       );
 
       setContext(response.data.context);
 
       const responseText = response.data.output.generic
-        .map((item: GenericItem) => (item.response_type === 'text' && item.text ? item.text : ''))
-        .filter((text) => text)
+        .map((item: any) => item.text || '')
         .join(' ')
-        .replace(/[{}[\]]/g, '') // Remove os caracteres { }, [ ]
-        .replace(/\\n/g, '\n')   // Substitui \\n por \n para garantir quebra de linha
-        .replace(/['"]/g, '');   // Remove aspas simples e duplas.
+        .replace(/[{}[\]]/g, '')
+        .replace(/\\n/g, '\n')
+        .replace(/['"]/g, '');
 
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: responseText || 'Sem resposta', isUser: false, name: 'AutoCarePlus' },
       ]);
 
-      // Verificar se é a mensagem final que pergunta sobre agendamento
       if (responseText.includes('Gostaria de agendar o serviço com uma oficina credenciada próxima a você?')) {
-        setCanTriggerNextStep(true); // Ativa a lógica após essa mensagem
+        setCanTriggerNextStep(true);
       }
 
-      // Verificar se o cliente respondeu "sim" e pode seguir para o próximo passo
       if (canTriggerNextStep && text.toLowerCase().includes('sim')) {
-        await delay(3000); // Delay de 3 segundos
-        handleNext();  // Aciona o botão automaticamente
+        await delay(3000);
+        handleNext();
       }
     } catch (error) {
       console.error('Erro ao enviar mensagem para o chatbot:', error);
@@ -247,7 +234,7 @@ const Chatbot: React.FC = () => {
 
   const handleNext = () => {
     const lastMessage = messages.at(-1)?.text || '';
-    navigate('/Orcamentos', { state: { lastMessage } });
+    router.push(`/Orcamentos?lastMessage=${encodeURIComponent(lastMessage)}`);
   };
 
   return (
@@ -258,7 +245,11 @@ const Chatbot: React.FC = () => {
         <ChatBody ref={chatBodyRef}>
           {messages.map((msg, index) => (
             <MessageContainer key={index} isUser={msg.isUser}>
-              <Avatar src={msg.isUser ? userAvatar : icone} alt={msg.isUser ? 'User Avatar' : 'Chatbot Avatar'} isUser={msg.isUser} />
+              <Avatar
+                src={msg.isUser ? userAvatar : icone}
+                alt={msg.isUser ? 'User Avatar' : 'Chatbot Avatar'}
+                isUser={msg.isUser}
+              />
               <Message isUser={msg.isUser} dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }} />
             </MessageContainer>
           ))}
@@ -270,7 +261,7 @@ const Chatbot: React.FC = () => {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                handleSubmit(e);  // Chama o handleSubmit quando a tecla Enter é pressionada
+                handleSubmit(e); 
               }
             }}
             placeholder="Digite sua mensagem..."

@@ -1,7 +1,9 @@
+"use client"; // Adicione esta linha
+
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
-import Rodape from '../Rodape';
+import Link from 'next/link';
 
 const PageContainer = styled.div`
   display: flex;
@@ -19,6 +21,7 @@ const LoginContainer = styled.div`
   border-radius: 8px;
   margin: auto;
   margin-top: 50px;
+  color: black;
 `;
 
 const LoginForm = styled.form`
@@ -111,13 +114,13 @@ function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter(); // Correção aqui, usando useRouter
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:4000/login', {
+      const response = await fetch('/api/login',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +138,7 @@ function Login() {
         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
 
-        navigate('/logado');
+        router.push('LogadoCliente'); // Redireciona para a página logada
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.error || 'Falha ao fazer login');
@@ -178,11 +181,10 @@ function Login() {
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
           <LinkStyled>
-            Não tem uma conta? <Link to="/SejaCadastrado">Cadastre-se</Link>
+            Não tem uma conta? <Link href="/SejaCadastrado">Cadastre-se</Link>
           </LinkStyled>
         </LoginForm>
       </LoginContainer>
-      <Rodape />
     </PageContainer>
   );
 }

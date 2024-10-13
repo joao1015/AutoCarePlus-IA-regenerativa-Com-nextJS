@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
+// Defina a interface para o usuário
 interface Usuario {
   id: number;
   nome: string;
@@ -12,6 +12,12 @@ interface Usuario {
   estado: string;
 }
 
+// Interface para as props do Sidebar
+interface SidebarProps {
+  usuario: Usuario | null;
+}
+
+// Styled Component para o Sidebar
 const SidebarContainer = styled.div`
   width: 220px;
   height: 100vh;
@@ -42,23 +48,12 @@ const MensagemBoasVindas = styled.div`
   font-weight: 600;
 `;
 
-const Sidebar: React.FC = () => {
-  const [usuario, setUsuario] = useState<Usuario | null>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const usuarioLogado = localStorage.getItem('usuarioLogado');
-    if (usuarioLogado) {
-      const usuarioData = JSON.parse(usuarioLogado);
-      console.log('Usuário recuperado do localStorage:', usuarioData);
-      setUsuario(usuarioData);
-    }
-  }, []);
-
+// Sidebar aceita a prop 'usuario'
+const Sidebar: React.FC<SidebarProps> = ({ usuario }) => {
   const handleLogout = () => {
     localStorage.removeItem('usuarioLogado');
     localStorage.removeItem('token');
-    navigate('/entrar');
+    window.location.href = '/entrar'; // Redireciona após logout
   };
 
   return (

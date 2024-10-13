@@ -69,7 +69,7 @@ function FormularioCadastroCliente() {
     };
 
     try {
-      const response = await fetch('/api/usuarios', {
+      const response = await fetch('../../app/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
