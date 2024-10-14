@@ -61,7 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ usuario }) => {
       {usuario ? (
         <>
           <MensagemBoasVindas>Bem-vindo, {usuario.nome}!</MensagemBoasVindas>
-          <p>Email: {usuario.email}</p>
+         
           <p>Endereço: {usuario.logradouro}, {usuario.numero}</p>
           <p>Cidade: {usuario.cidade}</p>
           <p>Estado: {usuario.estado}</p>

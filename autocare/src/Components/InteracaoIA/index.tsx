@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Para Next.js
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
@@ -37,18 +37,19 @@ const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
-  max-width: 800px;
+  width: 85%;
+  max-width: 94vw;
   margin: 2rem auto;
   padding: 20px;
   border: 2px solid #000000;
   border-radius: 10px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   background-color: #fff;
-  height: 80vh;
+  height: 90vh;
   overflow: hidden;
   position: relative;
-  margin-top: -20cm;
+  margin-top: -18cm;
+  margin-left: 5.9cm;
 `;
 
 const ChatHeader = styled.div`
@@ -97,6 +98,7 @@ const Input = styled.input`
   font-family: 'Poppins', sans-serif;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
+  color: black;
 
   &:focus {
     border-color: #4a90e2;
@@ -156,15 +158,27 @@ const Avatar = styled(Image)<{ isUser: boolean }>`
   margin-left: ${({ isUser }) => (isUser ? '10px' : '0')};
 `;
 
+interface GenericItem {
+  text?: string;
+  response_type?: string;
+}
+
+interface WatsonResponse {
+  output: {
+    generic: GenericItem[];
+  };
+  context: any;
+}
+
 const Chatbot: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<{ text: string; isUser: boolean; name: string }[]>([]);
   const [context, setContext] = useState<any>({});
-  const [canTriggerNextStep, setCanTriggerNextStep] = useState<boolean>(false);
+  const [canTriggerNextStep, setCanTriggerNextStep] = useState<boolean>(false); // Controla quando a lógica pode rodar
   const chatBodyRef = useRef<HTMLDivElement>(null);
-  const router = useRouter(); 
+  const router = useRouter(); // Hook para navegação no Next.js 13
 
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms)); 
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms)); // Função de delay
 
   useEffect(() => {
     if (chatBodyRef.current) {
@@ -174,7 +188,7 @@ const Chatbot: React.FC = () => {
 
   const sendMessageToWatson = async (text: string) => {
     try {
-      const response = await axios.post(
+      const response = await axios.post<WatsonResponse>(
         'https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/8a8032d0-e893-47de-a586-0398d3a35098/message?version=2021-06-14',
         {
           input: { text },
@@ -184,31 +198,34 @@ const Chatbot: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Basic ${btoa('apikey:r_suOM3Fo1tcsPUKukbkHjkltOBjiJGYFdPx2mtIHb-8')}`,
-          },
+        },
         }
       );
 
       setContext(response.data.context);
 
       const responseText = response.data.output.generic
-        .map((item: any) => item.text || '')
+        .map((item: GenericItem) => (item.response_type === 'text' && item.text ? item.text : ''))
+        .filter((text) => text)
         .join(' ')
-        .replace(/[{}[\]]/g, '')
-        .replace(/\\n/g, '\n')
-        .replace(/['"]/g, '');
+        .replace(/[{}[\]]/g, '') // Remove os caracteres { }, [ ]
+        .replace(/\\n/g, '\n')   // Substitui \\n por \n para garantir quebra de linha
+        .replace(/['"]/g, '');   // Remove aspas simples e duplas.
 
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: responseText || 'Sem resposta', isUser: false, name: 'AutoCarePlus' },
       ]);
 
+      // Verificar se é a mensagem final que pergunta sobre agendamento
       if (responseText.includes('Gostaria de agendar o serviço com uma oficina credenciada próxima a você?')) {
-        setCanTriggerNextStep(true);
+        setCanTriggerNextStep(true); // Ativa a lógica após essa mensagem
       }
 
+      // Verificar se o cliente respondeu "sim" e pode seguir para o próximo passo
       if (canTriggerNextStep && text.toLowerCase().includes('sim')) {
-        await delay(3000);
-        handleNext();
+        await delay(3000); // Delay de 3 segundos
+        handleNext();  // Aciona o botão automaticamente
       }
     } catch (error) {
       console.error('Erro ao enviar mensagem para o chatbot:', error);
@@ -234,7 +251,7 @@ const Chatbot: React.FC = () => {
 
   const handleNext = () => {
     const lastMessage = messages.at(-1)?.text || '';
-    router.push(`/Orcamentos?lastMessage=${encodeURIComponent(lastMessage)}`);
+    router.push(`/Agendamendo?lastMessage=${encodeURIComponent(lastMessage)}`);
   };
 
   return (

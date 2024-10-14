@@ -1,6 +1,6 @@
 "use client"; // Para Next.js
 
-import IA from "@/Components/InteracaoIA";
+import Agenda from "@/Components/Agenda";
 import React from 'react';
 import styled from 'styled-components';
 import Sidebar from '@/Components/SideBar';
@@ -23,7 +23,7 @@ const ConteudoPrincipal = styled.div`
   padding: 0px;
 `;
 
-const PaginaLogada: React.FC = () => {
+const Agenda1: React.FC = () => {
   const router = useRouter(); // Hook para redirecionar após o logout
 
   // Recupera o usuário do localStorage
@@ -36,11 +36,11 @@ const PaginaLogada: React.FC = () => {
       <Sidebar usuario={usuario} />
       <ConteudoPrincipal>
         <main>
-          <IA />
+          <Agenda></Agenda>
         </main>
       </ConteudoPrincipal>
     </div>
   );
 };
 
-export default PaginaLogada;
+export default Agenda1;

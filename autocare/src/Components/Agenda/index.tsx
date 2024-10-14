@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+"use client"; // Para Next.js
+
+import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation'; // Usando o hook de busca de parâmetros
 import styled from 'styled-components';
+import Image from 'next/image'; // Para otimizar imagens
 import oficinaAImage from './imagens/garagem.png';
 import oficinaBImage from './imagens/servico-automotivo (1).png';
 import oficinaCImage from './imagens/servico-automotivo.png';
@@ -114,12 +117,6 @@ const BalloonImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const BalloonImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 `;
 
 const BalloonTitle = styled.h2`
@@ -243,15 +240,15 @@ const Input = styled.input`
 
 // Componente de Agendamento
 const Agendamento: React.FC = () => {
-  const location = useLocation();
-  const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
-  const lastMessage = location.state?.lastMessage || 'Nenhum orçamento disponível.';
+  const searchParams = useSearchParams();
+  const usuarioLogado = JSON.parse(typeof window !== 'undefined' ? localStorage.getItem('usuarioLogado') || '{}' : '{}');
+  const lastMessage = searchParams.get('lastMessage') || 'Nenhum orçamento disponível.';
   const [success, setSuccess] = useState(false);
   const [disabledOfficinas, setDisabledOfficinas] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage);
+  const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage as string);
 
   const oficinas = [
     {
@@ -305,7 +302,7 @@ const Agendamento: React.FC = () => {
     console.log('Agendamento:', orcamento); // Para depuração
 
     try {
-      const response = await fetch('http://localhost:4000/agendar', {
+      const response = await fetch('/api/agendar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orcamento),
@@ -325,7 +322,6 @@ const Agendamento: React.FC = () => {
   return (
     <AgendamentoContainer>
       <h1>Agendamento</h1>
-      
 
       <ModalOverlay isOpen={isModalOpen}>
         <ModalContent>
@@ -341,7 +337,7 @@ const Agendamento: React.FC = () => {
             />
           </InputContainer>
           <ModalButton onClick={() => {
-            handleSelectOfficina(''); // Aqui você deve passar a chave da oficina correta
+            handleSelectOfficina(''); 
             setIsModalOpen(false);
           }}>Agendar</ModalButton>
         </ModalContent>
@@ -354,7 +350,7 @@ const Agendamento: React.FC = () => {
             disabled={disabledOfficinas.includes(oficina.localStorageKey)}
           >
             <BalloonImageContainer>
-              <BalloonImage src={oficina.image} alt={oficina.title} />
+              <Image src={oficina.image} alt={oficina.title} layout="fill" objectFit="cover" />
             </BalloonImageContainer>
             <BalloonTitle>{oficina.title}</BalloonTitle>
             <BalloonDescription>
