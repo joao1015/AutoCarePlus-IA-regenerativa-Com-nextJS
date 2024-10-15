@@ -74,7 +74,8 @@ const BalloonsWrapper = styled.div`
   flex-wrap: nowrap;
   overflow-x: auto;
   width: 100%;
-  height: 13cm;
+  height: 10cm;
+  margin-top: 1cm;
 `;
 
 const Balloon = styled.div<{ disabled: boolean }>`
@@ -302,7 +303,7 @@ const Agendamento: React.FC = () => {
     console.log('Agendamento:', orcamento); // Para depuração
 
     try {
-      const response = await fetch('/api/agendar', {
+      const response = await fetch('/api/agendamento', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orcamento),

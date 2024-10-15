@@ -47,7 +47,7 @@ const PaginaDaCredenciada: React.FC = () => {
 
   
     <LayoutContainer>
-      <Cabecalho></Cabecalho>
+     
       <Side></Side>
       <MainContent>
         <Title>Orçamento Recebido</Title>
@@ -57,7 +57,7 @@ const PaginaDaCredenciada: React.FC = () => {
         <OrcamentoDetail>Placa do veículo: {orcamento.placa}</OrcamentoDetail>
         <OrcamentoDetail>Data do Orçamento: {orcamento.data}</OrcamentoDetail>
       </MainContent>
-      <Rodape></Rodape>
+ 
     </LayoutContainer>
   
   );

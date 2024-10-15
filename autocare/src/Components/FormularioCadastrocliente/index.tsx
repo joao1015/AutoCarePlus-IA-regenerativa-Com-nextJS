@@ -69,7 +69,7 @@ function FormularioCadastroCliente() {
     };
 
     try {
-      const response = await fetch('../../app/api/login', {
+      const response = await fetch('/api/cadastro', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ function FormularioCadastroCliente() {
         localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
 
-        router.push('/entrar');
+        router.push('/AreadoCliente');
       } else {
         setError(true);
         setMessage(data.error || 'Erro ao criar a conta.');

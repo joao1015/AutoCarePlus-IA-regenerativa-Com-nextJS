@@ -1,5 +1,8 @@
+"use client";  // Certifique-se de que esta linha está no topo
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation'; // Use next/navigation para Next.js 13+
 
 // Styled components para layout mais profissional
 const Container = styled.div`
@@ -84,8 +87,23 @@ const Button = styled.button`
   }
 `;
 
+// Função para evitar referências circulares ao usar JSON.stringify
+const safeStringify = (obj: any) => {
+  const seen = new WeakSet();
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  });
+};
+
 const OrcamentosRecebidos: React.FC = () => {
   const [orcamentos, setOrcamentos] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOrcamentos = async () => {
@@ -97,7 +115,7 @@ const OrcamentosRecebidos: React.FC = () => {
           return;
         }
 
-        const response = await fetch(`http://localhost:4000/orcamentos/${oficinaId}`); // Filtra por oficinaId
+        const response = await fetch(`/api/orcamentos/${oficinaId}`); // Alterado para rota API local
         const result = await response.json();
         if (response.ok) {
           setOrcamentos(result.orcamentos);
@@ -110,7 +128,7 @@ const OrcamentosRecebidos: React.FC = () => {
     };
 
     fetchOrcamentos();
-  }, []);
+  }, []); // Lista de dependências vazia para garantir que seja chamado apenas uma vez
 
   const handleReject = async (index: number) => {
     const rejectedOrcamento = orcamentos[index];
@@ -121,7 +139,7 @@ const OrcamentosRecebidos: React.FC = () => {
 
     // Enviar atualização para backend (opcional)
     try {
-      await fetch(`http://localhost:4000/orcamentos/rejeitar`, {
+      await fetch(`/api/orcamentos/rejeitar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -139,12 +157,12 @@ const OrcamentosRecebidos: React.FC = () => {
 
     // Adicionar ao localStorage como aceito
     const storedAceitos = JSON.parse(localStorage.getItem('orcamentosAceitos') || '[]');
-    const updatedAceitos = [...storedAceitos, acceptedOrcamento];
-    localStorage.setItem('orcamentosAceitos', JSON.stringify(updatedAceitos));
+    const updatedAceitos = [...storedAceitos, JSON.parse(JSON.stringify(acceptedOrcamento))]; // Clonando objeto
+    localStorage.setItem('orcamentosAceitos', safeStringify(updatedAceitos)); // Usando safeStringify
 
     // Atualizar backend (opcional)
     try {
-      await fetch(`http://localhost:4000/orcamentos/aceitar`, {
+      await fetch(`/api/orcamentos/aceitar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,8 +178,8 @@ const OrcamentosRecebidos: React.FC = () => {
     const updatedOrcamentos = orcamentos.filter((_, i) => i !== index);
     setOrcamentos(updatedOrcamentos);
 
-    // Redirecionar para a página de gestão de orçamentos (opcional)
-    window.location.href = '/gestao-orcamentos'; // Altere o caminho para a página correta
+    // Redirecionar para a página de gestão de orçamentos usando useRouter
+    router.push('/gestao-orcamentos');
   };
 
   return (
