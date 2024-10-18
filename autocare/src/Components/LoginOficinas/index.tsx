@@ -148,7 +148,7 @@ const OficinasLogin: React.FC = () => {
 
       setTimeout(() => {
         setShowSuccessMessage(false);
-        router.push('OficinaLogada'); // Navegar após 3 segundos
+        router.push("OficinaLogada"); // Navegar após 3 segundos
       }, 3000);
     } else {
       setSuccessMessage('');

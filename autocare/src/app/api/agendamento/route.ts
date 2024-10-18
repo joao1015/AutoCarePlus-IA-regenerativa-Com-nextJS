@@ -10,9 +10,19 @@ const dbConfig = {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { cliente, oficinaId, pecas, modelo, ano, diagnostico, solucao, estimativa } = body;
+  const { cliente, oficinaId, pecas, modelo, ano, diagnostico, solucao, estimativa, ordemServico } = body;
 
-  if (!cliente || isNaN(Number(oficinaId)) || isNaN(Number(ano)) || !pecas || !modelo || !diagnostico || !solucao || !estimativa) {
+  if (
+    !cliente || 
+    isNaN(Number(oficinaId)) || 
+    isNaN(Number(ano)) || 
+    !pecas || 
+    !modelo || 
+    !diagnostico || 
+    !solucao || 
+    !estimativa || 
+    !ordemServico
+  ) {
     return NextResponse.json({ error: 'Dados insuficientes ou inválidos' }, { status: 400 });
   }
 
@@ -22,8 +32,8 @@ export async function POST(req: Request) {
     connection = await oracledb.getConnection(dbConfig);
 
     const insertQuery = `
-      INSERT INTO orcamentos (cliente_nome, cliente_email, cliente_telefone, oficina_id, pecas, modelo, ano, diagnostico, solucao, estimativa)
-      VALUES (:cliente_nome, :cliente_email, :cliente_telefone, :oficina_id, :pecas, :modelo, :ano, :diagnostico, :solucao, :estimativa)
+      INSERT INTO orcamentos (cliente_nome, cliente_email, cliente_telefone, oficina_id, pecas, modelo, ano, diagnostico, solucao, estimativa, NUMERO_ORDEM_SERVICO)
+      VALUES (:cliente_nome, :cliente_email, :cliente_telefone, :oficina_id, :pecas, :modelo, :ano, :diagnostico, :solucao, :estimativa, :NUMERO_ORDEM_SERVICO)
     `;
     await connection.execute(
       insertQuery,
@@ -38,6 +48,7 @@ export async function POST(req: Request) {
         diagnostico,
         solucao,
         estimativa,
+        NUMERO_ORDEM_SERVICO: ordemServico, // Utilizando o nome do campo 'NUMERO_ORDEM_SERVICO'
       },
       { autoCommit: true }
     );
@@ -47,5 +58,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Erro ao processar o agendamento' }, { status: 500 });
   } finally {
     if (connection) await connection.close();
-  }
+  }  
 }

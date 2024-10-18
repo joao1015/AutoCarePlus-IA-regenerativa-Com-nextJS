@@ -51,6 +51,11 @@ const extractDados = (text: string) => {
   };
 };
 
+// Função para gerar um código de 7 dígitos
+const gerarCodigoOrdemServico = (): string => {
+  return Math.floor(1000000 + Math.random() * 9000000).toString();
+};
+
 // Styled components para modal e agendamento
 const AgendamentoContainer = styled.div`
   display: flex;
@@ -248,6 +253,7 @@ const Agendamento: React.FC = () => {
   const [disabledOfficinas, setDisabledOfficinas] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [ordemServico, setOrdemServico] = useState<string>(''); // Adicionando estado para ordem de serviço
 
   const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage as string);
 
@@ -285,6 +291,9 @@ const Agendamento: React.FC = () => {
 
     const oficinaId = oficinaMap[localStorageKey as keyof typeof oficinaMap];
 
+    const codigoOrdemServico = gerarCodigoOrdemServico(); // Gerar o número de ordem de serviço
+    setOrdemServico(codigoOrdemServico); // Armazenar o número gerado no estado
+
     const orcamento = {
       cliente: {
         nome: usuarioLogado.nome || 'Nome não disponível',
@@ -298,6 +307,7 @@ const Agendamento: React.FC = () => {
       solucao,
       estimativa,
       oficinaId,
+      ordemServico: codigoOrdemServico, // Usar o número de ordem de serviço gerado
     };
 
     console.log('Agendamento:', orcamento); // Para depuração
@@ -376,7 +386,7 @@ const Agendamento: React.FC = () => {
         ))}
       </BalloonsWrapper>
 
-      {success && <p>Agendamento realizado com sucesso!</p>}
+      {success && <p>Agendamento realizado com sucesso! Código de ordem de serviço: {ordemServico}</p>}
     </AgendamentoContainer>
   );
 };

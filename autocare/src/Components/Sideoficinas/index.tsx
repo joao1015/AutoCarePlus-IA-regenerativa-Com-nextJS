@@ -1,7 +1,8 @@
-"use client";  // Certifique-se de que esta linha está no topo
+"use client";
 
-import styled from 'styled-components';
+
 import Link from 'next/link';
+import styled from 'styled-components';
 
 const SidebarContainer = styled.div`
   width: 220px;
@@ -23,8 +24,8 @@ const SidebarLink = styled.a`
   transition: background-color 0.3s ease, color 0.3s ease;
   
   &:hover {
-    background-color: #1e90ff; /* Fundo azul ao passar o mouse */
-    color: #fff; /* Texto branco ao passar o mouse */
+    background-color: #1e90ff; /* Fundo azul no hover */
+    color: #fff; /* Texto branco no hover */
   }
   
   &:active {
@@ -32,13 +33,13 @@ const SidebarLink = styled.a`
   }
 `;
 
-export default function Sideoficinas() {
+function Side() {
   return (
     <SidebarContainer>
-      <Link href="/ordensrecebidas" passHref>
+      <Link href="/Ordensrecebidas" passHref>
         <SidebarLink>Orçamentos Recebidos</SidebarLink>
       </Link>
-      <Link href="/gestao-orcamentos" passHref>
+      <Link href="/Gestao" passHref>
         <SidebarLink>Gestão de Orçamentos</SidebarLink>
       </Link>
       <Link href="/ordens-finalizadas" passHref>
@@ -47,3 +48,7 @@ export default function Sideoficinas() {
     </SidebarContainer>
   );
 }
+
+export default Side;
+
+

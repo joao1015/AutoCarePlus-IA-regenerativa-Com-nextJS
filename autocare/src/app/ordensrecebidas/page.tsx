@@ -1,9 +1,10 @@
-'use client'; // Certifica que o componente é um Client Component
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 
-// Styled components para layout mais profissional
+// Estilos do componente
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,7 +12,7 @@ const Container = styled.div`
   justify-content: center;
   padding: 20px;
   min-height: 100vh;
-  background-color: #f7f7f7;
+  background-color: #e0f7fa; /* Cor de fundo mais suave para melhor visualização */
 `;
 
 const Title = styled.h1`
@@ -21,7 +22,7 @@ const Title = styled.h1`
 `;
 
 const OrcamentoCard = styled.div`
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 12px;
@@ -54,7 +55,7 @@ const DataTitle = styled.span`
 `;
 
 const DataValue = styled.span`
-  color: #333;
+  color: #00796b;
 `;
 
 const ButtonContainer = styled.div`
@@ -63,7 +64,7 @@ const ButtonContainer = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: #10B981;
+  background-color: #00796b;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -73,41 +74,43 @@ const Button = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #004d40;
   }
 
   &:last-child {
     margin-right: 0;
-    background-color: #ff5252;
+    background-color: #d32f2f;
 
     &:hover {
-      background-color: #ff1744;
+      background-color: #b71c1c;
     }
   }
 `;
 
 const OrcamentosRecebidos: React.FC = () => {
   const [orcamentos, setOrcamentos] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOrcamentos = async () => {
+      console.log('Iniciando a busca de orçamentos...');
       try {
-        const oficinaId = localStorage.getItem('oficinaId'); // Pega o oficinaId do localStorage
-
+        const oficinaId = localStorage.getItem('oficinaId');
         if (!oficinaId) {
-          console.error('Nenhuma oficina logada.');
+          alert('Nenhuma oficina logada.');
           return;
         }
 
-        const response = await fetch(`/api/orcamentos/${oficinaId}`); // Filtra por oficinaId
-        const result = await response.json();
-        if (response.ok) {
-          setOrcamentos(result.orcamentos);
-        } else {
-          console.error('Erro ao buscar orçamentos:', result.error);
+        const response = await fetch(`/api/orcamentos?oficinaId=${oficinaId}`);
+        if (!response.ok) {
+          throw new Error('Erro ao buscar orçamentos.');
         }
+
+        const result = await response.json();
+        setOrcamentos(result.orcamentos);
       } catch (error) {
         console.error('Erro ao buscar orçamentos:', error);
+        alert('Erro ao buscar orçamentos.');
       }
     };
 
@@ -117,53 +120,59 @@ const OrcamentosRecebidos: React.FC = () => {
   const handleReject = async (index: number) => {
     const rejectedOrcamento = orcamentos[index];
 
-    // Remover do estado atual
-    const updatedOrcamentos = orcamentos.filter((_, i) => i !== index);
-    setOrcamentos(updatedOrcamentos);
-
-    // Enviar atualização para backend
     try {
-      await fetch(`/api/orcamentos/rejeitar`, {
-        method: 'POST',
+      const response = await fetch(`/api/orcamentos?numero_ordem_servico=${rejectedOrcamento.NUMERO_ORDEM_SERVICO}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: rejectedOrcamento.id }), // Enviar o ID do orçamento rejeitado
       });
-      console.log('Orçamento rejeitado com sucesso.');
+
+      if (!response.ok) {
+        throw new Error('Erro ao deletar orçamento');
+      }
+
+      setOrcamentos(orcamentos.filter((_, i) => i !== index));
+      alert('Orçamento deletado com sucesso!');
     } catch (error) {
-      console.error('Erro ao rejeitar orçamento:', error);
+      console.error('Erro ao deletar orçamento:', error);
+      alert('Erro ao deletar orçamento.');
     }
   };
 
   const handleAccept = async (index: number) => {
     const acceptedOrcamento = orcamentos[index];
 
-    // Adicionar ao localStorage como aceito
-    const storedAceitos = JSON.parse(localStorage.getItem('orcamentosAceitos') || '[]');
-    const updatedAceitos = [...storedAceitos, acceptedOrcamento];
-    localStorage.setItem('orcamentosAceitos', JSON.stringify(updatedAceitos));
-
-    // Atualizar backend
     try {
-      await fetch(`/api/orcamentos/aceitar`, {
+      const response = await fetch('/api/gestao-ordens', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: acceptedOrcamento.id }), // Enviar o ID do orçamento aceito
+        body: JSON.stringify({
+          cliente_nome: acceptedOrcamento.cliente_nome,
+          cliente_email: acceptedOrcamento.cliente_email,
+          cliente_telefone: acceptedOrcamento.cliente_telefone,
+          pecas: acceptedOrcamento.pecas,
+          modelo: acceptedOrcamento.modelo,
+          ano: acceptedOrcamento.ano,
+          diagnostico: acceptedOrcamento.diagnostico,
+          solucao: acceptedOrcamento.solucao,
+          estimativa: acceptedOrcamento.estimativa,
+          numero_ordem_servico: acceptedOrcamento.NUMERO_ORDEM_SERVICO,
+        }),
       });
-      console.log('Orçamento aceito com sucesso.');
+
+      if (!response.ok) {
+        throw new Error('Erro ao salvar na gestão de ordens');
+      }
+
+      setOrcamentos(orcamentos.filter((_, i) => i !== index));
+      alert('Orçamento aceito e salvo na gestão de ordens!');
     } catch (error) {
       console.error('Erro ao aceitar orçamento:', error);
+      alert('Erro ao aceitar orçamento.');
     }
-
-    // Remover do estado atual de orçamentos recebidos
-    const updatedOrcamentos = orcamentos.filter((_, i) => i !== index);
-    setOrcamentos(updatedOrcamentos);
-
-    // Redirecionar para a página de gestão de orçamentos
-    window.location.href = '/gestao-orcamentos'; // Altere o caminho para a página correta
   };
 
   return (
@@ -173,7 +182,7 @@ const OrcamentosRecebidos: React.FC = () => {
         <p>Não há orçamentos disponíveis no momento.</p>
       ) : (
         orcamentos.map((orcamento, index) => (
-          <OrcamentoCard key={index}>
+          <OrcamentoCard key={orcamento.NUMERO_ORDEM_SERVICO || index}>
             <OrcamentoHeader>
               <ClienteInfo>
                 <DataSection>
@@ -190,6 +199,10 @@ const OrcamentosRecebidos: React.FC = () => {
                 </DataSection>
               </ClienteInfo>
             </OrcamentoHeader>
+            <DataSection>
+              <DataTitle>Número da Ordem de Serviço: </DataTitle>
+              <DataValue>{orcamento.NUMERO_ORDEM_SERVICO || 'Número não disponível'}</DataValue>
+            </DataSection>
             <DataSection>
               <DataTitle>Peças: </DataTitle>
               <DataValue>{orcamento.pecas}</DataValue>
