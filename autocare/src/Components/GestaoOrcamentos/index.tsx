@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Cabecalho from '../Cabecalho';
-import Rodape from '../Rodape';
+import { FaTools, FaCarCrash, FaBoxOpen, FaCheck, FaWrench, FaBan } from 'react-icons/fa';
 
 interface Orcamento {
   descricao: string;
@@ -19,7 +18,7 @@ interface Orcamento {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh; 
+  min-height: 100vh;
   padding: 40px 20px;
   background-color: #f9f9f9;
   font-family: 'Poppins', sans-serif;
@@ -31,69 +30,69 @@ const MainContent = styled.main`
   margin: 0 auto;
 `;
 
-const OrcamentoCard = styled.div`
-  background-color: #fff;
-  padding: 20px;
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  &:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
-  }
 `;
 
-const CardContent = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  font-size: 1rem;
-  color: #333;
-`;
-
-const CardField = styled.div`
-  flex: 1 1 200px;
-`;
-
-const FieldLabel = styled.span`
+const Th = styled.th`
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  text-align: left;
   font-weight: 600;
-  color: #555;
 `;
 
-const FieldValue = styled.span`
+const Td = styled.td`
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
   color: #333;
-  margin-left: 5px;
+  font-size: 0.9rem;
+`;
+
+const IconWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const StatusTag = styled.span<{ color: string }>`
+  background-color: ${({ color }) => color};
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
-  justify-content: flex-end;
-  margin-top: 20px;
 `;
 
 const StatusButton = styled.button`
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #0056b3;
   }
 `;
 
 const RejectButton = styled.button`
-  background-color: #f44336;
+  background-color: #843e65;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #d32f2f;
   }
@@ -112,11 +111,10 @@ const Modal = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
   border-radius: 12px;
   width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 const ModalTitle = styled.h3`
@@ -148,13 +146,10 @@ const ModalButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #0056b3;
   }
-`;
-
-const RodapeStyled = styled(Rodape)`
-  margin-top: auto;
 `;
 
 const GestaoOrcamentos: React.FC = () => {
@@ -176,6 +171,13 @@ const GestaoOrcamentos: React.FC = () => {
     }
   }, []);
 
+  const statusColorMap: { [key: string]: string } = {
+    'Em andamento': '#ffc107',
+    'Aguardando Peças': '#17a2b8',
+    'Finalizado': '#28a745',
+    'Aguardando Carro': '#ff9800',
+  };
+
   const handleStatusChange = (index: number, status: string) => {
     if (status === 'Finalizado') {
       setCurrentIndex(index);
@@ -191,7 +193,7 @@ const GestaoOrcamentos: React.FC = () => {
   const handleModalSubmit = () => {
     if (currentIndex !== null) {
       const updatedOrcamentos = [...orcamentosAceitos];
-      const finalizedOrcamento = { 
+      const finalizedOrcamento = {
         ...updatedOrcamentos[currentIndex],
         status: 'Finalizado',
         falha: failureDescription,
@@ -232,75 +234,71 @@ const GestaoOrcamentos: React.FC = () => {
 
   return (
     <Container>
-      <Cabecalho />
       <MainContent>
-        {orcamentosAceitos.map((orcamento, index) => (
-          <OrcamentoCard key={index}>
-            <CardContent>
-              <CardField>
-                <FieldLabel>Cliente:</FieldLabel>
-                <FieldValue>{orcamento.clienteNome}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Email:</FieldLabel>
-                <FieldValue>{orcamento.clienteEmail}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Telefone:</FieldLabel>
-                <FieldValue>{orcamento.clienteTelefone}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Descrição:</FieldLabel>
-                <FieldValue>{orcamento.descricao}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Peças:</FieldLabel>
-                <FieldValue>{orcamento.pecas || 'Não especificado'}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Modelo:</FieldLabel>
-                <FieldValue>{orcamento.modelo || 'Não especificado'}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Ano:</FieldLabel>
-                <FieldValue>{orcamento.ano || 'Não especificado'}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Placa:</FieldLabel>
-                <FieldValue>{orcamento.placa || 'Não especificado'}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Data:</FieldLabel>
-                <FieldValue>{orcamento.data || 'Não especificado'}</FieldValue>
-              </CardField>
-              <CardField>
-                <FieldLabel>Status Atual:</FieldLabel>
-                <FieldValue>{orcamento.status}</FieldValue>
-              </CardField>
-            </CardContent>
-            <ButtonContainer>
-              <StatusButton onClick={() => handleStatusChange(index, 'Em andamento')}>Em Andamento</StatusButton>
-              <StatusButton onClick={() => handleStatusChange(index, 'Aguardando Peças')}>Aguardando Peças</StatusButton>
-              <StatusButton onClick={() => handleStatusChange(index, 'Finalizado')}>Finalizado</StatusButton>
-              <RejectButton onClick={() => handleReject(index)}>Rejeitar</RejectButton>
-            </ButtonContainer>
-          </OrcamentoCard>
-        ))}
+        <Table>
+          <thead>
+            <tr>
+              <Th>Cliente</Th>
+              <Th>Email</Th>
+              <Th>Telefone</Th>
+              <Th>Descrição</Th>
+              <Th>Peças</Th>
+              <Th>Modelo</Th>
+              <Th>Ano</Th>
+              <Th>Status</Th>
+              <Th>Ações</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {orcamentosAceitos.map((orcamento, index) => (
+              <tr key={index}>
+                <Td>{orcamento.clienteNome}</Td>
+                <Td>{orcamento.clienteEmail}</Td>
+                <Td>{orcamento.clienteTelefone}</Td>
+                <Td>{orcamento.descricao}</Td>
+                <Td>{orcamento.pecas || 'Não especificado'}</Td>
+                <Td>{orcamento.modelo || 'Não especificado'}</Td>
+                <Td>{orcamento.ano || 'Não especificado'}</Td>
+                <Td>
+                  <StatusTag color={statusColorMap[orcamento.status]}>
+                    {orcamento.status}
+                  </StatusTag>
+                </Td>
+                <Td>
+                  <ButtonContainer>
+                    <StatusButton onClick={() => handleStatusChange(index, 'Em andamento')}>
+                      <FaTools /> Em andamento
+                    </StatusButton>
+                    <StatusButton onClick={() => handleStatusChange(index, 'Aguardando Peças')}>
+                      <FaBoxOpen /> Aguardando Peças
+                    </StatusButton>
+                    <StatusButton onClick={() => handleStatusChange(index, 'Finalizado')}>
+                      <FaCheck /> Finalizado
+                    </StatusButton>
+                    <RejectButton onClick={() => handleReject(index)}>
+                      <FaBan /> Rejeitar
+                    </RejectButton>
+                  </ButtonContainer>
+                </Td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
 
         {showModal && (
           <Modal>
             <ModalContent>
               <ModalTitle>Finalizar Serviço</ModalTitle>
               <div>
-                <FieldLabel>Falha Relatada:</FieldLabel>
+                <span>Falha Relatada:</span>
                 <ModalTextarea value={failureDescription} onChange={(e) => setFailureDescription(e.target.value)} />
               </div>
               <div>
-                <FieldLabel>Defeito Apresentado:</FieldLabel>
+                <span>Defeito Apresentado:</span>
                 <ModalTextarea value={defectDescription} onChange={(e) => setDefectDescription(e.target.value)} />
               </div>
               <div>
-                <FieldLabel>Medidas Tomadas:</FieldLabel>
+                <span>Medidas Tomadas:</span>
                 <ModalTextarea value={measurements} onChange={(e) => setMeasurements(e.target.value)} />
               </div>
               <ModalButtonContainer>
@@ -311,7 +309,6 @@ const GestaoOrcamentos: React.FC = () => {
           </Modal>
         )}
       </MainContent>
-      <RodapeStyled />
     </Container>
   );
 };
