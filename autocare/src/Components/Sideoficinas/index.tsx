@@ -42,7 +42,7 @@ function Side() {
       <Link href="/Gestao" passHref>
         <SidebarLink>Gestão de Orçamentos</SidebarLink>
       </Link>
-      <Link href="/ordens-finalizadas" passHref>
+      <Link href="/Garantia" passHref>
         <SidebarLink>Ordens Finalizadas</SidebarLink>
       </Link>
     </SidebarContainer>
