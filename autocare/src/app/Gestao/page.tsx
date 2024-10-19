@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FaWrench, FaBox, FaCar, FaCheckCircle } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Side from "@/Components/Sideoficinas";
+import Modal from "react-modal";
 
 // Estilos do componente
 const PageWrapper = styled.div`
@@ -61,8 +61,8 @@ const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-const FinalizarButton = styled.button`
-  background-color: #28a745;
+const Button = styled.button`
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 10px;
@@ -71,13 +71,86 @@ const FinalizarButton = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const FinalizarButton = styled(Button)`
+  background-color: #28a745;
+
+  &:hover {
     background-color: #218838;
   }
 `;
 
+// Estilos adicionais para o modal
+const ModalWrapper = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+`;
+
+const ModalTitle = styled.h2`
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const ModalLabel = styled.label`
+  font-size: 1rem;
+  color: #555;
+  margin: 10px 0 5px;
+`;
+
+const ModalInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+`;
+
+const ModalButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+`;
+
+const ModalButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+interface DataToSend {
+  isDiagnosticoCorrect: boolean | null;
+  newDiagnostico?: string;
+  newPecas?: string;
+  newValorFinal?: string;
+}
+
 const GestaoOrdens: React.FC = () => {
   const [ordens, setOrdens] = useState<any[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<{ [key: number]: string }>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentOrderIndex, setCurrentOrderIndex] = useState<number | null>(null);
+  const [isDiagnosticoCorrect, setIsDiagnosticoCorrect] = useState<boolean | null>(null);
+  const [newDiagnostico, setNewDiagnostico] = useState("");
+  const [newPecas, setNewPecas] = useState("");
+  const [newValorFinal, setNewValorFinal] = useState("");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -89,11 +162,13 @@ const GestaoOrdens: React.FC = () => {
 
         if (response.ok) {
           setOrdens(result.ordens);
-          // Inicializar o status selecionado com o status atual das ordens
-          const initialStatus = result.ordens.reduce((acc: any, ordem: any, index: number) => {
-            acc[index] = ordem.STATUS_ORDEM;
-            return acc;
-          }, {});
+          const initialStatus = result.ordens.reduce(
+            (acc: any, ordem: any, index: number) => {
+              acc[index] = ordem.STATUS_ORDEM || "Em andamento";
+              return acc;
+            },
+            {}
+          );
           setSelectedStatus(initialStatus);
         } else {
           console.error("Erro ao buscar ordens de serviço:", result.error);
@@ -106,48 +181,69 @@ const GestaoOrdens: React.FC = () => {
     fetchOrdens();
   }, []);
 
-  const handleStatusChange = (index: number, event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newStatus = event.target.value;
-    setSelectedStatus((prev) => ({
-      ...prev,
-      [index]: newStatus,
-    }));
+  const openModal = (index: number) => {
+    setCurrentOrderIndex(index);
+    setIsModalOpen(true);
+    setIsDiagnosticoCorrect(null);
+    setNewDiagnostico("");
+    setNewPecas("");
+    setNewValorFinal("");
   };
 
-  const handleFinalizar = async (index: number) => {
-    const ordem = ordens[index];
-    const newStatus = selectedStatus[index];
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentOrderIndex(null);
+  };
+
+  const handleDiagnosticoResponse = (isCorrect: boolean) => {
+    setIsDiagnosticoCorrect(isCorrect);
+  };
+
+  const handleFinalizeOrder = async () => {
+    if (currentOrderIndex === null) return;
+    const ordem = ordens[currentOrderIndex];
+
+    const dataToSend: DataToSend = {
+      isDiagnosticoCorrect,
+    };
+
+    if (!isDiagnosticoCorrect) {
+      dataToSend.newDiagnostico = newDiagnostico;
+      dataToSend.newPecas = newPecas;
+      dataToSend.newValorFinal = newValorFinal;
+    }
 
     try {
-      const response = await fetch(`/api/gestao-ordens/${ordem.ID}/concluir`, {
+      const response = await fetch(`/api/gestao-ordens/${ordem.ID}/finalizar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status_ordem: newStatus }),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
         const errorResponse = await response.text();
-        console.error("Erro ao concluir ordem de serviço:", errorResponse);
+        console.error("Erro ao finalizar ordem de serviço:", errorResponse);
         return;
       }
 
-      console.log("Ordem de serviço concluída com sucesso.");
+      console.log("Ordem de serviço finalizada com sucesso.");
 
-      // Atualizar status da ordem no front-end
-      const updatedOrdens = ordens.map((o, i) =>
-        i === index ? { ...o, STATUS_ORDEM: newStatus } : o
-      );
+      // Fechar o modal e redefinir currentOrderIndex antes de atualizar o estado
+      closeModal();
+
+      // Remover a ordem do estado
+      const updatedOrdens = ordens.filter((_, i) => i !== currentOrderIndex);
       setOrdens(updatedOrdens);
     } catch (error) {
-      console.error("Erro ao concluir ordem de serviço:", error);
+      console.error("Erro ao finalizar ordem de serviço:", error);
     }
   };
 
   return (
     <PageWrapper>
-      <Side /> {/* Componente Side para navegação lateral */}
+      <Side />
       <MainContent>
         <Title>Gestão de Ordens de Serviço</Title>
         <Table>
@@ -178,8 +274,14 @@ const GestaoOrdens: React.FC = () => {
                 <Td>{ordem.DIAGNOSTICO || "Diagnóstico não disponível"}</Td>
                 <Td>
                   <StatusTag
-                    value={selectedStatus[index] || ordem.STATUS_ORDEM}
-                    onChange={(e) => handleStatusChange(index, e)}
+                    value={selectedStatus[index] || ordem.STATUS_ORDEM || "Em andamento"}
+                    onChange={(e) => {
+                      const newStatus = e.target.value;
+                      setSelectedStatus((prev) => ({
+                        ...prev,
+                        [index]: newStatus,
+                      }));
+                    }}
                   >
                     <option value="Em andamento">Em andamento</option>
                     <option value="Aguardando Peças">Aguardando Peças</option>
@@ -192,17 +294,82 @@ const GestaoOrdens: React.FC = () => {
                 </Td>
                 <Td>
                   <ButtonContainer>
-                    {selectedStatus[index] !== "Concluída" && (
-                      <FinalizarButton onClick={() => handleFinalizar(index)}>
-                        Finalizar
-                      </FinalizarButton>
-                    )}
+                    <Button onClick={() => alert('Status atualizado')}>Atualizar Status</Button>
+                    <FinalizarButton onClick={() => openModal(index)}>
+                      Finalizar Ordem
+                    </FinalizarButton>
                   </ButtonContainer>
                 </Td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        {/* Modal */}
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Finalizar Ordem"
+          ariaHideApp={false}
+        >
+          <ModalWrapper>
+            {currentOrderIndex !== null && ordens[currentOrderIndex] && (
+              <>
+                <ModalTitle>Finalizar Ordem</ModalTitle>
+                <p>
+                  Diagnóstico/Falha:{" "}
+                  {ordens[currentOrderIndex].DIAGNOSTICO || "Não disponível"}
+                </p>
+                {isDiagnosticoCorrect === null ? (
+                  <>
+                    <p>Esta falha corresponde à verdadeira falha?</p>
+                    <ModalButtons>
+                      <ModalButton onClick={() => handleDiagnosticoResponse(true)}>
+                        Sim
+                      </ModalButton>
+                      <ModalButton onClick={() => handleDiagnosticoResponse(false)}>
+                        Não
+                      </ModalButton>
+                    </ModalButtons>
+                  </>
+                ) : isDiagnosticoCorrect ? (
+                  <>
+                    <p>Deseja finalizar a ordem?</p>
+                    <ModalButtons>
+                      <FinalizarButton onClick={handleFinalizeOrder}>Finalizar</FinalizarButton>
+                      <ModalButton onClick={closeModal}>Cancelar</ModalButton>
+                    </ModalButtons>
+                  </>
+                ) : (
+                  <>
+                    <ModalLabel>Verdadeira Falha:</ModalLabel>
+                    <ModalInput
+                      type="text"
+                      value={newDiagnostico}
+                      onChange={(e) => setNewDiagnostico(e.target.value)}
+                    />
+                    <ModalLabel>Peças a serem trocadas:</ModalLabel>
+                    <ModalInput
+                      type="text"
+                      value={newPecas}
+                      onChange={(e) => setNewPecas(e.target.value)}
+                    />
+                    <ModalLabel>Valor Final:</ModalLabel>
+                    <ModalInput
+                      type="text"
+                      value={newValorFinal}
+                      onChange={(e) => setNewValorFinal(e.target.value)}
+                    />
+                    <ModalButtons>
+                      <FinalizarButton onClick={handleFinalizeOrder}>Finalizar</FinalizarButton>
+                      <ModalButton onClick={closeModal}>Cancelar</ModalButton>
+                    </ModalButtons>
+                  </>
+                )}
+              </>
+            )}
+          </ModalWrapper>
+        </Modal>
       </MainContent>
     </PageWrapper>
   );
