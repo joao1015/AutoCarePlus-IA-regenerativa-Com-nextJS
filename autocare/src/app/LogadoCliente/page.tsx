@@ -17,10 +17,16 @@ interface Usuario {
   estado: string;
 }
 
-// Styled Component para o conteúdo principal com cor de fundo personalizada
+// Styled Component para o layout principal com flexbox
+const PaginaContainer = styled.div`
+  display: flex;
+  height: 100vh; // Ocupa toda a altura da janela
+`;
+
 const ConteudoPrincipal = styled.div`
- 
-  padding: 0px;
+  flex: 1; // O conteúdo principal ocupa todo o espaço disponível restante
+  padding: 20px;
+  overflow-y: auto;
 `;
 
 const PaginaLogada: React.FC = () => {
@@ -31,7 +37,7 @@ const PaginaLogada: React.FC = () => {
   const usuario: Usuario | null = usuarioData ? JSON.parse(usuarioData) : null;
 
   return (
-    <div>
+    <PaginaContainer>
       {/* Passa o usuário como prop para o Sidebar */}
       <Sidebar usuario={usuario} />
       <ConteudoPrincipal>
@@ -39,8 +45,9 @@ const PaginaLogada: React.FC = () => {
           <IA />
         </main>
       </ConteudoPrincipal>
-    </div>
+    </PaginaContainer>
   );
 };
 
 export default PaginaLogada;
+
