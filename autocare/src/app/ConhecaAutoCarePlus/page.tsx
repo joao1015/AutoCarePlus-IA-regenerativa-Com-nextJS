@@ -17,6 +17,22 @@ const ConhecaAuto = () => {
     },
     {
       id: 2,
+      title: 'Análise por Monitoramento via Visão Computacional (Em breve)',
+      description:
+        'Use a câmera do celular para analisar o painel do carro e identificar qual é a falha, dependendo da luz que acender no painel de aviso.',
+      details:
+        'Com essa funcionalidade, será possível detectar falhas no veículo através do monitoramento visual do painel, utilizando visão computacional para interpretar os sinais luminosos.'
+    },
+    {
+      id: 3,
+      title: 'Aplicativo para Google Play e App Store (Em breve)',
+      description:
+        'Um aplicativo para Android e iOS que permitirá aos clientes acessar todos os serviços diretamente de seus dispositivos móveis.',
+      details:
+        'Em breve, o AutoCarePlus estará disponível nas lojas de aplicativos, facilitando o acesso e a interação dos clientes com as oficinas.'
+    },
+    {
+      id: 4,
       title: 'IA para Diagnóstico de Falhas',
       description:
         'Uma inteligência artificial que identifica falhas em veículos e oferece soluções detalhadas.',
@@ -24,7 +40,7 @@ const ConhecaAuto = () => {
         'A IA fornece uma descrição completa para evitar erros e alucinações, garantindo uma análise precisa do problema.'
     },
     {
-      id: 3,
+      id: 5,
       title: 'Busca e Comparação de Oficinas',
       description:
         'Plataforma que permite encontrar oficinas credenciadas, comparar preços, tempo de serviço e avaliações.',
@@ -32,7 +48,7 @@ const ConhecaAuto = () => {
         'A plataforma facilita a busca de oficinas de acordo com a necessidade do cliente, com critérios como preço e avaliações.'
     },
     {
-      id: 4,
+      id: 6,
       title: 'Serviços Extras',
       description:
         'Adicione serviços como leva e traz, alinhamento e mais de forma personalizada.',
@@ -40,7 +56,7 @@ const ConhecaAuto = () => {
         'Os clientes podem personalizar o serviço com opções extras, como leva e traz e alinhamento.'
     },
     {
-      id: 5,
+      id: 7,
       title: 'Escolha de Peças',
       description:
         'Flexibilidade para escolher entre peças renovadas ou novas, conforme a preferência do cliente.',
@@ -48,7 +64,7 @@ const ConhecaAuto = () => {
         'A plataforma oferece a opção de escolher entre peças renovadas ou novas, dependendo do orçamento e preferência do cliente.'
     },
     {
-      id: 6,
+      id: 8,
       title: 'Agendamento e Execução',
       description:
         'O cliente agenda o serviço, escolhe a oficina e recebe um atendimento personalizado.',
@@ -123,7 +139,7 @@ const ConhecaAuto = () => {
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent border-t-4 border-blue-500"></div>
               </div>
               <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-md text-center w-48">{step.title}</div>
-              {step.id < steps.length && <div className="text-blue-700 text-2xl mt-4">↓</div>}
+              {step.id < steps.length &&   <div className="flex items-center justify-center text-blue-700 text-2xl mt-4">↓</div>}
             </div>
           ))}
         </div>
@@ -137,7 +153,7 @@ const ConhecaAuto = () => {
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent border-t-4 border-blue-500"></div>
               </div>
               <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-md text-center w-48">{step.title}</div>
-              {step.id < workshopSteps.length && <div className="text-blue-700 text-2xl mt-4">↓</div>}
+              {step.id < workshopSteps.length &&   <div className="flex items-center justify-center text-blue-700 text-2xl mt-4">↓</div>}
             </div>
           ))}
         </div>

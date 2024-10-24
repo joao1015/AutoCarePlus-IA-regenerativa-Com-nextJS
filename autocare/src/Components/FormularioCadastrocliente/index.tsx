@@ -98,9 +98,9 @@ function FormularioCadastroCliente() {
   };
 
   return (
-    <div className="w-full h-full mt-20"> 
-      <div className="py-12 px-4 sm:px-6 lg:px-8" style={{ marginLeft: '13cm' }}>
-        <div className="max-w-md w-full space-y-8">
+    <div className="w-full min-h-screen bg-[#F8F8FF] flex flex-col items-center pt-20"> {/* Ajuste para garantir que o fundo preencha toda a tela */}
+      <div className="py-12 px-4 sm:px-6 lg:px-8 w-full max-w-lg">
+        <div className="max-w-md w-full space-y-">
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Bem-vindo à nossa plataforma!
           </h2>
@@ -119,7 +119,7 @@ function FormularioCadastroCliente() {
           }}
         >
           <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">Crie sua Conta Gratuita</h2>
-          
+
           {message && (
             <p className={`text-center text-lg ${error ? 'text-red-600' : 'text-green-600'} mb-4`}>
               {message}
@@ -153,6 +153,8 @@ function FormularioCadastroCliente() {
               </div>
             </div>
           )}
+
+
 
           {/* Etapa 2: Email */}
           {step === 2 && (
