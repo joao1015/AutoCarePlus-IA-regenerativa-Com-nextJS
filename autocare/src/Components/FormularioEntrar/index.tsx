@@ -1,19 +1,19 @@
 "use client"; // Adicione esta linha
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import styled from 'styled-components';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import styled from "styled-components";
+import Link from "next/link";
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
 `;
 
 const LoginContainer = styled.div`
-  background-color: #F3F4F6;
+  background-color: #f3f4f6;
   width: 70%;
   max-width: 600px;
   padding: 20px;
@@ -34,7 +34,7 @@ const LoginForm = styled.form`
 const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 26px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   text-align: center;
 `;
@@ -47,7 +47,7 @@ const Label = styled.label`
   display: block;
   margin-bottom: 8px;
   font-size: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
 `;
 
@@ -58,7 +58,7 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   background-color: #f0f0f0;
   box-sizing: border-box;
@@ -71,12 +71,12 @@ const Input = styled.input`
 const LoginButton = styled.button`
   width: 100%;
   height: 40px;
-  background-color: #10B981;
+  background-color: #10b981;
   color: #fff;
   border: none;
   border-radius: 10px;
   font-size: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -92,7 +92,7 @@ const LoginButton = styled.button`
 const LinkStyled = styled.p`
   color: #000000;
   font-size: 18px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   text-align: center;
 `;
 
@@ -111,19 +111,20 @@ const SuccessMessage = styled.p`
 `;
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const router = useRouter(); // Correção aqui, usando useRouter
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/login',{
-        method: 'POST',
+      const response = await fetch("/api/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, senha }),
       });
@@ -131,21 +132,24 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
 
-        // Verifique o conteúdo de data.user
-        console.log('Dados recebidos do backend:', data.user);
+        setErrorMessage("");
+        setSuccessMessage("Login bem-sucedido! Bem-vindo à AutoCarePlus");
 
         // Armazena as informações do usuário
-        localStorage.setItem('usuarioLogado', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("usuarioLogado", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
 
-        router.push('LogadoCliente'); // Redireciona para a página logada
+        // Exibe a mensagem de sucesso por 2 segundos antes de redirecionar
+        setTimeout(() => {
+          router.push("LogadoCliente");
+        }, 2500);
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData.error || 'Falha ao fazer login');
+        setErrorMessage(errorData.error || "Falha ao fazer login");
       }
     } catch (error) {
-      setErrorMessage('Erro ao conectar com o servidor.');
-      console.error('Erro ao conectar com o servidor:', error);
+      setErrorMessage("Erro ao conectar com o servidor.");
+      console.error("Erro ao conectar com o servidor:", error);
     }
   };
 
@@ -179,9 +183,11 @@ function Login() {
           <LoginButton type="submit">Entrar</LoginButton>
 
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
 
           <LinkStyled>
-            Não tem uma conta? <Link href="/SejaCadastrado">Cadastre-se</Link>
+            Não tem uma conta?{" "}
+            <Link href="/SejaCadastrado">Cadastre-se</Link>
           </LinkStyled>
         </LoginForm>
       </LoginContainer>

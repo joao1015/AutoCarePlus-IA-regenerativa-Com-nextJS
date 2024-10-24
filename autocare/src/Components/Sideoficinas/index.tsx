@@ -36,7 +36,7 @@ const SidebarLink = styled.a`
 function Side() {
   return (
     <SidebarContainer>
-      <Link href="/Ordensrecebidas" passHref>
+      <Link href="/ordensrecebidas" passHref>
         <SidebarLink>Orçamentos Recebidos</SidebarLink>
       </Link>
       <Link href="/Gestao" passHref>
