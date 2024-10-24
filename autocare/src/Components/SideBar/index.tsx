@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 
-// Defina a interface para o usuário
 interface Usuario {
   id: number;
   nome: string;
@@ -12,14 +12,9 @@ interface Usuario {
   estado: string;
 }
 
-// Interface para as props do Sidebar
-interface SidebarProps {
-  usuario: Usuario | null;
-}
-
-// Styled Component para o Sidebar
+// Estilos para o container da sidebar
 const SidebarContainer = styled.div`
-  width: 220px;
+  width: 270px;
   height: 100vh;
   background-color: #000;
   color: #fff;
@@ -27,6 +22,7 @@ const SidebarContainer = styled.div`
   font-family: 'Poppins', sans-serif;
 `;
 
+// Estilos para o botão de deslogar
 const BotaoDeslogar = styled.button`
   background-color: #117500;
   color: #fff;
@@ -42,18 +38,49 @@ const BotaoDeslogar = styled.button`
   }
 `;
 
+// Estilos para a mensagem de boas-vindas
 const MensagemBoasVindas = styled.div`
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: 600;
 `;
 
-// Sidebar aceita a prop 'usuario'
-const Sidebar: React.FC<SidebarProps> = ({ usuario }) => {
+// Estilos para os links da sidebar
+const SidebarLink = styled.a`
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 0;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #117500;
+  }
+`;
+
+const Sidebar: React.FC = () => {
+  const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+  // Recuperar os dados do usuário logado do localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (usuarioLogado) {
+        const usuarioData = JSON.parse(usuarioLogado);
+        console.log('Usuário recuperado do localStorage:', usuarioData);
+        setUsuario(usuarioData);
+      }
+    }
+  }, []);
+
+  // Função para deslogar
   const handleLogout = () => {
-    localStorage.removeItem('usuarioLogado');
-    localStorage.removeItem('token');
-    window.location.href = '/entrar'; // Redireciona após logout
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('usuarioLogado');
+      localStorage.removeItem('token');
+      window.location.href = '/entrar'; // Redireciona para a página de login
+    }
   };
 
   return (
@@ -61,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({ usuario }) => {
       {usuario ? (
         <>
           <MensagemBoasVindas>Bem-vindo, {usuario.nome}!</MensagemBoasVindas>
-         
+          <p>Email: {usuario.email}</p>
           <p>Endereço: {usuario.logradouro}, {usuario.numero}</p>
           <p>Cidade: {usuario.cidade}</p>
           <p>Estado: {usuario.estado}</p>
@@ -69,6 +96,15 @@ const Sidebar: React.FC<SidebarProps> = ({ usuario }) => {
       ) : (
         <MensagemBoasVindas>Bem-vindo!</MensagemBoasVindas>
       )}
+
+      {/* Link para monitoramento de status de serviço */}
+      <Link href="/Status" passHref>
+      <SidebarLink>Status de Serviço</SidebarLink>
+      </Link>
+
+
+
+      {/* Botão para deslogar */}
       <BotaoDeslogar onClick={handleLogout}>Deslogar</BotaoDeslogar>
     </SidebarContainer>
   );
