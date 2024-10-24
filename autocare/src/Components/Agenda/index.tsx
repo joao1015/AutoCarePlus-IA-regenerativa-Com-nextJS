@@ -65,44 +65,47 @@ const AgendamentoContainer = styled.div`
   padding: 20px;
   border-radius: 12px;
   margin: 2rem auto;
-  height: 70%;
-  width: 80%;
+  height: auto;
+  width: 95%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-left: 7cm;
-  margin-top: -20cm;
+`;
+
+const Title = styled.h1`
+  color: black;
+  text-align: center;
 `;
 
 const BalloonsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  gap: 1cm;
+  justify-content: space-around;
+  gap: 2rem;
   flex-wrap: nowrap;
   overflow-x: auto;
   width: 100%;
-  height: 10cm;
-  margin-top: 1cm;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
 `;
 
 const Balloon = styled.div<{ disabled: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #3437f1;
+  background-color: ${({ disabled }) => (disabled ? '#888' : '#3437f1')};
   border: 1px solid #ddd;
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
   color: white;
   padding: 30px;
-  width: 345px;
-  height: 440px;
+  width: 400px;
+  height: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: transform 0.2s ease;
-  border-width: 10px;
   position: relative;
   font-weight: bold;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  flex: 0 0 auto;
 
   &:hover {
     transform: ${({ disabled }) => (disabled ? 'none' : 'scale(1.05)')};
@@ -111,11 +114,11 @@ const Balloon = styled.div<{ disabled: boolean }>`
 
 const BalloonImageContainer = styled.div`
   position: absolute;
-  top: -30px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid #fff;
@@ -126,18 +129,21 @@ const BalloonImageContainer = styled.div`
 `;
 
 const BalloonTitle = styled.h2`
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 22px;
+  margin-bottom: 20px;
+  margin-top: 57px;
 `;
 
 const BalloonDescription = styled.p`
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
+  margin-top: 20px;
+  line-height: 1.5;
 `;
 
 const Button = styled.button<{ disabled: boolean }>`
-  margin-top: 10px;
-  padding: 10px 20px;
+  margin-top: 30px;
+  padding: 15px 30px;
   border: none;
   border-radius: 8px;
   background-color: ${({ disabled }) => (disabled ? '#aaa' : '#117500')};
@@ -151,99 +157,6 @@ const Button = styled.button<{ disabled: boolean }>`
   }
 `;
 
-const OpenModalButton = styled.button`
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  background-color: #117500;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: #0d5b00;
-  }
-`;
-
-const ModalOverlay = styled.div<{ isOpen: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  border-radius: 12px;
-`;
-
-const ModalContent = styled.div`
-  background: #fff;
-  padding: 20px;
-  border-radius: 22px;
-  max-width: 500px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-`;
-
-const CloseButton = styled.button`
-  background: #f44336;
-  color: #000000;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  &:hover {
-    background: #ffffff;
-  }
-`;
-
-const ModalTitle = styled.h2`
-  margin: 0 0 10px 0;
-  font-size: 24px;
-`;
-
-const ModalMessage = styled.p`
-  font-size: 16px;
-  margin: 0;
-`;
-
-const ModalButton = styled.button`
-  margin-top: 50px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  background-color: #117500;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0d5b00;
-  }
-`;
-
-const InputContainer = styled.div`
-  margin-top: 20px;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 100%;
-`;
-
 // Componente de Agendamento
 const Agendamento: React.FC = () => {
   const searchParams = useSearchParams();
@@ -251,11 +164,10 @@ const Agendamento: React.FC = () => {
   const lastMessage = searchParams.get('lastMessage') || 'Nenhum orçamento disponível.';
   const [success, setSuccess] = useState(false);
   const [disabledOfficinas, setDisabledOfficinas] = useState<string[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(''); // Atualizando número de telefone
   const [ordemServico, setOrdemServico] = useState<string>(''); // Adicionando estado para ordem de serviço
 
-  const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage as string);
+  const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage);
 
   const oficinas = [
     {
@@ -282,6 +194,11 @@ const Agendamento: React.FC = () => {
   ];
 
   const handleSelectOfficina = async (localStorageKey: string) => {
+    if (disabledOfficinas.includes(localStorageKey)) {
+      console.warn('Oficina já selecionada anteriormente');
+      return;
+    }
+
     const oficinaMap = { oficinaA: 1, oficinaB: 2, oficinaC: 3 };
 
     if (!(localStorageKey in oficinaMap)) {
@@ -291,8 +208,8 @@ const Agendamento: React.FC = () => {
 
     const oficinaId = oficinaMap[localStorageKey as keyof typeof oficinaMap];
 
-    const codigoOrdemServico = gerarCodigoOrdemServico(); // Gerar o número de ordem de serviço
-    setOrdemServico(codigoOrdemServico); // Armazenar o número gerado no estado
+    const codigoOrdemServico = gerarCodigoOrdemServico();
+    setOrdemServico(codigoOrdemServico);
 
     const orcamento = {
       cliente: {
@@ -307,10 +224,10 @@ const Agendamento: React.FC = () => {
       solucao,
       estimativa,
       oficinaId,
-      ordemServico: codigoOrdemServico, // Usar o número de ordem de serviço gerado
+      ordemServico: codigoOrdemServico,
     };
 
-    console.log('Agendamento:', orcamento); // Para depuração
+    console.log('Tentando agendar:', orcamento);
 
     try {
       const response = await fetch('/api/agendamento', {
@@ -319,11 +236,15 @@ const Agendamento: React.FC = () => {
         body: JSON.stringify(orcamento),
       });
 
+      console.log('Response status:', response.status); // Debug
+
       if (response.ok) {
         setSuccess(true);
         setDisabledOfficinas([...disabledOfficinas, localStorageKey]);
+        console.log('Agendamento realizado com sucesso!');
       } else {
-        console.error('Erro ao salvar orçamento:', await response.json());
+        const errorData = await response.json();
+        console.error('Erro ao salvar orçamento:', errorData);
       }
     } catch (err) {
       console.error('Erro ao salvar orçamento:', err);
@@ -332,27 +253,7 @@ const Agendamento: React.FC = () => {
 
   return (
     <AgendamentoContainer>
-      <h1>Agendamento</h1>
-
-      <ModalOverlay isOpen={isModalOpen}>
-        <ModalContent>
-          <CloseButton onClick={() => setIsModalOpen(false)}>×</CloseButton>
-          <ModalTitle>Último Orçamento</ModalTitle>
-          <ModalMessage>{lastMessage}</ModalMessage>
-          <InputContainer>
-            <Input
-              type="text"
-              placeholder="Digite seu número de telefone"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-          </InputContainer>
-          <ModalButton onClick={() => {
-            handleSelectOfficina(''); 
-            setIsModalOpen(false);
-          }}>Agendar</ModalButton>
-        </ModalContent>
-      </ModalOverlay>
+      <Title>Agendamento</Title>
 
       <BalloonsWrapper>
         {oficinas.map((oficina) => (
@@ -361,7 +262,7 @@ const Agendamento: React.FC = () => {
             disabled={disabledOfficinas.includes(oficina.localStorageKey)}
           >
             <BalloonImageContainer>
-              <Image src={oficina.image} alt={oficina.title} layout="fill" objectFit="cover" />
+              <Image src={oficina.image} alt={oficina.title} fill />
             </BalloonImageContainer>
             <BalloonTitle>{oficina.title}</BalloonTitle>
             <BalloonDescription>
@@ -375,10 +276,7 @@ const Agendamento: React.FC = () => {
             </BalloonDescription>
             <Button
               disabled={disabledOfficinas.includes(oficina.localStorageKey)}
-              onClick={() => {
-                setIsModalOpen(true);
-                handleSelectOfficina(oficina.localStorageKey);
-              }}
+              onClick={() => handleSelectOfficina(oficina.localStorageKey)}
             >
               Agendar
             </Button>
