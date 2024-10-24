@@ -1,15 +1,8 @@
+// Componentes do Front-end - página de busca de status
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-
-// Definição da interface para as ordens
-interface Ordem {
-  numero_ordem_servico: string;
-  cliente_nome: string;
-  cliente_email: string;
-  status: string;
-}
 
 const Container = styled.div`
   display: flex;
@@ -84,13 +77,8 @@ const ErrorMsg = styled.p`
   margin-top: 10px;
 `;
 
-const NoResults = styled.p`
-  color: #6c757d;
-  margin-top: 10px;
-`;
-
 const StatusOrdens = () => {
-  const [ordens, setOrdens] = useState<Ordem[]>([]);
+  const [status, setStatus] = useState<string | null>(null);
   const [emailCliente, setEmailCliente] = useState('');
   const [error, setError] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -99,66 +87,44 @@ const StatusOrdens = () => {
     setError('');
     setShowResults(false);
     try {
-      const response = await fetch('http://localhost:4000/ordens/todas');
+      const response = await fetch(`/api/StatusApi?email=${emailCliente}`, {
+        method: 'GET',
+      });      
       const result = await response.json();
 
       if (response.ok) {
-        const filtered = result.ordens.filter((ordem: Ordem) =>
-          ordem.cliente_email.toLowerCase().includes(emailCliente.toLowerCase().trim())
-        );
-        setOrdens(filtered);
+        setStatus(result.status);
         setShowResults(true);
-        if (filtered.length === 0) {
-          setError('Nenhuma ordem encontrada para este email.');
-        }
       } else {
-        setError(result.message || 'Erro ao buscar as ordens.');
+        setError(result.error || 'Erro ao buscar as ordens.');
       }
     } catch (error) {
-      console.error('Erro ao buscar todas as ordens:', error);
-      setError('Erro ao buscar as ordens.');
+      console.error('Erro ao buscar ordem de serviço:', error);
+      setError('Erro ao buscar a ordem de serviço.');
     }
   };
 
   return (
     <Container>
       <MainContent>
-        <Title>Monitoramento de Ordens de Serviço</Title>
+        <Title>Monitoramento de Status da Ordem de Serviço</Title>
         <Input
           type="email"
           placeholder="Digite o email do cliente"
           value={emailCliente}
           onChange={(e) => setEmailCliente(e.target.value)}
         />
-        <Button onClick={handleFilter}>Buscar Ordens</Button>
+        <Button onClick={handleFilter}>Buscar Status</Button>
 
         {error && <ErrorMsg>{error}</ErrorMsg>}
 
-        {showResults && ordens.length > 0 ? (
-          ordens.map((ordem, index) => (
-            <OrcamentoCard key={index}>
-              <div>
-                <FieldLabel>Número da Ordem:</FieldLabel>
-                <FieldValue>{ordem.numero_ordem_servico}</FieldValue>
-              </div>
-              <div>
-                <FieldLabel>Nome do Cliente:</FieldLabel>
-                <FieldValue>{ordem.cliente_nome}</FieldValue>
-              </div>
-              <div>
-                <FieldLabel>Email do Cliente:</FieldLabel>
-                <FieldValue>{ordem.cliente_email}</FieldValue>
-              </div>
-              <div>
-                <FieldLabel>Status da Ordem:</FieldLabel>
-                <FieldValue>{ordem.status}</FieldValue>
-              </div>
-            </OrcamentoCard>
-          ))
-        ) : (
-          showResults && (
-            <NoResults>Nenhuma ordem de serviço encontrada para este cliente.</NoResults>
-          )
+        {showResults && status && (
+          <OrcamentoCard>
+            <div>
+              <FieldLabel>Status da Ordem:</FieldLabel>
+              <FieldValue>{status}</FieldValue>
+            </div>
+          </OrcamentoCard>
         )}
       </MainContent>
     </Container>
