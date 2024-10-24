@@ -36,14 +36,14 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="font-poppins">
-  {/* Hero Section */}
-  <section className="flex flex-col items-center py-16 text-center bg-gradient-to-r from-black-300 to-blue-100 w-full">
-  <h2 className="text-[1.5cm] mb-4 bg-gradient-to-r from-white to-gray-700 text-transparent bg-clip-text font-bold">
-    Bem Vindo a AutoCarePlus
-  </h2>
-  <p className="text-[0.5cm] mb-4 bg-gradient-to-r from-white to-gray-700 text-transparent bg-clip-text font-bold">
-    Utilize Inteligência Artificial para diagnosticar falhas no seu veículo em tempo real, obter o valor do reparo e encontrar as oficinas mais próximas para realizar o serviço.
-  </p>
+      {/* Hero Section */}
+      <section className="flex flex-col items-center py-16 text-center bg-gray-100 w-full">
+        <h2 className="text-[1.5cm] mb-4 text-black font-bold">
+          Bem Vindo a AutoCarePlus
+        </h2>
+        <p className="text-[0.5cm] mb-4 text-black font-bold">
+          Utilize Inteligência Artificial para diagnosticar falhas no seu veículo em tempo real, obter o valor do reparo e encontrar as oficinas mais próximas para realizar o serviço.
+        </p>
 </section>
 
 
