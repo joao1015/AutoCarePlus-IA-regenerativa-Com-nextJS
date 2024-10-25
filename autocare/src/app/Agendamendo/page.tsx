@@ -36,7 +36,7 @@ const ConteudoPrincipal = styled.div`
 const SidebarContainer = styled.div`
   width: 20%;
   min-width: 200px;
-  background-color: #2c3e50;
+  background-color: #000000;
   color: white;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
