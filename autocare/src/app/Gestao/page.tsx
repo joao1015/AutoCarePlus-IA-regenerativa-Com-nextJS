@@ -153,6 +153,7 @@ const GestaoOrdens: React.FC = () => {
 
   const router = useRouter();
 
+  // Buscar ordens de serviço
   useEffect(() => {
     const fetchOrdens = async () => {
       try {
@@ -195,10 +196,31 @@ const GestaoOrdens: React.FC = () => {
     setCurrentOrderIndex(null);
   };
 
-  const handleDiagnosticoResponse = (isCorrect: boolean) => {
-    setIsDiagnosticoCorrect(isCorrect);
+  // Atualizar o status da ordem
+  const handleUpdateStatus = async (index: number) => {
+    const ordem = ordens[index];
+    const newStatus = selectedStatus[index];
+
+    try {
+      const response = await fetch(`/api/gestao-ordens/${ordem.ID}/concluir`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status_ordem: newStatus }),
+      });
+
+      if (response.ok) {
+        console.log("Status atualizado com sucesso.");
+      } else {
+        console.error("Erro ao atualizar status:", await response.text());
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar status da ordem:", error);
+    }
   };
 
+  // Finalizar a ordem de serviço
   const handleFinalizeOrder = async () => {
     if (currentOrderIndex === null) return;
     const ordem = ordens[currentOrderIndex];
@@ -239,6 +261,10 @@ const GestaoOrdens: React.FC = () => {
     } catch (error) {
       console.error("Erro ao finalizar ordem de serviço:", error);
     }
+  };
+
+  const handleDiagnosticoResponse = (isCorrect: boolean) => {
+    setIsDiagnosticoCorrect(isCorrect);
   };
 
   return (
@@ -294,7 +320,7 @@ const GestaoOrdens: React.FC = () => {
                 </Td>
                 <Td>
                   <ButtonContainer>
-                    <Button onClick={() => alert('Status atualizado')}>Atualizar Status</Button>
+                    <Button onClick={() => handleUpdateStatus(index)}>Atualizar Status</Button>
                     <FinalizarButton onClick={() => openModal(index)}>
                       Finalizar Ordem
                     </FinalizarButton>
