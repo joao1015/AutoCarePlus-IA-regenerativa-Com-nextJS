@@ -187,7 +187,7 @@ function Login() {
 
           <LinkStyled>
             Não tem uma conta?{" "}
-            <Link href="/SejaCadastrado">Cadastre-se</Link>
+            <Link href="/SejaCredenciado">Cadastre-se</Link>
           </LinkStyled>
         </LoginForm>
       </LoginContainer>

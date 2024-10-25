@@ -101,12 +101,7 @@ function FormularioCadastroCliente() {
     <div className="w-full min-h-screen bg-[#F8F8FF] flex flex-col items-center pt-20"> {/* Ajuste para garantir que o fundo preencha toda a tela */}
       <div className="py-12 px-4 sm:px-6 lg:px-8 w-full max-w-lg">
         <div className="max-w-md w-full space-y-">
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">
-            Bem-vindo à nossa plataforma!
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Preencha suas informações abaixo para criar uma conta e aproveitar todos os nossos serviços com facilidade e segurança.
-          </p>
+          
         </div>
       </div>
 
