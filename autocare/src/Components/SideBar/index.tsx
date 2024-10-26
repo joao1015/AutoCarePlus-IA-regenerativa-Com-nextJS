@@ -1,3 +1,5 @@
+"use client"; // Certifique-se de que o Sidebar é tratado como um Client Component
+
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';

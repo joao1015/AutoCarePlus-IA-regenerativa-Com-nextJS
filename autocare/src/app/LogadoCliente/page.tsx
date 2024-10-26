@@ -1,20 +1,10 @@
+// Adicione essa linha no topo do arquivo para definir como Client Component
 "use client";
 
-import IA from "@/Components/InteracaoIA";
 import React from 'react';
 import styled from 'styled-components';
-import Sidebar from '@/Components/SideBar';
-import { useRouter } from 'next/navigation';
-
-interface Usuario {
-  id: number;
-  nome: string;
-  email: string;
-  logradouro: string;
-  numero: string;
-  cidade: string;
-  estado: string;
-}
+import SidebarWrapper from '@/Components/SidebarWrapper';
+import IA from '@/Components/InteracaoIA';
 
 const PaginaContainer = styled.div`
   display: flex;
@@ -28,14 +18,12 @@ const ConteudoPrincipal = styled.div`
 `;
 
 const PaginaLogada: React.FC = () => {
-  const router = useRouter();
-
-  const usuarioData = typeof window !== "undefined" ? localStorage.getItem('usuarioLogado') : null;
-  const usuario: Usuario | null = usuarioData ? JSON.parse(usuarioData) : null;
+  const usuarioData = typeof window !== 'undefined' ? localStorage.getItem('usuarioLogado') : null;
+  const usuario = usuarioData ? JSON.parse(usuarioData) : null;
 
   return (
     <PaginaContainer>
-      <Sidebar usuario={usuario} /> 
+      <SidebarWrapper usuario={usuario} />
       <ConteudoPrincipal>
         <main>
           <IA />

@@ -169,6 +169,8 @@ const Agendamento: React.FC = () => {
 
   const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage);
 
+  
+
   const oficinas = [
     {
       id: 1,
