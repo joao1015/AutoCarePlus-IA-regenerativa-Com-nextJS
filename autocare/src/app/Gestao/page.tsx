@@ -17,35 +17,72 @@ const PageWrapper = styled.div`
 const MainContent = styled.div`
   flex: 1;
   padding: 20px;
+  overflow-x: auto; /* Adiciona rolagem horizontal caso a tabela ultrapasse a tela */
 `;
 
 const Title = styled.h1`
   font-size: 2.5rem;
   color: #333;
   margin-bottom: 30px;
+  
+  @media (max-width: 1300px) {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+
+  @media (max-width: 1300px) {
+    font-size: 0.70rem;
+    max-width: 30%;
+    min-width: 20px; /* Define uma largura mínima para evitar o colapso das colunas */
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    min-width: 700px;
+  }
 `;
 
 const Th = styled.th`
   background-color: #007bff;
   color: white;
-  padding: 10px;
+  padding: 8px; /* Ajuste do padding */
   text-align: left;
   font-weight: 600;
+  
+  @media (max-width: 1300px) {
+    padding: 3px;
+    font-weight: 400px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 4px;
+  }
 `;
 
 const Td = styled.td`
-  padding: 10px;
+  padding: 8px;
   border-bottom: 1px solid #ddd;
   color: #333;
   font-size: 0.9rem;
+
+  @media (max-width: 1300px) {
+    padding: 3px;
+    font-size: 0.7rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 4px;
+  }
 `;
+
 
 const StatusTag = styled.select`
   padding: 5px;
@@ -54,6 +91,14 @@ const StatusTag = styled.select`
   border: 1px solid #ddd;
   background-color: #fff;
   cursor: pointer;
+
+
+  @media (max-width: 1300px) {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+  }
+
 `;
 
 const ButtonContainer = styled.div`

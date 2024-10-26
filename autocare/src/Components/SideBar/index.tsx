@@ -15,7 +15,7 @@ interface Usuario {
 // Estilos para o container da sidebar
 const SidebarContainer = styled.div`
   width: 270px;
-  height: 100vh;
+  height: auto;
   background-color: #000;
   color: #fff;
   padding: 20px;

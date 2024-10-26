@@ -63,7 +63,7 @@ const Rodape = () => {
         </p>
 
         {/* Logo da empresa no canto direito */}
-        <div className="absolute right-1">
+        <div className="fixed bottom-0 right-0">
           <Image
             src={LogoMetamind}
             alt="Metamind Solution Logo"

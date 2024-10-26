@@ -7,26 +7,40 @@ import Sidebar from '../SideBar';
 
 const Container = styled.div`
   display: flex;
-  min-height: 10vh;
+  align-content: center;
+  height: auto; // Ajustado para ocupar toda a altura da tela
   background-color: #f0f2f5;
   font-family: 'Roboto', sans-serif;
 `;
 
 const SidebarContainer = styled.div`
-  width: 250px; // Ajuste conforme necessário
-  height: 15cm;
-  background-color: #ffffff;
+  width: auto; // Defina uma largura fixa para a sidebar, se necessário
+  height: auto; // Ajuste para ocupar a altura total do contêiner
+  background-color: #000000;
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  max-width: 600px;
-  margin: 40px auto;
+  max-width:700px;
+  height: auto; // Ajustado para ocupar toda a altura
+  margin-top: 3cm;; // Remove o espaçamento automático
+  margin-bottom: 7cm;
+  margin-left: 12cm;
   background-color: #ffffff;
   padding: 40px 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // Centraliza o conteúdo verticalmente
+
+  @media (max-width: 1300px) {
+    margin-top: 3cm;; // Remove o espaçamento automático
+    margin-bottom: 2cm;
+    margin-left: 4cm;
+  }
 `;
+
 
 const Title = styled.h2`
   color: #2c3e50;

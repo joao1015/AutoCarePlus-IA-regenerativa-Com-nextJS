@@ -26,7 +26,7 @@ const Title = styled.h1`
 
 const Table = styled.table`
   width: 100%;
-  max-width: 1200px;
+  max-width: auto;
   border-collapse: collapse;
   margin-bottom: 20px;
 `;

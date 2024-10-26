@@ -17,7 +17,7 @@ const ContentWrapper = styled.div`
 
 const Container = styled.div`
   min-height: 100vh;
-  background-color: #e0f7fa;
+  background-color: white;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -31,7 +31,7 @@ const Title = styled.h1`
 
 const Table = styled.table`
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 `;

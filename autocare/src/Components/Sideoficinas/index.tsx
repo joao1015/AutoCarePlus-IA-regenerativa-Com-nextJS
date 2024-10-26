@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const SidebarContainer = styled.div`
   width: 220px;
   background-color: #000; /* Fundo preto */
-  height: 100vh;
+  height: auto;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   font-family: 'Poppins', sans-serif; /* Fonte Poppins */
@@ -36,7 +36,7 @@ const SidebarLink = styled.a`
 function Side() {
   return (
     <SidebarContainer>
-      <Link href="/Ordensrecebidas" passHref>
+      <Link href="/ordensrecebidas" passHref>
         <SidebarLink>Orçamentos Recebidos</SidebarLink>
       </Link>
       <Link href="/Gestao" passHref>
