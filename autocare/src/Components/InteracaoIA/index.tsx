@@ -148,101 +148,166 @@ const Message = styled.div<{ isUser: boolean }>`
   white-space: pre-wrap;
 `;
 
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+`;
+
+const ModalContent = styled.div`
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 80%;
+  max-width: 800px; // Define uma largura máxima
+  position: relative;
+`;
+
+const AnnotatedImage = styled.img`
+  width: 100%;
+  height: auto;
+  max-height: 80vh; // Garante que a imagem não ultrapasse a altura da tela
+  border-radius: 10px;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+`;
+
+// No JSX
+
+
 interface GenericItem {
   text?: string;
   response_type?: string;
 }
- 
+
 interface WatsonResponse {
   output: {
     generic: GenericItem[];
   };
   context: any;
 }
- 
+
 const Chatbot: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<{ text: string; isUser: boolean; name: string }[]>([]);
   const [context, setContext] = useState<any>({});
-  const [canTriggerNextStep, setCanTriggerNextStep] = useState<boolean>(false); // Controla quando a lógica pode rodar
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [annotatedImage, setAnnotatedImage] = useState<string | null>(null);
   const chatBodyRef = useRef<HTMLDivElement>(null);
-  const router = useRouter(); // Hook para navegação no Next.js 13
- 
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms)); // Função de delay
- 
+  const router = useRouter();
+
   useEffect(() => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
   }, [messages]);
- 
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!message.trim()) return;
+
+    setMessages((prevMessages) => [...prevMessages, { text: message, isUser: true, name: 'Usuário' }]);
+    await sendMessageToWatson(message);
+    setMessage('');
+  };
+
   const sendMessageToWatson = async (text: string) => {
     try {
       const response = await axios.post<WatsonResponse>(
         'https://api.us-south.assistant.watson.cloud.ibm.com/v1/workspaces/8a8032d0-e893-47de-a586-0398d3a35098/message?version=2021-06-14',
-        {
-          input: { text },
-          context,
-        },
+        { input: { text }, context },
         {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Basic ${btoa('apikey:r_suOM3Fo1tcsPUKukbkHjkltOBjiJGYFdPx2mtIHb-8')}`,
-        },
+          },
         }
       );
- 
+
       setContext(response.data.context);
- 
       const responseText = response.data.output.generic
         .map((item: GenericItem) => (item.response_type === 'text' && item.text ? item.text : ''))
         .filter((text) => text)
-        .join(' ')
-        .replace(/[{}[\]]/g, '') // Remove os caracteres { }, [ ]
-        .replace(/\\n/g, '\n')   // Substitui \\n por \n para garantir quebra de linha
-        .replace(/['"]/g, '');   // Remove aspas simples e duplas.
- 
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: responseText || 'Sem resposta', isUser: false, name: 'AutoCarePlus' },
-      ]);
- 
-      // Verificar se é a mensagem final que pergunta sobre agendamento
-      if (responseText.includes('Gostaria de agendar o serviço com uma oficina credenciada próxima a você?')) {
-        setCanTriggerNextStep(true); // Ativa a lógica após essa mensagem
-      }
- 
-      // Verificar se o cliente respondeu "sim" e pode seguir para o próximo passo
-      if (canTriggerNextStep && text.toLowerCase().includes('sim')) {
-        await delay(3000); // Delay de 3 segundos
-        handleNext();  // Aciona o botão automaticamente
-      }
+        .join(' ');
+
+      setMessages((prevMessages) => [...prevMessages, { text: responseText || 'Sem resposta', isUser: false, name: 'AutoCarePlus' }]);
     } catch (error) {
       console.error('Erro ao enviar mensagem para o chatbot:', error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: 'Ocorreu um erro, tente novamente.', isUser: false, name: 'Chatbot' },
-      ]);
+      setMessages((prevMessages) => [...prevMessages, { text: 'Ocorreu um erro, tente novamente.', isUser: false, name: 'Chatbot' }]);
     }
   };
- 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!message.trim()) return;
- 
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setSelectedImage(file);
+    setShowModal(!!file);
+    setAnnotatedImage(null); // Adicione esta linha para redefinir a imagem anotada ao selecionar uma nova imagem
+  };
+
+  const handleImageSend = async () => {
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append("image", selectedImage);
+
+      try {
+        const response = await axios.post("http://127.0.0.1:5000/detect", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          responseType: "blob"
+        });
+
+        const imageUrl = URL.createObjectURL(response.data);
+        setAnnotatedImage(imageUrl);
+        // Remova setShowModal(false);
+      } catch (error) {
+        console.error("Erro ao enviar imagem:", error);
+      }
+    }
+  };
+  const handleSendFailure = async () => {
+    const failureMessage = 'falha na injeção eletrônica';
+  
+    // Adiciona a mensagem ao estado das mensagens como se fosse enviada pelo usuário
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: message, isUser: true, name: 'Usuário' },
+      { text: failureMessage, isUser: true, name: 'Usuário' },
     ]);
- 
-    await sendMessageToWatson(message);
-    setMessage('');
+  
+    // Fecha o modal
+    closeModal();
+  
+    // Envia a mensagem para o Watson Assistant
+    await sendMessageToWatson(failureMessage);
   };
- 
-  const handleNext = () => {
-    const lastMessage = messages.at(-1)?.text || '';
-    router.push(`/Agendamendo?lastMessage=${encodeURIComponent(lastMessage)}`);
+  
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedImage(null);
+    setAnnotatedImage(null);
   };
+
 
   return (
     <>
@@ -266,6 +331,11 @@ const Chatbot: React.FC = () => {
               <Message isUser={msg.isUser} dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }} />
             </MessageContainer>
           ))}
+          {annotatedImage && (
+            <MessageContainer isUser={false}>
+              <Image src={annotatedImage} alt="Imagem Anotada" width={200} height={200} />
+            </MessageContainer>
+          )}
         </ChatBody>
         <ChatInputContainer>
           <Input
@@ -273,7 +343,7 @@ const Chatbot: React.FC = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleSubmit(e);
               }
             }}
@@ -281,10 +351,54 @@ const Chatbot: React.FC = () => {
             aria-label="Campo de mensagem"
           />
           <Button onClick={handleSubmit} aria-label="Enviar mensagem">Enviar</Button>
+          <Button onClick={() => document.getElementById("fileInput")?.click()} aria-label="Anexar Imagem">Anexar</Button>
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
         </ChatInputContainer>
       </ChatContainer>
+
+      {showModal && (
+  <Modal>
+    <ModalContent>
+      {!annotatedImage ? (
+        <>
+          <h3>Pré-visualização da Imagem</h3>
+          {selectedImage && (
+            <Image
+              src={URL.createObjectURL(selectedImage)}
+              alt="Imagem Selecionada"
+              width={1300}
+              height={1300}
+            />
+          )}
+          <div style={{ marginTop: '15px' }}>
+            <Button onClick={handleImageSend}>Enviar</Button>
+            <CloseButton onClick={closeModal}>X</CloseButton>
+          </div>
+        </>
+      ) : (
+        <>
+          <h3>Resultado da Análise</h3>
+          <AnnotatedImage src={annotatedImage} alt="Imagem Anotada" />
+          <div style={{ marginTop: '15px' }}>
+            <Button onClick={handleSendFailure}>Enviar Falha</Button>
+            <Button onClick={closeModal}>Fechar</Button>
+          </div>
+        </>
+      )}
+    </ModalContent>
+  </Modal>
+)}
+
+
     </>
   );
 };
 
 export default Chatbot;
+
