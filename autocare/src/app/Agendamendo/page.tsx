@@ -1,7 +1,7 @@
 "use client"; // Para Next.js
 
 import Agenda from "@/Components/Agenda";
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Sidebar from '@/Components/SideBar';
 import { useRouter } from 'next/navigation';
@@ -49,11 +49,17 @@ const Agenda1: React.FC = () => {
   const usuarioData = typeof window !== "undefined" ? localStorage.getItem('usuarioLogado') : null;
   const usuario: Usuario | null = usuarioData ? JSON.parse(usuarioData) : null;
 
+  // Atualiza o localStorage sempre que o usuário for atualizado
+  useEffect(() => {
+    if (usuario) {
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+    }
+  }, [usuario]);
+
   return (
     <PageContainer>
-      {/* Passa o usuário como prop para o Sidebar */}
       <SidebarContainer>
-        <Sidebar usuario={usuario} />
+        <Sidebar /> {/* Remove a prop `usuario` aqui */}
       </SidebarContainer>
       <ConteudoPrincipal>
         <main>
