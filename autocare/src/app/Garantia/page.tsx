@@ -26,7 +26,7 @@ const Title = styled.h1`
 
 const Table = styled.table`
   width: 100%;
-  max-width: auto;
+  max-width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
 `;
@@ -43,7 +43,7 @@ const Td = styled.td`
   padding: 10px;
   border-bottom: 1px solid #ddd;
   color: #333;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 `;
 
 const ButtonContainer = styled.div`

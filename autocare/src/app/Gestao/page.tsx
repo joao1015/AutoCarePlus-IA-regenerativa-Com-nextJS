@@ -40,7 +40,7 @@ const Table = styled.table`
 
   @media (max-width: 1300px) {
     font-size: 0.70rem;
-    max-width: 30%;
+    max-width: auto;
     min-width: 20px; /* Define uma largura mínima para evitar o colapso das colunas */
   }
 
