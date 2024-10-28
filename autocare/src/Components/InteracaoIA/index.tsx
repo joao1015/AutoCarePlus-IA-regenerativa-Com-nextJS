@@ -271,7 +271,7 @@ const Chatbot: React.FC = () => {
       formData.append("image", selectedImage);
 
       try {
-        const response = await axios.post("http://127.0.0.1:5000/detect", formData, {
+        const response = await axios.post("http://127.0.0.1:5001/detect", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
