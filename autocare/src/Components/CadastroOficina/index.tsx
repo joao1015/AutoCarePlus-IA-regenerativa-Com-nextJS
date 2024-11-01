@@ -35,22 +35,29 @@ const CadastroOficina = () => {
     try {
       const response = await fetch('/api/oficinas');
       const data = await response.json();
-      
-      const oficinasFormatadas = data.map((item: any[]) => ({
-        id: item[0],
-        empresa: item[1],
-        contato: item[2],
-        telefone: item[3],
-        email: item[4],
-        cidade: item[5],
-      }));
-
-      setOficinas(oficinasFormatadas);
+  
+      // Cheque se data é um array antes de mapear
+      if (Array.isArray(data)) {
+        const oficinasFormatadas = data.map((item: any) => ({
+          id: item.id,
+          empresa: item.empresa,
+          contato: item.contato,
+          telefone: item.telefone,
+          email: item.email,
+          cidade: item.cidade,
+        }));
+        setOficinas(oficinasFormatadas);
+      } else {
+        console.error('Erro: dados recebidos não são um array:', data);
+        setMensagem("Erro ao buscar oficinas: resposta inesperada.");
+      }
     } catch (error) {
       console.error("Erro ao buscar oficinas:", error);
       setMensagem("Erro ao buscar oficinas.");
     }
   };
+  
+  
 
   const salvarOficina = async () => {
     setErroEmpresa(null);

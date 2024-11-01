@@ -23,6 +23,7 @@
     "icons": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.15",
+    "node-fetch": "^3.3.2",
     "oci-common": "^2.95.2",
     "oci-objectstorage": "^2.95.2",
     "oci-secrets": "^2.95.2",

@@ -1,10 +1,13 @@
-"use client"; // Adicione esta linha
+"use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
+// Styled Components
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,6 +44,7 @@ const Title = styled.h2`
 
 const FormGroup = styled.div`
   margin-bottom: 20px;
+  position: relative;
 `;
 
 const Label = styled.label`
@@ -66,6 +70,16 @@ const Input = styled.input`
   &::placeholder {
     color: #999;
   }
+`;
+
+const EyeIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 67%;
+  right: 20px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333;
+  font-size: 1.5em; /* Aumenta o tamanho do ícone para combinar com a altura do input */
 `;
 
 const LoginButton = styled.button`
@@ -113,6 +127,7 @@ const SuccessMessage = styled.p`
 function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/esconder senha
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
@@ -135,11 +150,9 @@ function Login() {
         setErrorMessage("");
         setSuccessMessage("Login bem-sucedido! Bem-vindo à AutoCarePlus");
 
-        // Armazena as informações do usuário
         localStorage.setItem("usuarioLogado", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
 
-        // Exibe a mensagem de sucesso por 2 segundos antes de redirecionar
         setTimeout(() => {
           router.push("LogadoCliente");
         }, 2500);
@@ -172,12 +185,16 @@ function Login() {
           <FormGroup>
             <Label htmlFor="senha">Senha</Label>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="senha"
               name="senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
+            />
+            <EyeIcon
+              icon={showPassword ? faEyeSlash : faEye}
+              onClick={() => setShowPassword(!showPassword)}
             />
           </FormGroup>
           <LoginButton type="submit">Entrar</LoginButton>
@@ -186,8 +203,7 @@ function Login() {
           {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
 
           <LinkStyled>
-            Não tem uma conta?{" "}
-            <Link href="/SejaCredenciado">Cadastre-se</Link>
+            Não tem uma conta? <Link href="/SejaCredenciado">Cadastre-se</Link>
           </LinkStyled>
         </LoginForm>
       </LoginContainer>
