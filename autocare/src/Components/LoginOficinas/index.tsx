@@ -1,8 +1,10 @@
-"use client"; // Deve estar no topo do arquivo
+"use client";
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // useRouter do Next.js
+import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 // Styled Components
 const PageContainer = styled.div`
@@ -44,6 +46,7 @@ const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const Label = styled.label`
@@ -80,25 +83,59 @@ const Input = styled.input`
   }
 `;
 
-const LogarButton = styled.button`
+const TogglePasswordButton = styled.button`
+  position: absolute;
+  right: 20px;
+  top: 48px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%;
+  justify-content: space-around;
+`;
+
+const Button = styled.button`
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  font-size: 18px;
-  width: 60%;
-  max-width: 200px;
-  height: 50px;
-  background-color: #10B981;
+  font-size: 16px;
+  width: 45%;
+  max-width: 220px;
+  height: 45px;
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
   cursor: pointer;
   text-align: center;
   transition: background-color 0.3s, transform 0.2s;
 
   &:hover {
-    background-color: #0056b3;
     transform: translateY(-3px);
+  }
+`;
+
+const LogarButton = styled(Button)`
+  background-color: #10B981;
+
+  &:hover {
+    background-color: #059669;
+  }
+`;
+
+const CadastroButton = styled(Button)`
+  background-color: #3B82F6;
+
+  &:hover {
+    background-color: #2563EB;
   }
 `;
 
@@ -119,41 +156,46 @@ const SuccessMessage = styled.p`
 const OficinasLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const router = useRouter(); // Use useRouter ao invés de useNavigate
+  const router = useRouter();
 
-  // Definição das oficinas com seus respectivos IDs
-  const oficinasFixas = [
-    { id: 1, nome: 'Oficina AutoTech', email: 'oficina1@example.com', senha: '123' },
-    { id: 2, nome: 'Oficina Mecânica Rápida', email: 'oficina2@example.com', senha: '123' },
-    { id: 3, nome: 'Oficina SuperCar', email: 'oficina3@example.com', senha: '123' },
-  ];
+  // Verifica se o login é de administrador
+  const isAdmin = email === 'Admin@admin.com' && senha === '87654321';
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const oficinaValida = oficinasFixas.find(
-      (oficina) => oficina.email === email && oficina.senha === senha
-    );
-
-    if (oficinaValida) {
+    if (isAdmin) {
       setErrorMessage('');
-      setSuccessMessage(`Login bem-sucedido! Bem-vindo à ${oficinaValida.nome}`);
+      setSuccessMessage('Acesso concedido para cadastro de oficina!');
       setShowSuccessMessage(true);
-
-      // Armazenar o oficinaId no localStorage
-      localStorage.setItem('oficinaId', String(oficinaValida.id));
 
       setTimeout(() => {
         setShowSuccessMessage(false);
-        router.push("OficinaLogada"); // Navegar após 3 segundos
-      }, 3000);
+        router.push('/cadastro-oficina');
+      }, 2000);
     } else {
       setSuccessMessage('');
       setShowSuccessMessage(false);
       setErrorMessage('Email ou senha incorretos. Por favor, tente novamente.');
+    }
+  };
+
+  const handleCadastroClick = () => {
+    if (isAdmin) {
+      setErrorMessage('');
+      setSuccessMessage('Acesso concedido para cadastro de oficina!');
+      setShowSuccessMessage(true);
+
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        router.push('/ListaOficina');
+      }, 2000);
+    } else {
+      setErrorMessage('Somente administradores têm permissão para acessar o cadastro de oficinas. Por favor, insira as credenciais corretas.');
     }
   };
 
@@ -175,15 +217,26 @@ const OficinasLogin: React.FC = () => {
         <FormGroup>
           <Label htmlFor="senha">Senha</Label>
           <Input
-            type="password"
+            type={mostrarSenha ? 'text' : 'password'}
             id="senha"
             name="senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
           />
+          <TogglePasswordButton
+            type="button"
+            onClick={() => setMostrarSenha(!mostrarSenha)}
+          >
+            <FontAwesomeIcon icon={mostrarSenha ? faEyeSlash : faEye} />
+          </TogglePasswordButton>
         </FormGroup>
-        <LogarButton type="submit">Logar</LogarButton>
+        <ButtonGroup>
+          <LogarButton type="submit">Logar</LogarButton>
+          <CadastroButton type="button" onClick={handleCadastroClick}>
+            Cadastro de Oficina
+          </CadastroButton>
+        </ButtonGroup>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         {showSuccessMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
       </Balao>
@@ -192,3 +245,4 @@ const OficinasLogin: React.FC = () => {
 };
 
 export default OficinasLogin;
+
