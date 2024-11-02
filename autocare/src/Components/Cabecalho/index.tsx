@@ -45,7 +45,7 @@ const Cabecalho: React.FC<CabecalhoProps> = ({ usuario }) => {
         <Link href="/LoginOficinas" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FiTool /> Oficinas Credenciadas
         </Link>
-        <Link href="/Analise" className="text-black flex items-center gap-2 font-bold hover:text-blue-500" onClick={toggleMenu}>
+        <Link href="/Analise" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FiBarChart /> Análise de Oficinas
         </Link>
         <Link href="/ConhecaAutoCarePlus" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
@@ -78,14 +78,14 @@ const Cabecalho: React.FC<CabecalhoProps> = ({ usuario }) => {
           <Link href="/LoginOficinas" className="text-black flex items-center gap-2 font-bold hover:text-blue-500" onClick={toggleMenu}>
             <FiTool /> Oficinas Credenciadas
           </Link>
+          <Link href="/Analise" className="text-black flex items-center gap-2 font-bold hover:text-blue-500" onClick={toggleMenu}>
+            <FiBarChart /> Análise de Oficinas
+          </Link>
           <Link href="/ConhecaAutoCarePlus" className="text-black flex items-center gap-2 font-bold hover:text-blue-500" onClick={toggleMenu}>
             <FaCar /> Conheça o AutoCarePlus
           </Link>
           <Link href="/SobreNos" className="text-black flex items-center gap-2 font-bold hover:text-blue-500" onClick={toggleMenu}>
             <FiInfo /> Sobre Nós
-          </Link>
-          <Link href="/Analise" className="text-black flex items-center gap-2 font-bold hover:text-blue-500" onClick={toggleMenu}>
-            <FiBarChart /> Análise de Oficinas
           </Link>
           <Link href="/AreadoCliente" className="bg-white text-blue-500 border-2 border-blue-500 py-2 px-4 rounded-lg font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300" onClick={toggleMenu}>
             Área do Cliente
