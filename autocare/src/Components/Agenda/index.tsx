@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation'; // Usando o hook de busca de parâmetros
-import styled from 'styled-components';
 import Image from 'next/image'; // Para otimizar imagens
 import oficinaAImage from './imagens/garagem.png';
 import oficinaBImage from './imagens/servico-automotivo (1).png';
@@ -56,120 +55,20 @@ const gerarCodigoOrdemServico = (): string => {
   return Math.floor(1000000 + Math.random() * 9000000).toString();
 };
 
-// Styled components para modal e agendamento
-const AgendamentoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 12px;
-  margin: 2rem auto;
-  height: auto;
-  width: 95%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-`;
-
-const Title = styled.h1`
-  color: black;
-  text-align: center;
-`;
-
-const BalloonsWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  gap: 2rem;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  width: 100%;
-  margin-top: 2rem;
-  padding-bottom: 2rem;
-`;
-
-const Balloon = styled.div<{ disabled: boolean }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${({ disabled }) => (disabled ? '#888' : '#3437f1')};
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  padding: 30px;
-  width: 400px;
-  height: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  transition: transform 0.2s ease;
-  position: relative;
-  font-weight: bold;
-  background-size: contain;
-  background-position: center;
-  flex: 0 0 auto;
-
-  &:hover {
-    transform: ${({ disabled }) => (disabled ? 'none' : 'scale(1.05)')};
-  }
-`;
-
-const BalloonImageContainer = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid #fff;
-  background-color: #2c6568;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const BalloonTitle = styled.h2`
-  font-size: 22px;
-  margin-bottom: 20px;
-  margin-top: 57px;
-`;
-
-const BalloonDescription = styled.p`
-  font-size: 16px;
-  text-align: center;
-  margin-top: 20px;
-  line-height: 1.5;
-`;
-
-const Button = styled.button<{ disabled: boolean }>`
-  margin-top: 30px;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 8px;
-  background-color: ${({ disabled }) => (disabled ? '#aaa' : '#117500')};
-  color: #fff;
-  font-size: 16px;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: ${({ disabled }) => (disabled ? '#aaa' : '#0000cc')};
-  }
-`;
-
 // Componente de Agendamento
 const Agendamento: React.FC = () => {
   const searchParams = useSearchParams();
-  const usuarioLogado = JSON.parse(typeof window !== 'undefined' ? localStorage.getItem('usuarioLogado') || '{}' : '{}');
-  const lastMessage = searchParams.get('lastMessage') || 'Nenhum orçamento disponível.';
+  const usuarioLogado = JSON.parse(
+    typeof window !== 'undefined' ? localStorage.getItem('usuarioLogado') || '{}' : '{}'
+  );
+  const lastMessage =
+    searchParams.get('lastMessage') || 'Nenhum orçamento disponível.';
   const [success, setSuccess] = useState(false);
   const [disabledOfficinas, setDisabledOfficinas] = useState<string[]>([]);
   const [phoneNumber, setPhoneNumber] = useState(''); // Atualizando número de telefone
   const [ordemServico, setOrdemServico] = useState<string>(''); // Adicionando estado para ordem de serviço
 
   const { pecas, modelo, ano, diagnostico, solucao, estimativa } = extractDados(lastMessage);
-
-  
 
   const oficinas = [
     {
@@ -254,40 +153,67 @@ const Agendamento: React.FC = () => {
   };
 
   return (
-    <AgendamentoContainer>
-      <Title>Agendamento</Title>
+    <div className="flex flex-col items-center justify-center p-5 rounded-xl my-8 mx-auto w-[95%] shadow-lg">
+      <h1 className="text-black text-center text-2xl font-bold">Agendamento</h1>
 
-      <BalloonsWrapper>
+      <div className="flex flex-wrap justify-center gap-8 mt-8 pb-8 w-full">
         {oficinas.map((oficina) => (
-          <Balloon
+          <div
             key={oficina.id}
-            disabled={disabledOfficinas.includes(oficina.localStorageKey)}
+            className={`flex flex-col items-center relative bg-[#3437f1] border border-gray-300 rounded-xl font-poppins text-white p-4 sm:p-6 md:p-8 w-full sm:w-1/2 lg:w-1/3 max-w-xs sm:max-w-sm shadow-md cursor-pointer transition-transform duration-200 ease-in-out ${
+              disabledOfficinas.includes(oficina.localStorageKey)
+                ? 'bg-gray-500 cursor-not-allowed'
+                : 'hover:scale-105'
+            }`}
+            onClick={() =>
+              !disabledOfficinas.includes(oficina.localStorageKey) &&
+              handleSelectOfficina(oficina.localStorageKey)
+            }
           >
-            <BalloonImageContainer>
-              <Image src={oficina.image} alt={oficina.title} fill />
-            </BalloonImageContainer>
-            <BalloonTitle>{oficina.title}</BalloonTitle>
-            <BalloonDescription>
-              Endereço: {oficina.address}<br />
-              Modelo: {modelo}<br />
-              Ano: {ano}<br />
-              Peças necessárias: {pecas}<br />
-              Diagnóstico: {diagnostico}<br />
-              Solução sugerida: {solucao}<br />
+            <div className="absolute top-2 -mt-10 left-1/2 transform -translate-x-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-white bg-[#2c6568] flex items-center justify-center">
+              <Image
+                src={oficina.image}
+                alt={oficina.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h2 className="text-lg sm:text-xl mt-12 mb-5">{oficina.title}</h2>
+            <p className="text-sm sm:text-base text-center mt-5 leading-relaxed">
+              Endereço: {oficina.address}
+              <br />
+              Modelo: {modelo}
+              <br />
+              Ano: {ano}
+              <br />
+              Peças necessárias: {pecas}
+              <br />
+              Diagnóstico: {diagnostico}
+              <br />
+              Solução sugerida: {solucao}
+              <br />
               Estimativa de custo: {estimativa}
-            </BalloonDescription>
-            <Button
+            </p>
+            <button
+              className={`mt-6 py-2 px-4 sm:mt-8 sm:py-3 sm:px-6 rounded-lg text-white text-sm sm:text-base transition-colors duration-300 ${
+                disabledOfficinas.includes(oficina.localStorageKey)
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-[#117500] hover:bg-[#0000cc]'
+              }`}
               disabled={disabledOfficinas.includes(oficina.localStorageKey)}
-              onClick={() => handleSelectOfficina(oficina.localStorageKey)}
             >
               Agendar
-            </Button>
-          </Balloon>
+            </button>
+          </div>
         ))}
-      </BalloonsWrapper>
+      </div>
 
-      {success && <p>Agendamento realizado com sucesso! Código de ordem de serviço: {ordemServico}</p>}
-    </AgendamentoContainer>
+      {success && (
+        <p className="text-green-600 font-semibold mt-4">
+          Agendamento realizado com sucesso! Código de ordem de serviço:{' '}
+          {ordemServico}
+        </p>
+      )}
+    </div>
   );
 };
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import Image from 'next/image';
 import LogoMetamind from './Imagens/LogoMetamind.png';
 
@@ -63,18 +64,10 @@ const Rodape = () => {
         </p>
 
         {/* Logo da empresa no canto direito */}
-        <div className="fixed bottom-0 right-0">
-          <Image
-            src={LogoMetamind}
-            alt="Metamind Solution Logo"
-            width={130}
-            height={130}
-          />
-        </div>
+       
       </div>
     </footer>
   );
 };
 
 export default Rodape;
-

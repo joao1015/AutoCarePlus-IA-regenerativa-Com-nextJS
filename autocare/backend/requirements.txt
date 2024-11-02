@@ -1,5 +1,0 @@
-Flask==2.0.3
-cx_Oracle
-fuzzywuzzy
-concurrent.futures
-python-dotenv  
