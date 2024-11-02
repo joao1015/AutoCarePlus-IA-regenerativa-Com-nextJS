@@ -1,54 +1,65 @@
 "use client";
 
-
 import Link from 'next/link';
-import styled from 'styled-components';
-
-const SidebarContainer = styled.div`
-  width: 220px;
-  background-color: #000; /* Fundo preto */
-  height: auto;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  font-family: 'Poppins', sans-serif; /* Fonte Poppins */
-`;
-
-const SidebarLink = styled.a`
-  display: block;
-  padding: 10px;
-  color: #fff; /* Texto branco */
-  text-decoration: none;
-  font-size: 18px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  
-  &:hover {
-    background-color: #1e90ff; /* Fundo azul no hover */
-    color: #fff; /* Texto branco no hover */
-  }
-  
-  &:active {
-    background-color: #1c86ee; /* Azul mais escuro quando clicado */
-  }
-`;
+import { useState } from 'react';
+import { FiMenu, FiX, FiFileText, FiSettings, FiCheckSquare } from 'react-icons/fi';
 
 function Side() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <SidebarContainer>
-      <Link href="/ordensrecebidas" passHref>
-        <SidebarLink>Orçamentos Recebidos</SidebarLink>
-      </Link>
-      <Link href="/Gestao" passHref>
-        <SidebarLink>Gestão de Orçamentos</SidebarLink>
-      </Link>
-      <Link href="/Garantia" passHref>
-        <SidebarLink>Ordens Finalizadas</SidebarLink>
-      </Link>
-    </SidebarContainer>
+    <div className="lg:w-60 w-40 bg-black text-white shadow-lg">
+      {/* Sidebar for Large Screens */}
+      <div className="hidden lg:flex flex-col h-full p-5">
+        <Link href="/Ordensrecebidas" legacyBehavior>
+          <a className="block w-full text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center gap-2">
+            <FiFileText /> Orçamentos Recebidos
+          </a>
+        </Link>
+        <Link href="/Gestao" legacyBehavior>
+          <a className="block w-full text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center gap-2">
+            <FiSettings /> Gestão de Orçamentos
+          </a>
+        </Link>
+        <Link href="/Garantia" legacyBehavior>
+          <a className="block w-full text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center gap-2">
+            <FiCheckSquare /> Ordens Finalizadas
+          </a>
+        </Link>
+      </div>
+
+      {/* Header for Small Screens */}
+      <div className="lg:hidden w-full bg-black text-white">
+        <div className="flex items-center justify-between p-2">
+          <h1 className="text-lg font-semibold">Menu</h1>
+          <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <FiX size={14} /> : <FiMenu size={14} />}
+          </button>
+        </div>
+
+        {/* Links in Header for Small Screens */}
+        {isOpen && (
+          <div className="flex flex-col items-center bg-black w-full p-4">
+            <Link href="/Ordensrecebidas" legacyBehavior>
+              <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
+                <FiFileText size={24} />
+              </a>
+            </Link>
+            <Link href="/Gestao" legacyBehavior>
+              <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
+                <FiSettings size={24} />
+              </a>
+            </Link>
+            <Link href="/Garantia" legacyBehavior>
+              <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center">
+                <FiCheckSquare size={24} />
+              </a>
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default Side;
-
-

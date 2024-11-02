@@ -1,198 +1,133 @@
 "use client"; // Adicione isso no topo do arquivo
 
-import styled from 'styled-components';
-import Image from 'next/image'; // Para otimizar as imagens no Next.js
+import React, { useState } from 'react';
+import Image, { StaticImageData } from 'next/image'; // Importe StaticImageData
 import Arthur from './Imagens/Foto-Arthur.jpg';
 import Joao from './Imagens/Foto-Joao.jpg';
 import Paulo from './Imagens/Carpina.jpeg';
 
-const ProfileStory = styled.span`
-  background-color: rgba(255, 255, 255, 0.8);
-  color: rgb(0, 0, 0);
-  font-size: 22px;
-  padding: 10px;
-  border-radius: 50px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  box-sizing: border-box;
-  white-space: normal;
-  font-family: 'Poppins', sans-serif;
-  border: 1px solid black;
-  z-index: 10;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-left: 50%;
-  margin-top: 1cm;
-`;
-
-const Main = styled.main`
-  padding: 36px;
-  text-align: center;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  font-family: 'Poppins', sans-serif;
-  margin-top: 2cm;
-  width: 100%;
-  height: 100%;
-`;
-
-const Texto1 = styled.h1`
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #000000;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const FraseDestaque = styled.span`
-  display: block;
-  font-size: 28px;
-  font-weight: bold;
-  color: #ff0000;
-  margin: 10px 0;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const P = styled.p`
-  font-size: 33px;
-  color: #000000;
-  margin: 10px 0 20px;
-  line-height: 1.6;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const BoxesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-`;
-
-const ProfileContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  margin: 30px 0;
-  align-items: center;
-
-  &:hover ${ProfileStory} {
-    opacity: 1;
-  }
-
-  &:hover .profile-img {
-    transform: scale(1.1);
-  }
-`;
-
-const ProfileImg = styled(Image)`
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-`;
-
-const Text = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 30px;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const Link = styled.a`
-  color: #007BFF;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 5px 0;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+interface ProfileCardProps {
+  name: string;
+  rm: string;
+  turma: string;
+  githubLink: string;
+  projectLink: string;
+  imageSrc: StaticImageData;
+  description: string;
+}
 
 function Sobrenos() {
   return (
     <div>
-      <Main role="main">
-        <Texto1>Bem-vindo à MetaMind!</Texto1>
-        <FraseDestaque>
+      <main
+        role="main"
+        className="p-[36px] text-center bg-[#ffffff] text-[#000000] font-poppins mt-[2cm] w-full h-full"
+      >
+        <h1 className="text-[36px] font-bold mb-[20px] text-[#000000] font-poppins">
+          Bem-vindo à MetaMind!
+        </h1>
+        <span className="block text-[28px] font-bold text-[#ff0000] my-[10px] font-poppins">
           A MetaMind é uma consultoria que visa resolver problemas do cotidiano utilizando tecnologia.
-        </FraseDestaque>
-        <P>Conheça um pouco do nosso time:</P>
+        </span>
+        <p className="text-[33px] text-[#000000] mt-[10px] mb-[20px] leading-[1.6] font-poppins">
+          Conheça um pouco do nosso time:
+        </p>
 
-        <Container>
-          <BoxesContainer>
+        <div className="flex flex-col items-center">
+          <div className="flex flex-wrap justify-center gap-[30px]">
             {/* Perfil 1 - Arthur */}
-            <ProfileContainer role="complementary">
-              <ProfileImg src={Arthur} alt="foto do Arthur Bispo" className="profile-img" width={250} height={250} />
-              <ProfileStory>
-                Arthur Bispo de Lima é apaixonado por desenvolvimento web e tem experiência em projetos de sustentabilidade. Ele adora desafios e está sempre buscando aprender algo novo.
-              </ProfileStory>
-              <Text>
-                <p>Arthur Bispo de Lima</p>
-                <p>RM: 557568</p>
-                <p>TURMA: 1TDSPV</p>
-                <Link href="https://github.com/ArthurBispo00?tab=repositories" aria-label="GitHub do Arthur">
-                  GitHub Arthur
-                </Link>
-                <Link href="https://github.com/ArthurBispo00/Sprint1-Front" aria-label="Repositório do Projeto">
-                  Repositório do Projeto
-                </Link>
-              </Text>
-            </ProfileContainer>
+            <ProfileCard
+              name="Arthur Bispo de Lima"
+              rm="557568"
+              turma="1TDSPV"
+              githubLink="https://github.com/ArthurBispo00?tab=repositories"
+              projectLink="https://github.com/ArthurBispo00/Sprint1-Front"
+              imageSrc={Arthur}
+              description="Arthur Bispo de Lima é apaixonado por desenvolvimento web e tem experiência em projetos de sustentabilidade. Ele adora desafios e está sempre buscando aprender algo novo."
+            />
 
             {/* Perfil 2 - João Paulo Moreira */}
-            <ProfileContainer role="complementary">
-              <ProfileImg src={Joao} alt="foto do João Paulo Moreira" className="profile-img" width={250} height={250} />
-              <ProfileStory>
-                João Paulo Moreira dos Santos é entusiasta de tecnologia e meio ambiente. Ele acredita que a inovação pode ser uma grande aliada na preservação dos recursos naturais.
-              </ProfileStory>
-              <Text>
-                <p>João Paulo Moreira dos Santos</p>
-                <p>RM: 557808</p>
-                <p>TURMA: 1TDSPV</p>
-                <Link href="https://github.com/joao1015?tab=repositories" aria-label="GitHub do João Paulo">
-                  GitHub João Paulo
-                </Link>
-                <Link href="https://github.com/ArthurBispo00/Sprint1-Front" aria-label="Repositório do Projeto">
-                  Repositório do Projeto
-                </Link>
-              </Text>
-            </ProfileContainer>
+            <ProfileCard
+              name="João Paulo Moreira dos Santos"
+              rm="557808"
+              turma="1TDSPV"
+              githubLink="https://github.com/joao1015?tab=repositories"
+              projectLink="https://github.com/ArthurBispo00/Sprint1-Front"
+              imageSrc={Joao}
+              description="João Paulo Moreira dos Santos é entusiasta de tecnologia e meio ambiente. Ele acredita que a inovação pode ser uma grande aliada na preservação dos recursos naturais."
+            />
 
             {/* Perfil 3 - Paulo André Carminati */}
-            <ProfileContainer role="complementary">
-              <ProfileImg src={Paulo} alt="foto de Paulo André Carminati" className="profile-img" width={250} height={250} />
-              <ProfileStory>
-                Paulo André Carminati tem uma visão inovadora sobre soluções ambientais. Ele está sempre à procura de maneiras criativas para resolver problemas complexos.
-              </ProfileStory>
-              <Text>
-                <p>Paulo André Carminati</p>
-                <p>RM: 557881</p>
-                <p>TURMA: 1TDSPZ</p>
-                <Link href="https://github.com/carmipa" aria-label="GitHub do Paulo André">
-                  GitHub Paulo André
-                </Link>
-                <Link href="https://github.com/ArthurBispo00/Projeto_Oceanos_Limpos" aria-label="Repositório do Projeto">
-                  Repositório do Projeto
-                </Link>
-              </Text>
-            </ProfileContainer>
-          </BoxesContainer>
-        </Container>
-      </Main>
+            <ProfileCard
+              name="Paulo André Carminati"
+              rm="557881"
+              turma="1TDSPZ"
+              githubLink="https://github.com/carmipa"
+              projectLink="https://github.com/ArthurBispo00/Projeto_Oceanos_Limpos"
+              imageSrc={Paulo}
+              description="Paulo André Carminati tem uma visão inovadora sobre soluções ambientais. Ele está sempre à procura de maneiras criativas para resolver problemas complexos."
+            />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function ProfileCard({
+  name,
+  rm,
+  turma,
+  githubLink,
+  projectLink,
+  imageSrc,
+  description,
+}: ProfileCardProps) {
+  const [isClicked, setIsClicked] = useState(false);
+
+  return (
+    <div
+      role="complementary"
+      className="relative flex flex-col items-center text-center font-poppins my-[30px] group"
+    >
+      <div
+        className={`relative w-[250px] h-[250px] cursor-pointer rounded-full overflow-hidden`}
+        onClick={() => setIsClicked(!isClicked)}
+      >
+        <Image
+          src={imageSrc}
+          alt={`foto de ${name}`}
+          className={`w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110`}
+          width={250}
+          height={250}
+        />
+        <div
+          className={`absolute inset-0 ${
+            isClicked ? 'bg-black' : 'bg-black bg-opacity-60'
+          } opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out flex items-center justify-center p-[10px]`}
+        >
+          <p className="text-white text-[14px] px-4">{description}</p>
+        </div>
+      </div>
+      <div className="flex flex-col items-center text-center mt-[15px] font-poppins">
+        <p>{name}</p>
+        <p>RM: {rm}</p>
+        <p>TURMA: {turma}</p>
+        <a
+          href={githubLink}
+          aria-label={`GitHub do ${name.split(' ')[0]}`}
+          className="text-[#007BFF] no-underline font-bold my-[5px] hover:underline"
+        >
+          GitHub {name.split(' ')[0]}
+        </a>
+        <a
+          href={projectLink}
+          aria-label="Repositório do Projeto"
+          className="text-[#007BFF] no-underline font-bold my-[5px] hover:underline"
+        >
+          Repositório do Projeto
+        </a>
+      </div>
     </div>
   );
 }

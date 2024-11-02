@@ -83,7 +83,7 @@ const HomePage: React.FC = () => {
     Assistência completa para realizar manutenções corretivas e preventivas, além de contar com uma rede de oficinas credenciadas e a segurança de utilizar peças novas ou renovadas com garantia.
   </p>
   <a
-    href="/clientes"
+    href="AreadoCliente"
     className="block bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-8 rounded-lg text-[1.25rem] font-bold mx-auto mt-8 hover:bg-gradient-to-r hover:from-green-500 hover:to-red-600 transition-all duration-300"
   >
     Área do Cliente

@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import styled from "styled-components";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
+<<<<<<< HEAD
 // Styled Components
 const PageContainer = styled.div`
   display: flex;
@@ -124,6 +124,8 @@ const SuccessMessage = styled.p`
   text-align: center;
 `;
 
+=======
+>>>>>>> main
 function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -167,47 +169,108 @@ function Login() {
   };
 
   return (
-    <PageContainer>
-      <LoginContainer>
-        <LoginForm onSubmit={handleLogin}>
-          <Title>Acesse sua Conta</Title>
-          <FormGroup>
-            <Label htmlFor="email">Email</Label>
-            <Input
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <div
+        className="bg-gray-100 w-[70%] max-w-[600px] p-5 mx-auto mt-[50px] text-black rounded-lg"
+        style={{ boxShadow: "0 4px 8px rgba(176, 30, 30, 0.1)" }}
+      >
+        <form
+          onSubmit={handleLogin}
+          className="bg-white p-5 rounded-lg"
+          style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}
+        >
+          <h2 className="mb-5 text-[26px] font-poppins font-semibold text-center">
+            Acesse sua Conta
+          </h2>
+          <div className="mb-5">
+            <label
+              htmlFor="email"
+              className="block mb-2 text-[20px] font-poppins font-medium"
+            >
+              Email
+            </label>
+            <input
               type="email"
               id="email"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="w-full h-[65px] px-[15px] border border-gray-300 rounded-[20px] text-[20px] font-poppins font-medium bg-gray-200 placeholder-gray-500 box-border"
+              placeholder="Digite seu email"
             />
+<<<<<<< HEAD
           </FormGroup>
           <FormGroup>
             <Label htmlFor="senha">Senha</Label>
             <Input
               type={showPassword ? "text" : "password"}
+=======
+          </div>
+          <div className="mb-5">
+            <label
+              htmlFor="senha"
+              className="block mb-2 text-[20px] font-poppins font-medium"
+            >
+              Senha
+            </label>
+            <input
+              type="password"
+>>>>>>> main
               id="senha"
               name="senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
+              className="w-full h-[65px] px-[15px] border border-gray-300 rounded-[20px] text-[20px] font-poppins font-medium bg-gray-200 placeholder-gray-500 box-border"
+              placeholder="Digite sua senha"
             />
+<<<<<<< HEAD
             <EyeIcon
               icon={showPassword ? faEyeSlash : faEye}
               onClick={() => setShowPassword(!showPassword)}
             />
           </FormGroup>
           <LoginButton type="submit">Entrar</LoginButton>
+=======
+          </div>
+          <button
+            type="submit"
+            className="w-full h-[40px] bg-[#10b981] text-white rounded-[10px] text-[20px] font-poppins font-medium cursor-pointer flex items-center justify-center mt-5 hover:bg-[#0056b3]"
+          >
+            Entrar
+          </button>
+>>>>>>> main
 
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-          {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+          {errorMessage && (
+            <p className="text-red-500 text-[16px] mt-[10px] text-center">
+              {errorMessage}
+            </p>
+          )}
+          {successMessage && (
+            <p className="text-green-500 text-[16px] mt-[10px] text-center">
+              {successMessage}
+            </p>
+          )}
 
+<<<<<<< HEAD
           <LinkStyled>
             Não tem uma conta? <Link href="/SejaCredenciado">Cadastre-se</Link>
           </LinkStyled>
         </LoginForm>
       </LoginContainer>
     </PageContainer>
+=======
+          <p className="text-black text-[18px] font-poppins text-center mt-5">
+            Não tem uma conta?{" "}
+            <Link href="/SejaCredenciado" className="text-blue-500 underline">
+              Cadastre-se
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
+>>>>>>> main
   );
 }
 

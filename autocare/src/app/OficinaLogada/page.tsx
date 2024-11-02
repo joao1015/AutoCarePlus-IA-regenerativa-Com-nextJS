@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Oficina() {
   return (
     <div className="flex">
-      <div className="w-[14%] h-screen bg-black p-10">
+      <div className="w-[14%] h-screen bg-black p-1 2xl:p-10">
         <Sidebar />
       </div>
       <div className="flex-grow flex items-center justify-center bg-gray-100 h-screen">
