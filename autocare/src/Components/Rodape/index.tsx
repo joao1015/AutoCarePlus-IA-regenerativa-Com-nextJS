@@ -17,7 +17,7 @@ const Rodape = () => {
           <a href="/privacidade" className="mx-2 text-white no-underline hover:underline">
             Política de Privacidade
           </a>
-          <a href="/termos" className="mx-2 text-white no-underline hover:underline">
+          <a href="/termos" className="mx-2 text-white no-uderline hover:underline">
             Termos de Serviço
           </a>
         </div>
