@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import Cabecalho from "@/Components/Cabecalho";
-import Rodape from "@/Components/Rodape";
+import "./globals.css"; // Importando estilos globais
+import Cabecalho from "@/Components/Cabecalho"; // Importando o cabeçalho
+import Rodape from "@/Components/Rodape"; // Importando o rodapé
 
 export const metadata: Metadata = {
   title: "AutoCarePlus - Seu Sistema Inteligente para Oficinas",
@@ -14,12 +14,12 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode; // Definindo o tipo de children
 }) {
   return (
     <html lang="pt-br">
       <head>
-        {/* Adicione a meta tag viewport para responsividade */}
+        {/* Adicionando a meta tag viewport para responsividade */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
