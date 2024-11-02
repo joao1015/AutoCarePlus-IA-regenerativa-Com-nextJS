@@ -12,7 +12,7 @@ const PageContainer = styled.div`
   width: 100%;
   height: 100vh;
   background-color: #F3F4F6;
-  padding: 20px;
+  padding: 21px;
 `;
 
 const Balao = styled.form`
