@@ -2,9 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Side from "@/Components/Sideoficinas";
-import Cabecalho from "@/Components/Cabecalho";
-import Rodape from "@/Components/Rodape";
 import Modal from "react-modal";
 import {
   FiUser,
@@ -18,7 +15,8 @@ import {
   FiX,
 } from "react-icons/fi";
 
-// Configuração do Modal
+console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
+
 const AdministrarOficinas: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
@@ -35,9 +33,8 @@ const AdministrarOficinas: React.FC = () => {
     cidade: "",
   });
 
-  const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  // Define o elemento do Modal após a montagem do componente e apenas no cliente
   useEffect(() => {
     const nextElement = document.getElementById("__next");
     if (typeof window !== "undefined" && nextElement) {
@@ -45,7 +42,6 @@ const AdministrarOficinas: React.FC = () => {
     }
   }, []);
 
-  // Autenticação simples para o administrador
   const handleLogin = () => {
     if (username === "admin" && password === "admin123") {
       setIsAuthenticated(true);
@@ -54,11 +50,10 @@ const AdministrarOficinas: React.FC = () => {
     }
   };
 
-  // Buscar todas as oficinas (apenas se autenticado)
   useEffect(() => {
     const fetchOficinas = async () => {
       try {
-        const response = await fetch("/api/oficinas");
+        const response = await fetch(`${apiUrl}/api/oficinas`);
         const result = await response.json();
         if (response.ok) {
           setOficinas(result);
@@ -73,9 +68,8 @@ const AdministrarOficinas: React.FC = () => {
     if (isAuthenticated) {
       fetchOficinas();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, apiUrl]);
 
-  // Abrir modal para criar ou editar
   const openModal = (oficina?: any) => {
     if (oficina) {
       setIsEditMode(true);
@@ -94,7 +88,6 @@ const AdministrarOficinas: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  // Fechar modal
   const closeModal = () => {
     setIsModalOpen(false);
     setCurrentOficina({
@@ -107,7 +100,6 @@ const AdministrarOficinas: React.FC = () => {
     });
   };
 
-  // Manipular alterações nos campos do formulário
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCurrentOficina((prev: any) => ({
@@ -116,11 +108,10 @@ const AdministrarOficinas: React.FC = () => {
     }));
   };
 
-  // Criar nova oficina
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/oficinas", {
+      const response = await fetch(`${apiUrl}/api/oficinas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,11 +119,16 @@ const AdministrarOficinas: React.FC = () => {
         body: JSON.stringify(currentOficina),
       });
 
-      const result = await response.json();
       if (response.ok) {
-        setOficinas([...oficinas, result]);
+        // Adiciona a nova oficina usando os dados de currentOficina diretamente
+        setOficinas((prevOficinas) => [
+          ...prevOficinas,
+          { ...currentOficina, id: prevOficinas.length + 1 } // Define um ID temporário
+        ]);
+        alert("Oficina adicionada com sucesso!");
         closeModal();
       } else {
+        const result = await response.json();
         console.error("Erro ao criar oficina:", result.error);
       }
     } catch (error) {
@@ -140,11 +136,15 @@ const AdministrarOficinas: React.FC = () => {
     }
   };
 
-  // Atualizar oficina existente
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!currentOficina.id) {
+      console.error("ID da oficina está undefined. Não é possível atualizar.");
+      return;
+    }
+
     try {
-      const response = await fetch(`/api/oficinas/${currentOficina.id}`, {
+      const response = await fetch(`${apiUrl}/api/oficinas/${currentOficina.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -154,10 +154,12 @@ const AdministrarOficinas: React.FC = () => {
 
       const result = await response.json();
       if (response.ok) {
-        const updatedOficinas = oficinas.map((oficina) =>
-          oficina.id === currentOficina.id ? result : oficina
+        setOficinas((prevOficinas) =>
+          prevOficinas.map((oficina) =>
+            oficina.id === currentOficina.id ? { ...currentOficina } : oficina
+          )
         );
-        setOficinas(updatedOficinas);
+        alert("Oficina atualizada com sucesso!");
         closeModal();
       } else {
         console.error("Erro ao atualizar oficina:", result.error);
@@ -167,20 +169,24 @@ const AdministrarOficinas: React.FC = () => {
     }
   };
 
-  // Excluir oficina
   const handleDelete = async (id: number) => {
+    if (!id) {
+      console.error("ID da oficina está undefined. Não é possível excluir.");
+      return;
+    }
+
     if (!confirm("Tem certeza de que deseja excluir esta oficina?")) return;
 
     try {
-      const response = await fetch(`/api/oficinas/${id}`, {
+      const response = await fetch(`${apiUrl}/api/oficinas/${id}`, {
         method: "DELETE",
       });
 
-      const result = await response.json();
       if (response.ok) {
-        const updatedOficinas = oficinas.filter((oficina) => oficina.id !== id);
-        setOficinas(updatedOficinas);
+        setOficinas(oficinas.filter((oficina) => oficina.id !== id));
+        alert("Oficina excluída com sucesso!");
       } else {
+        const result = await response.json();
         console.error("Erro ao excluir oficina:", result.error);
       }
     } catch (error) {
@@ -188,7 +194,6 @@ const AdministrarOficinas: React.FC = () => {
     }
   };
 
-  // Se não autenticado, exibe tela de login
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -221,23 +226,13 @@ const AdministrarOficinas: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-    
       <div className="flex flex-grow">
-       
         <div className="flex-grow p-5">
           <div className="bg-white p-5">
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-2xl md:text-4xl font-semibold text-gray-800">
                 Administrar Oficinas
               </h1>
-              <p className="text-gray-600 mt-2 md:text-lg">
-                Esta página permite que o administrador do negócio gerencie as
-                oficinas cadastradas no sistema, de acordo com as regras de
-                negócio definidas. Aqui, é possível adicionar novas oficinas,
-                editar informações, e excluir oficinas desativadas, garantindo
-                que os dados estejam sempre atualizados e alinhados com as
-                necessidades da AutoCarePlus.
-              </p>
               <button
                 onClick={() => openModal()}
                 className="flex items-center bg-teal-700 text-white py-2 px-4 rounded hover:bg-teal-900 transition-colors text-sm md:text-base"
@@ -291,7 +286,6 @@ const AdministrarOficinas: React.FC = () => {
               </div>
             )}
 
-            {/* Modal para Criar/Editar Oficina */}
             <Modal
               isOpen={isModalOpen}
               onRequestClose={closeModal}
@@ -395,7 +389,6 @@ const AdministrarOficinas: React.FC = () => {
           </div>
         </div>
       </div>
-     
     </div>
   );
 };
