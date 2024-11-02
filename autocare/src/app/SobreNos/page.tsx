@@ -1,10 +1,20 @@
 "use client"; // Adicione isso no topo do arquivo
 
 import React, { useState } from 'react';
-import Image from 'next/image'; // Para otimizar as imagens no Next.js
+import Image, { StaticImageData } from 'next/image'; // Importe StaticImageData
 import Arthur from './Imagens/Foto-Arthur.jpg';
 import Joao from './Imagens/Foto-Joao.jpg';
 import Paulo from './Imagens/Carpina.jpeg';
+
+interface ProfileCardProps {
+  name: string;
+  rm: string;
+  turma: string;
+  githubLink: string;
+  projectLink: string;
+  imageSrc: StaticImageData;
+  description: string;
+}
 
 function Sobrenos() {
   return (
@@ -64,7 +74,15 @@ function Sobrenos() {
   );
 }
 
-function ProfileCard({ name, rm, turma, githubLink, projectLink, imageSrc, description }) {
+function ProfileCard({
+  name,
+  rm,
+  turma,
+  githubLink,
+  projectLink,
+  imageSrc,
+  description,
+}: ProfileCardProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   return (
@@ -88,9 +106,7 @@ function ProfileCard({ name, rm, turma, githubLink, projectLink, imageSrc, descr
             isClicked ? 'bg-black' : 'bg-black bg-opacity-60'
           } opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out flex items-center justify-center p-[10px]`}
         >
-          <p className="text-white text-[14px] px-4">
-            {description}
-          </p>
+          <p className="text-white text-[14px] px-4">{description}</p>
         </div>
       </div>
       <div className="flex flex-col items-center text-center mt-[15px] font-poppins">

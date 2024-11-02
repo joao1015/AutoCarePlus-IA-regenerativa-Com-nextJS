@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('usuarioLogado');
       localStorage.removeItem('token');
-      window.location.href = '/entrar'; // Redireciona para a página de login
+      window.location.href = '/AreadoCliente'; // Redireciona para a página de login
     }
   };
 

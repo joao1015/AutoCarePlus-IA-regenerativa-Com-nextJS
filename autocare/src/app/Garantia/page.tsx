@@ -1,79 +1,19 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Side from "@/Components/Sideoficinas";
+import Side from "@/Components/Sideoficinas"; // Certifique-se de que o caminho está correto
 import Modal from "react-modal";
-
-// Estilos do componente
-const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
-  background-color: #f0f0f0;
-`;
-
-const MainContent = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 30px;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-`;
-
-const Th = styled.th`
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  text-align: left;
-  font-weight: 600;
-`;
-
-const Td = styled.td`
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  color: #333;
-  font-size: 0.8rem;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const Button = styled.button`
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #c82333;
-  }
-`;
-
-// Definição do ModalWrapper
-const ModalWrapper = styled.div`
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  max-width: 500px;
-  margin: 0 auto;
-  border: 1px solid #ddd;
-`;
+import {
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiHash,
+  FiSettings,
+  FiTool,
+  FiCalendar,
+  FiClipboard,
+  FiDollarSign,
+} from "react-icons/fi";
 
 const GarantiaPage: React.FC = () => {
   const [garantias, setGarantias] = useState<any[]>([]);
@@ -138,75 +78,115 @@ const GarantiaPage: React.FC = () => {
   };
 
   return (
-    <PageWrapper>
+    <div className="flex">
       <Side />
-      <MainContent>
-        <Title>Gestão de Garantias</Title>
-        <Table>
-          <thead>
-            <tr>
-              <Th>Cliente</Th>
-              <Th>Email</Th>
-              <Th>Telefone</Th>
-              <Th>Número da Ordem</Th>
-              <Th>Peças</Th>
-              <Th>Modelo</Th>
-              <Th>Ano</Th>
-              <Th>Diagnóstico/Falha</Th>
-              <Th>Valor Final</Th>
-              <Th>Data da Garantia</Th>
-              <Th>Ações</Th>
-            </tr>
-          </thead>
-          <tbody>
-            {garantias.map((garantia, index) => (
-              <tr key={garantia.NUMERO_ORDEM_SERVICO || index}>
-                <Td>{garantia.CLIENTE_NOME || "Nome não disponível"}</Td>
-                <Td>{garantia.CLIENTE_EMAIL || "Email não disponível"}</Td>
-                <Td>{garantia.CLIENTE_TELEFONE || "Telefone não disponível"}</Td>
-                <Td>{garantia.NUMERO_ORDEM_SERVICO || "Número não disponível"}</Td>
-                <Td>{garantia.PECAS || "Peças não disponíveis"}</Td>
-                <Td>{garantia.MODELO || "Modelo não disponível"}</Td>
-                <Td>{garantia.ANO || "Ano não disponível"}</Td>
-                <Td>{garantia.DIAGNOSTICO || "Diagnóstico não disponível"}</Td>
-                <Td>{garantia.VALOR_FINAL || "Valor não disponível"}</Td>
-                <Td>
-                  {garantia.DATA_GARANTIA
-                    ? new Date(garantia.DATA_GARANTIA).toLocaleDateString()
-                    : "Data não disponível"}
-                </Td>
-                <Td>
-                  <ButtonContainer>
-                    <Button onClick={() => openModal(index)}>Excluir</Button>
-                  </ButtonContainer>
-                </Td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+      <div className="flex-grow p-5">
+        <div className="min-h-screen bg-white flex flex-col p-5">
+          <h1 className="text-2xl md:text-4xl font-semibold text-gray-800 mb-8">
+            Gestão de Garantias
+          </h1>
+          {garantias.length === 0 ? (
+            <div className="text-center py-4 text-gray-500">
+              Não há garantias disponíveis no momento.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+              {garantias.map((garantia, index) => (
+                <div
+                  key={garantia.NUMERO_ORDEM_SERVICO || index}
+                  className="border rounded-lg shadow p-4"
+                >
+                  <h2 className="text-lg md:text-xl font-bold mb-2 flex items-center gap-2">
+                    <FiUser /> {garantia.CLIENTE_NOME || "Nome não disponível"}
+                  </h2>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiMail /> <strong>Email:</strong>{" "}
+                    <span className="max-w-xs md:max-w-sm overflow-hidden text-ellipsis whitespace-nowrap truncate">
+                      {garantia.CLIENTE_EMAIL || "Email não disponível"}
+                    </span>
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiPhone /> <strong>Telefone:</strong>{" "}
+                    {garantia.CLIENTE_TELEFONE || "Telefone não disponível"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiHash /> <strong>Número da Ordem:</strong>{" "}
+                    {garantia.NUMERO_ORDEM_SERVICO || "Número não disponível"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2 break-words">
+                    <FiSettings /> <strong>Peças:</strong>{" "}
+                    {garantia.PECAS || "Peças não disponíveis"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiTool /> <strong>Modelo:</strong>{" "}
+                    {garantia.MODELO || "Modelo não disponível"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiCalendar /> <strong>Ano:</strong>{" "}
+                    {garantia.ANO || "Ano não disponível"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2 break-words">
+                    <FiClipboard /> <strong>Diagnóstico/Falha:</strong>{" "}
+                    {garantia.DIAGNOSTICO || "Diagnóstico não disponível"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiDollarSign /> <strong>Valor Final:</strong>{" "}
+                    {garantia.VALOR_FINAL || "Valor não disponível"}
+                  </p>
+                  <p className="text-sm md:text-base flex items-center gap-2">
+                    <FiCalendar /> <strong>Data da Garantia:</strong>{" "}
+                    {garantia.DATA_GARANTIA
+                      ? new Date(garantia.DATA_GARANTIA).toLocaleDateString()
+                      : "Data não disponível"}
+                  </p>
+                  <div className="flex gap-2 justify-end mt-4">
+                    <button
+                      onClick={() => openModal(index)}
+                      className="bg-red-600 text-white py-2 px-3 md:px-4 rounded hover:bg-red-800 transition-colors text-sm md:text-base"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* Modal */}
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Excluir Garantia"
-          ariaHideApp={false}
-        >
-          <ModalWrapper>
-            {currentGarantiaIndex !== null && garantias[currentGarantiaIndex] && (
-              <>
-                <h2>Excluir Garantia</h2>
-                <p>Tem certeza de que deseja excluir esta garantia?</p>
-                <ButtonContainer>
-                  <Button onClick={handleDeleteGarantia}>Excluir</Button>
-                  <Button onClick={closeModal}>Cancelar</Button>
-                </ButtonContainer>
-              </>
-            )}
-          </ModalWrapper>
-        </Modal>
-      </MainContent>
-    </PageWrapper>
+          {/* Modal */}
+          <Modal
+            isOpen={isModalOpen}
+            onRequestClose={closeModal}
+            contentLabel="Excluir Garantia"
+            ariaHideApp={false}
+            className="fixed inset-0 flex items-center justify-center z-50"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+          >
+            <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+              {currentGarantiaIndex !== null && garantias[currentGarantiaIndex] && (
+                <>
+                  <h2 className="text-xl font-bold mb-4">Excluir Garantia</h2>
+                  <p className="mb-4">Tem certeza de que deseja excluir esta garantia?</p>
+                  <div className="flex gap-4 justify-end">
+                    <button
+                      onClick={handleDeleteGarantia}
+                      className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-800 transition-colors"
+                    >
+                      Excluir
+                    </button>
+                    <button
+                      onClick={closeModal}
+                      className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-800 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </Modal>
+        </div>
+      </div>
+    </div>
   );
 };
 
