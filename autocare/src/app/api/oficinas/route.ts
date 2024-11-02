@@ -40,6 +40,11 @@ export async function POST(req: NextRequest) {
     body: JSON.stringify(requestBody),
   });
 
+  if (status !== 201) {
+    console.error('Failed to create oficina:', data);
+    return NextResponse.json({ error: 'Failed to create oficina', details: data }, { status });
+  }
+
   return NextResponse.json(data, { status });
 }
 
@@ -54,6 +59,11 @@ export async function PUT(req: NextRequest) {
     body: JSON.stringify(requestBody),
   });
 
+  if (status !== 200) {
+    console.error('Failed to update oficina:', data);
+    return NextResponse.json({ error: 'Failed to update oficina', details: data }, { status });
+  }
+
   return NextResponse.json(data, { status });
 }
 
@@ -66,6 +76,11 @@ export async function DELETE(req: NextRequest) {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   });
+
+  if (status !== 200) {
+    console.error('Failed to delete oficina:', data);
+    return NextResponse.json({ error: 'Failed to delete oficina', details: data }, { status });
+  }
 
   return NextResponse.json(data, { status });
 }
