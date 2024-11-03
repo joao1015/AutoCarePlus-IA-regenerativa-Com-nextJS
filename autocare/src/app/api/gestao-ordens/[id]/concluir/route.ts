@@ -9,7 +9,7 @@ const dbConfig = {
 };
 
 // Função para atualizar o status de uma ordem
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: any }) { // Alterado para any
   let connection;
   try {
     // Parseia o corpo da requisição

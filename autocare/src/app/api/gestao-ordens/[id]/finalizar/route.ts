@@ -7,9 +7,6 @@ const dbConfig = {
   connectString: 'oracle.fiap.com.br:1521/orcl',
 };
 
-// Opcional: Definir autoCommit globalmente
-// oracledb.autoCommit = false;
-
 interface OrdemData {
   CLIENTE_NOME: string;
   CLIENTE_EMAIL: string;
@@ -26,19 +23,15 @@ interface OrdemData {
   DATA_GARANTIA?: Date;
 }
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request, { params }: { params: any }) {
   let connection;
   try {
     const ordemId = parseInt(params.id, 10);
     const body = await request.json();
     const { isDiagnosticoCorrect, newDiagnostico, newPecas, newValorFinal } = body;
 
-    // Conecta ao banco de dados
     connection = await oracledb.getConnection(dbConfig);
 
-    // Não é necessário definir connection.autoCommit
-
-    // Busca a ordem na tabela 'gestao_ordens'
     const result = await connection.execute(
       `SELECT * FROM gestao_ordens WHERE ID = :ordemId`,
       { ordemId },
@@ -55,49 +48,23 @@ export async function POST(request: Request, { params }: { params: { id: string 
       return NextResponse.json({ error: 'Dados da ordem inválidos' }, { status: 400 });
     }
 
-    // Prepara os dados para inserir em 'gestaodegarantia1'
     let garantiaData = { ...ordemData };
 
-    // Atualiza os dados caso o diagnóstico esteja incorreto
     if (!isDiagnosticoCorrect) {
       garantiaData.DIAGNOSTICO = newDiagnostico;
       garantiaData.PECAS = newPecas;
       garantiaData.VALOR_FINAL = newValorFinal;
     }
 
-    // Adiciona a data atual como data de garantia
     garantiaData.DATA_GARANTIA = new Date();
 
-    // Insere na tabela 'gestaodegarantia1'
     const insertQuery = `
       INSERT INTO gestaodegarantia1 (
-        CLIENTE_NOME,
-        CLIENTE_EMAIL,
-        CLIENTE_TELEFONE,
-        NUMERO_ORDEM_SERVICO,
-        PECAS,
-        MODELO,
-        ANO,
-        DIAGNOSTICO,
-        SOLUCAO,
-        ESTIMATIVA,
-        STATUS_ORDEM,
-        VALOR_FINAL,
-        DATA_GARANTIA
+        CLIENTE_NOME, CLIENTE_EMAIL, CLIENTE_TELEFONE, NUMERO_ORDEM_SERVICO, PECAS, MODELO,
+        ANO, DIAGNOSTICO, SOLUCAO, ESTIMATIVA, STATUS_ORDEM, VALOR_FINAL, DATA_GARANTIA
       ) VALUES (
-        :CLIENTE_NOME,
-        :CLIENTE_EMAIL,
-        :CLIENTE_TELEFONE,
-        :NUMERO_ORDEM_SERVICO,
-        :PECAS,
-        :MODELO,
-        :ANO,
-        :DIAGNOSTICO,
-        :SOLUCAO,
-        :ESTIMATIVA,
-        :STATUS_ORDEM,
-        :VALOR_FINAL,
-        :DATA_GARANTIA
+        :CLIENTE_NOME, :CLIENTE_EMAIL, :CLIENTE_TELEFONE, :NUMERO_ORDEM_SERVICO, :PECAS, :MODELO,
+        :ANO, :DIAGNOSTICO, :SOLUCAO, :ESTIMATIVA, :STATUS_ORDEM, :VALOR_FINAL, :DATA_GARANTIA
       )
     `;
 
@@ -118,23 +85,20 @@ export async function POST(request: Request, { params }: { params: { id: string 
         VALOR_FINAL: garantiaData.VALOR_FINAL,
         DATA_GARANTIA: garantiaData.DATA_GARANTIA,
       },
-      { autoCommit: false } // Controle de transação manual
+      { autoCommit: false }
     );
 
-    // Remove a ordem da tabela 'gestao_ordens'
     await connection.execute(
       `DELETE FROM gestao_ordens WHERE ID = :ordemId`,
       { ordemId },
-      { autoCommit: false } // Controle de transação manual
+      { autoCommit: false }
     );
 
-    // Confirma a transação
     await connection.commit();
 
     return NextResponse.json({ message: 'Ordem finalizada com sucesso' }, { status: 200 });
   } catch (error) {
     if (connection) {
-      // Reverte a transação em caso de erro
       await connection.rollback();
     }
     console.error('Erro ao finalizar ordem:', error);

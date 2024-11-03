@@ -7,10 +7,10 @@ const dbConfig = {
   connectString: 'oracle.fiap.com.br:1521/orcl',
 };
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: any }) {
   let connection;
   try {
-    const garantiaId = parseInt(params.id, 10);
+    const garantiaId = parseInt(context.params.id, 10);
 
     connection = await oracledb.getConnection(dbConfig);
 
