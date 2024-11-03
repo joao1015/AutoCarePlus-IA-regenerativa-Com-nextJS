@@ -29,13 +29,15 @@ function Side() {
       </div>
 
       {/* Header for Small Screens */}
-      <div className="lg:hidden w-full bg-black text-white">
-        <div className="flex items-center justify-between p-2">
-          <h1 className="text-lg font-semibold">Menu</h1>
-          <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <FiX size={14} /> : <FiMenu size={14} />}
-          </button>
-        </div>
+      <div className="lg:hidden w-full bg-black text-white mt-[8px]">
+  <div className="flex items-center justify-between p-">
+    <h1 className="text-lg font-semibold">Menu</h1>
+    <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+      {isOpen ? <FiX size={14} /> : <FiMenu size={14} />}
+    </button>
+  </div>
+</div>
+
 
         {/* Links in Header for Small Screens */}
         {isOpen && (
