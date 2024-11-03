@@ -1,4 +1,5 @@
-// tailwind.config.js
+
+
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
@@ -6,20 +7,22 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        customBg: "#181661",
-      },
+    extend: {},
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
     },
   },
   safelist: [
-    'bg-white', 'text-blue-500', 'border-2', 'border-blue-500',
-    'hover:bg-blue-500', 'hover:text-white', 'rounded-lg', 'py-2', 'px-4',
-    'font-bold', 'transition-colors', 'duration-300'
+  
+      'bg-white', 'text-black', 'text-blue-500', 'border-blue-500', 
+      'hover:text-blue-500', 'hover:border-blue-500',
+      'md:flex', 'lg:flex', 'lg:gap-12', 'md:gap-8', 'lg:h-24', 'md:h-20',
+      'hidden', 'block', 'cursor-pointer', 'font-bold', 'transition-colors', 
+      'duration-300', 'rounded-lg', 'py-2', 'px-4',
+    
   ],
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [],
 };
