@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import logo from './Imagems/LogoAutoCareplus.png';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiHome, FiInfo, FiTool, FiUser, FiMenu, FiX, FiBarChart } from 'react-icons/fi';
+import { FaCar } from 'react-icons/fa';
 import Link from 'next/link';
 
 const Cabecalho: React.FC = () => {
@@ -39,16 +40,32 @@ const Cabecalho: React.FC = () => {
 
       {/* Menu completo para telas grandes */}
       <nav className={`${isLargeScreen ? "flex" : "hidden"} items-center gap-8 lg:gap-12 flex-grow justify-center`}>
-        <Link href="/" className="text-black font-bold hover:text-blue-500">Início</Link>
-        <Link href="/SejaCredenciado" className="text-black font-bold hover:text-blue-500">Seja Cadastrado</Link>
-        <Link href="/LoginOficinas" className="text-black font-bold hover:text-blue-500">Oficinas Credenciadas</Link>
-        <Link href="/Analise" className="text-black font-bold hover:text-blue-500">Análise</Link>
-        <Link href="/SobreNos" className="text-black font-bold hover:text-blue-500">Sobre Nós</Link>
+        <Link href="/" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+          <FiHome /> Início
+        </Link>
+        <Link href="/SejaCredenciado" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+          <FiUser /> Seja Cadastrado
+        </Link>
+        <Link href="/LoginOficinas" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+          <FiTool /> Oficinas Credenciadas
+        </Link>
+        <Link href="/Analise" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+          <FiBarChart /> Análise de Oficinas
+        </Link>
+        <Link href="/ConhecaAutoCarePlus" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+          <FaCar /> Conheça o AutoCarePlus
+        </Link>
+        <Link href="/SobreNos" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+          <FiInfo /> Sobre Nós
+        </Link>
       </nav>
 
       {/* Botão Área do Cliente para telas grandes */}
       {isLargeScreen && (
-        <Link href="/AreadoCliente" className="bg-white text-blue-500 border-2 border-blue-500 py-2 px-4 rounded-lg font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300 lg:ml-4">
+        <Link
+          href="/AreadoCliente"
+          className="bg-white text-blue-500 border-2 border-blue-500 py-2 px-4 rounded-lg font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300 lg:ml-4"
+        >
           Área do Cliente
         </Link>
       )}
@@ -63,11 +80,24 @@ const Cabecalho: React.FC = () => {
       {/* Menu Responsivo para telas pequenas */}
       {!isLargeScreen && isMenuOpen && (
         <div className="absolute top-20 left-0 w-full bg-white border-t-2 border-blue-500 flex flex-col items-center gap-4 py-4 shadow-lg z-50">
-          <Link href="/" onClick={toggleMenu} className="text-black font-bold hover:text-blue-500">Início</Link>
-          <Link href="/SejaCredenciado" onClick={toggleMenu} className="text-black font-bold hover:text-blue-500">Seja Cadastrado</Link>
-          <Link href="/LoginOficinas" onClick={toggleMenu} className="text-black font-bold hover:text-blue-500">Oficinas Credenciadas</Link>
-          <Link href="/Analise" onClick={toggleMenu} className="text-black font-bold hover:text-blue-500">Análise</Link>
-          <Link href="/SobreNos" onClick={toggleMenu} className="text-black font-bold hover:text-blue-500">Sobre Nós</Link>
+          <Link href="/" onClick={toggleMenu} className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+            <FiHome /> Início
+          </Link>
+          <Link href="/SejaCredenciado" onClick={toggleMenu} className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+            <FiUser /> Seja Cadastrado
+          </Link>
+          <Link href="/LoginOficinas" onClick={toggleMenu} className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+            <FiTool /> Oficinas Credenciadas
+          </Link>
+          <Link href="/Analise" onClick={toggleMenu} className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+            <FiBarChart /> Análise de Oficinas
+          </Link>
+          <Link href="/ConhecaAutoCarePlus" onClick={toggleMenu} className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+            <FaCar /> Conheça o AutoCarePlus
+          </Link>
+          <Link href="/SobreNos" onClick={toggleMenu} className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
+            <FiInfo /> Sobre Nós
+          </Link>
           <Link href="/AreadoCliente" onClick={toggleMenu} className="bg-white text-blue-500 border-2 border-blue-500 py-2 px-4 rounded-lg font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300">
             Área do Cliente
           </Link>
