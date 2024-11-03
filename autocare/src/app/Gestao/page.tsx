@@ -94,11 +94,14 @@ const GestaoOrdens: React.FC = () => {
       });
 
       if (response.ok) {
+        alert("Status atualizado com sucesso!");
         console.log("Status atualizado com sucesso.");
       } else {
+        alert("Erro ao atualizar status.");
         console.error("Erro ao atualizar status:", await response.text());
       }
     } catch (error) {
+      alert("Erro ao atualizar status da ordem.");
       console.error("Erro ao atualizar status da ordem:", error);
     }
   };
@@ -204,7 +207,7 @@ const GestaoOrdens: React.FC = () => {
                           [index]: newStatus,
                         }));
                       }}
-                      className="ml-2 p-1 border rounded"
+                      className="ml-2 p-1 border rounded bg-white"
                     >
                       <option value="Em andamento">Em andamento</option>
                       <option value="Aguardando Peças">Aguardando Peças</option>
@@ -295,7 +298,7 @@ const GestaoOrdens: React.FC = () => {
                         type="text"
                         value={newDiagnostico}
                         onChange={(e) => setNewDiagnostico(e.target.value)}
-                        className="w-full p-2 mb-4 border rounded"
+                        className="w-full p-2 mb-4 border rounded bg-white"
                       />
                       <label className="block mb-2 text-sm font-medium text-gray-700">
                         Peças a serem trocadas:
@@ -304,7 +307,7 @@ const GestaoOrdens: React.FC = () => {
                         type="text"
                         value={newPecas}
                         onChange={(e) => setNewPecas(e.target.value)}
-                        className="w-full p-2 mb-4 border rounded"
+                        className="w-full p-2 mb-4 border rounded bg-white"
                       />
                       <label className="block mb-2 text-sm font-medium text-gray-700">
                         Valor Final:
@@ -313,7 +316,7 @@ const GestaoOrdens: React.FC = () => {
                         type="text"
                         value={newValorFinal}
                         onChange={(e) => setNewValorFinal(e.target.value)}
-                        className="w-full p-2 mb-4 border rounded"
+                        className="w-full p-2 mb-4 border rounded bg-white"
                       />
                       <div className="flex gap-4 justify-end">
                         <button

@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Deve estar no topo do arquivo
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -33,8 +33,8 @@ const OficinasLogin: React.FC = () => {
 
       setTimeout(() => {
         setShowSuccessMessage(false);
-        router.push('/OficinaLogada');
-      }, 3000);
+        router.push("/OficinaLogada");
+      }, 2000);
     } else {
       setSuccessMessage('');
       setShowSuccessMessage(false);
@@ -46,12 +46,12 @@ const OficinasLogin: React.FC = () => {
     <div className="flex justify-center items-center h-screen bg-gray-100 p-5">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col items-center border border-gray-200"
+        className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md flex flex-col items-center border-t-4 border-blue-600"
       >
-        <h2 className="text-2xl font-bold text-center mb-6 text-black">Acessar Conta</h2>
-        
-        <div className="mb-4 w-full">
-          <label htmlFor="email" className="block text-lg font-medium mb-2 text-gray-800">
+        <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800 font-roboto">Área de Login</h2>
+
+        <div className="mb-5 w-full">
+          <label htmlFor="email" className="block text-lg font-semibold mb-2 text-gray-700 font-roboto">
             Email
           </label>
           <input
@@ -61,12 +61,13 @@ const OficinasLogin: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-lg text-gray-700"
+            className="w-full p-3 border  rounded-lg focus:outline-none focus:border-blue-600 text-lg font-roboto text-black bg-white placeholder-gray-400 shadow-sm"
+            placeholder="Digite seu email"
           />
         </div>
 
-        <div className="mb-4 w-full relative">
-          <label htmlFor="senha" className="block text-lg font-medium mb-2 text-gray-800">
+        <div className="mb-6 w-full">
+          <label htmlFor="senha" className="block text-lg font-semibold mb-2 text-gray-700 font-roboto">
             Senha
           </label>
           <input
@@ -76,18 +77,19 @@ const OficinasLogin: React.FC = () => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-lg text-gray-700"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 text-lg font-roboto text-black bg-white placeholder-gray-400 shadow-sm"
+            placeholder="Digite sua senha"
           />
         </div>
 
-        {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
-        {showSuccessMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+        {errorMessage && <p className="text-red-500 text-center mb-4 font-semibold">{errorMessage}</p>}
+        {showSuccessMessage && <p className="text-green-500 text-center mb-4 font-semibold">{successMessage}</p>}
 
         <button
           type="submit"
-          className="bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition-transform transform duration-200 hover:translate-y-[-2px]"
+          className="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-all transform duration-200 hover:scale-105 shadow-lg"
         >
-          Logar
+          Entrar
         </button>
       </form>
     </div>

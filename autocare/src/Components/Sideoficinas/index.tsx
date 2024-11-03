@@ -40,7 +40,7 @@ function Side() {
         {/* Links in Header for Small Screens */}
         {isOpen && (
           <div className="flex flex-col items-center bg-black w-full p-4">
-            <Link href="/Ordensrecebidas" legacyBehavior>
+            <Link href="/ordensrecebidas" legacyBehavior>
               <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
                 <FiFileText size={24} />
               </a>

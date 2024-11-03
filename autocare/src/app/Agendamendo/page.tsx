@@ -40,9 +40,8 @@ const Agenda1: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-screen">
+    <div className="flex flex-col md:flex-row w-full h-screen bg-white">
       {/* Botão para abrir a sidebar em telas pequenas */}
-   
 
       {/* Sidebar */}
       <div
@@ -55,7 +54,7 @@ const Agenda1: React.FC = () => {
       </div>
 
       {/* Conteúdo Principal */}
-      <div className="flex-1 mt-[60px] p-5 overflow-y-auto md:mt-0">
+      <div className="flex-1 mt-[60px] p-5 overflow-y-auto md:mt-0 bg-white">
         <main>
           <Agenda />
         </main>

@@ -104,15 +104,13 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-3xl mx-auto p-6 border-2 border-black rounded-lg shadow-lg bg-white h-[80vh] overflow-hidden">
+    <div className="flex flex-col items-center w-full max-w-3xl mx-auto p-6 border-2 border-red rounded-lg shadow-lg bg-white h-[80vh] overflow-hidden">
       <header className="w-full bg-blue-900 text-white font-bold text-xl p-4 text-center">AutoCarePlus</header>
       <div ref={chatBodyRef} className="flex-1 w-full overflow-y-auto p-4 bg-gray-100 flex flex-col gap-4">
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex items-center ${
-              msg.isUser ? 'justify-end' : 'justify-start'
-            }`}
+            className={`flex items-center ${msg.isUser ? 'justify-end' : 'justify-start'}`}
           >
             <Image
               src={msg.isUser ? userAvatar : icone}
@@ -139,7 +137,7 @@ const Chatbot: React.FC = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Digite sua mensagem..."
-          className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
+          className="flex-1 p-3 border border-gray-300 rounded-full bg-white text-black focus:outline-none focus:border-blue-500 font-['Roboto']"
         />
         <button
           type="submit"
@@ -150,6 +148,7 @@ const Chatbot: React.FC = () => {
       </form>
     </div>
   );
+  
 };
 
 export default Chatbot;

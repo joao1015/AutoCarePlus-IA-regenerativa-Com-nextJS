@@ -1,4 +1,3 @@
-// Adicione essa linha no topo do arquivo para definir como Client Component
 "use client";
 
 import React from 'react';
@@ -9,6 +8,7 @@ import IA from '@/Components/InteracaoIA';
 const PaginaContainer = styled.div`
   display: flex;
   height: 100vh;
+  background-color: #ebe4e4; /* Define o fundo branco */
 `;
 
 const ConteudoPrincipal = styled.div`

@@ -1,13 +1,27 @@
-/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #ffffff;
+  --foreground: #000000; /* Cor preta */
+}
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #000000; /* Cor preta mesmo no modo escuro */
+  }
+}
 
-/* Adicionando uma classe personalizada ao Tailwind */
+body {
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
+

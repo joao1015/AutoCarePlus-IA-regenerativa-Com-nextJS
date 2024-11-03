@@ -16,7 +16,7 @@ def connect_db():
     """Função para conectar ao banco de dados Oracle."""
     try:
         connection = cx_Oracle.connect(**db_config)
-        print("Conexão bem-sucedida com o banco de dados-!")
+        print("Conexão bem-sucedida com o banco de dados!")
         return connection
     except cx_Oracle.DatabaseError as e:
         print("Erro ao conectar ao banco de dados:", e)
