@@ -57,11 +57,11 @@ const OficinasLogin: React.FC = () => {
         onSubmit={handleLogin}
         className="bg-white p-6 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-lg shadow-md"
       >
-        <h2 className="mb-5 text-2xl font-semibold text-black text-center">
+        <h2 className="mb-5 text-2xl font-semibold text-textDark text-center">
           Acessa conta - Preencha seus dados da Credenciada
         </h2>
         <div className="mb-5 w-full flex flex-col items-center relative">
-          <label htmlFor="email" className="block mb-2 text-lg font-medium text-gray-800 w-full text-left">
+          <label htmlFor="email" className="block mb-2 text-lg font-medium text-textGray w-full text-left">
             Email
           </label>
           <input
@@ -71,12 +71,12 @@ const OficinasLogin: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-[calc(100%-30px)] h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-gray-800 outline-none focus:border-blue-700"
+            className="w-full h-12 px-4 border border-border rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
             placeholder="Insira seu email"
           />
         </div>
         <div className="mb-5 w-full flex flex-col items-center relative">
-          <label htmlFor="senha" className="block mb-2 text-lg font-medium text-gray-800 w-full text-left">
+          <label htmlFor="senha" className="block mb-2 text-lg font-medium text-textGray w-full text-left">
             Senha
           </label>
           <input
@@ -86,13 +86,13 @@ const OficinasLogin: React.FC = () => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
-            className="w-[calc(100%-30px)] h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-gray-800 outline-none focus:border-blue-700"
+            className="w-full h-12 px-4 border border-border rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
             placeholder="Insira sua senha"
           />
           <button
             type="button"
             onClick={() => setMostrarSenha(!mostrarSenha)}
-            className="absolute right-4 top-10 bg-transparent border-none text-lg text-gray-800"
+            className="absolute right-4 top-10 bg-transparent border-none text-lg text-textGray"
           >
             <FontAwesomeIcon icon={mostrarSenha ? faEyeSlash : faEye} />
           </button>
@@ -100,14 +100,14 @@ const OficinasLogin: React.FC = () => {
         <div className="flex gap-4 mt-5 w-full justify-center">
           <button
             type="submit"
-            className="w-1/2 max-w-xs h-12 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transform hover:translate-y-[-3px] transition-all duration-200"
+            className="w-1/2 max-w-xs h-12 bg-primary text-white font-semibold rounded-md hover:bg-green-600 transform hover:translate-y-[-3px] transition-all duration-200"
           >
             Logar
           </button>
           <button
             type="button"
             onClick={handleCadastroClick}
-            className="w-1/2 max-w-xs h-12 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transform hover:translate-y-[-3px] transition-all duration-200"
+            className="w-1/2 max-w-xs h-12 bg-secondary text-white font-semibold rounded-md hover:bg-blue-600 transform hover:translate-y-[-3px] transition-all duration-200"
           >
             Cadastro de Oficina
           </button>
