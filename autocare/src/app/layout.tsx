@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <head>
-        {/* Adicionando a meta tag viewport para responsividade */}
+    
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
