@@ -55,7 +55,7 @@ const OficinasLogin: React.FC = () => {
     <div className="flex justify-center items-center w-full h-screen bg-gray-100 p-6">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-5 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-lg shadow-md"
+        className="bg-white p-6 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-lg shadow-md"
       >
         <h2 className="mb-5 text-2xl font-semibold text-black text-center">
           Acessa conta - Preencha seus dados da Credenciada
