@@ -14,17 +14,14 @@ const OficinasLogin: React.FC = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const router = useRouter();
 
-  // Verifica se o login é de administrador
   const isAdmin = email === 'Admin@admin.com' && senha === '87654321';
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (isAdmin) {
       setErrorMessage('');
       setSuccessMessage('Acesso concedido para cadastro de oficina!');
       setShowSuccessMessage(true);
-
       setTimeout(() => {
         setShowSuccessMessage(false);
         router.push('/cadastro-oficina');
@@ -41,7 +38,6 @@ const OficinasLogin: React.FC = () => {
       setErrorMessage('');
       setSuccessMessage('Acesso concedido para cadastro de oficina!');
       setShowSuccessMessage(true);
-
       setTimeout(() => {
         setShowSuccessMessage(false);
         router.push('/ListaOficina');
@@ -55,7 +51,7 @@ const OficinasLogin: React.FC = () => {
     <div className="flex justify-center items-center w-full h-screen bg-gray-100 p-6">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-6 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-lg shadow-md"
+        className="bg-white p-6 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-md shadow-md"
       >
         <h2 className="mb-5 text-2xl font-semibold text-textDark text-center">
           Acessa conta - Preencha seus dados da Credenciada
@@ -71,7 +67,7 @@ const OficinasLogin: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full h-12 px-4 border border-border rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
+            className="w-full h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
             placeholder="Insira seu email"
           />
         </div>
@@ -86,7 +82,7 @@ const OficinasLogin: React.FC = () => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
-            className="w-full h-12 px-4 border border-border rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
+            className="w-full h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
             placeholder="Insira sua senha"
           />
           <button
