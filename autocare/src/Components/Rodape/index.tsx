@@ -28,7 +28,7 @@ const Rodape = () => {
             href="https://facebook.com/seudominio"
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-2 no-underline hover:underline"
+            className="mx-4 no-underline hover:underline"
           >
             Facebook
           </a>
@@ -36,7 +36,7 @@ const Rodape = () => {
             href="https://twitter.com/seudominio"
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-2 no-underline hover:underline"
+            className="mx-3 no-underline hover:underline"
           >
             Twitter
           </a>
@@ -44,7 +44,7 @@ const Rodape = () => {
             href="https://instagram.com/seudominio"
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-2 no-underline hover:underline"
+            className="mx-4 no-underline hover:underline"
           >
             Instagram
           </a>
@@ -52,7 +52,7 @@ const Rodape = () => {
             href="https://linkedin.com/company/seudominio"
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-2 no-underline hover:underline"
+            className="mx-3 no-underline hover:underline"
           >
             LinkedIn
           </a>

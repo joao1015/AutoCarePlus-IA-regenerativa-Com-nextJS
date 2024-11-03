@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css"; // Importando estilos globais
+import "./globals.css"; 
 import Cabecalho from "@/Components/Cabecalho"; // Importando o cabeçalho
 import Rodape from "@/Components/Rodape"; // Importando o rodapé
 
