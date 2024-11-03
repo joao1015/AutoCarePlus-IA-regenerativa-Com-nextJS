@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: true,
   experimental: {
-    optimizeCss: false,
+    appDir: true, // Use esta opção se estiver usando a pasta `app` do Next.js
   },
 };
