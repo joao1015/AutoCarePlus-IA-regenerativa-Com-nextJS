@@ -22,7 +22,7 @@ const Cabecalho: React.FC<CabecalhoProps> = ({ usuario }) => {
   };
 
   return (
-    <header className="w-full h-20 bg-white flex items-center justify-between px-4 border-b-2 border-black hover:border-blue-500 z-50 lg:h-24">
+    <header className="relative top-0 left-0 w-full h-20 bg-white flex items-center justify-between px-4 border-b-2 border-black hover:border-blue-500 z-50 lg:h-24">
       {/* Logo do lado esquerdo */}
       <Link href="/" className="flex-shrink-0">
         <Image
