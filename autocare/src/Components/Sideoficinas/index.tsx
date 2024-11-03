@@ -29,37 +29,35 @@ function Side() {
       </div>
 
       {/* Header for Small Screens */}
-      <div className="lg:hidden w-full bg-black text-white mt-[8px]">
-  <div className="flex items-center justify-between p-">
-    <h1 className="text-lg font-semibold">Menu</h1>
-    <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
-      {isOpen ? <FiX size={14} /> : <FiMenu size={14} />}
-    </button>
-  </div>
-</div>
-
-
-        {/* Links in Header for Small Screens */}
-        {isOpen && (
-          <div className="flex flex-col items-center bg-black w-full p-4">
-            <Link href="/ordensrecebidas" legacyBehavior>
-              <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
-                <FiFileText size={24} />
-              </a>
-            </Link>
-            <Link href="/Gestao" legacyBehavior>
-              <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
-                <FiSettings size={24} />
-              </a>
-            </Link>
-            <Link href="/Garantia" legacyBehavior>
-              <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center">
-                <FiCheckSquare size={24} />
-              </a>
-            </Link>
-          </div>
-        )}
+      <div className="lg:hidden w-full bg-black text-white mt-[5px]">
+        <div className="flex items-center justify-between px-4 py-2">
+          <h1 className="text-lg font-semibold">Menu</h1>
+          <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
+        </div>
       </div>
+
+      {/* Links in Header for Small Screens */}
+      {isOpen && (
+        <div className="flex flex-col items-center bg-black w-full p-4">
+          <Link href="/ordensrecebidas" legacyBehavior>
+            <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
+              <FiFileText size={24} />
+            </a>
+          </Link>
+          <Link href="/Gestao" legacyBehavior>
+            <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
+              <FiSettings size={24} />
+            </a>
+          </Link>
+          <Link href="/Garantia" legacyBehavior>
+            <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center">
+              <FiCheckSquare size={24} />
+            </a>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
