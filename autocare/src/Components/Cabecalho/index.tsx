@@ -1,4 +1,4 @@
-"use client"; // Importante para uso no Next.js
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -15,19 +15,20 @@ const Cabecalho: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Função para monitorar tamanho da tela
+  // Função para monitorar o tamanho da tela
   useEffect(() => {
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 768); // Tela média (md) começa em 768px no Tailwind
+      setIsLargeScreen(window.innerWidth >= 768);
     };
 
-    handleResize(); // Definir valor inicial
-    window.addEventListener("resize", handleResize); // Atualizar ao redimensionar
+    handleResize();
+    window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <header className="w-full h-20 bg-white flex items-center justify-between px-4 border-b-2 border-black z-50 lg:h-24">
+      {/* Logo */}
       <Link href="/" className="flex-shrink-0">
         <Image
           src={logo}
@@ -38,7 +39,7 @@ const Cabecalho: React.FC = () => {
         />
       </Link>
 
-      {/* Menu completo para telas grandes */}
+      {/* Menu para telas grandes */}
       <nav className={`${isLargeScreen ? "flex" : "hidden"} items-center gap-8 lg:gap-12 flex-grow justify-center`}>
         <Link href="/" className="text-black flex items-center gap-2 font-bold hover:text-blue-500">
           <FiHome /> Início
@@ -60,31 +61,29 @@ const Cabecalho: React.FC = () => {
         </Link>
       </nav>
 
-      {/* Botão Área do Cliente para telas grandes */}
-      {isLargeScreen && (
-        <Link
-          href="/AreadoCliente"
-          className="hidden md:block py-2 px-4 rounded-lg font-bold"
-          style={{
-            backgroundColor: 'white',
-            color: '#1E40AF', // Azul do texto
-            border: '2px solid #1E40AF', // Cor da borda
-            transition: 'all 0.3s ease',
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = '#1E40AF';
-            (e.currentTarget as HTMLElement).style.color = 'white';
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = 'white';
-            (e.currentTarget as HTMLElement).style.color = '#1E40AF';
-          }}
-        >
-          Área do Cliente
-        </Link>
-      )}
+      {/* Botão "Área do Cliente" */}
+      <Link
+        href="/AreadoCliente"
+        className="hidden md:block py-2 px-4 rounded-lg font-bold"
+        style={{
+          backgroundColor: 'white',
+          color: '#1E40AF',
+          border: '2px solid #1E40AF',
+          transition: 'all 0.3s ease',
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.backgroundColor = '#1E40AF';
+          (e.currentTarget as HTMLElement).style.color = 'white';
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.backgroundColor = 'white';
+          (e.currentTarget as HTMLElement).style.color = '#1E40AF';
+        }}
+      >
+        Área do Cliente
+      </Link>
 
-      {/* Ícone de Menu "Hambúrguer" para telas pequenas */}
+      {/* Ícone do Menu para telas pequenas */}
       {!isLargeScreen && (
         <button onClick={toggleMenu} className="text-blue-500 focus:outline-none">
           {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
