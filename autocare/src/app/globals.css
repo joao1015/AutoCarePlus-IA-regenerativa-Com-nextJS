@@ -3,20 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Variáveis de cores globais */
-:root {
-  --background-light: #ffffff;
-  --background-dark: #0a0a0a;
-  --foreground: #000000; /* Texto padrão */
-}
-
-/* Tema claro e escuro usando prefers-color-scheme */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-light: #0a0a0a;
-    --foreground: #ffffff;
-  }
-}
 
 body {
   background-color: var(--background-light);
