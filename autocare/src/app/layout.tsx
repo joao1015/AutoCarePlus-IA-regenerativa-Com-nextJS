@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   },
 };
 
+
+export const viewport = {
+  initialScale: 1.0,
+  width: "device-width",
+  colorScheme: "dark"
+}
 export default function RootLayout({
   children,
 }: {
