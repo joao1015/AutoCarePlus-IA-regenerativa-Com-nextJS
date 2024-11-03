@@ -64,7 +64,21 @@ const Cabecalho: React.FC = () => {
       {isLargeScreen && (
         <Link
           href="/AreadoCliente"
-          className="bg-white text-blue-500 border-2 border-blue-500 py-2 px-4 rounded-lg font-bold hover:bg-blue-500 hover:text-white transition-colors duration-300 lg:ml-4"
+          className="hidden md:block py-2 px-4 rounded-lg font-bold"
+          style={{
+            backgroundColor: 'white',
+            color: '#1E40AF', // Azul do texto
+            border: '2px solid #1E40AF', // Cor da borda
+            transition: 'all 0.3s ease',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.backgroundColor = '#1E40AF';
+            (e.currentTarget as HTMLElement).style.color = 'white';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.backgroundColor = 'white';
+            (e.currentTarget as HTMLElement).style.color = '#1E40AF';
+          }}
         >
           Área do Cliente
         </Link>
