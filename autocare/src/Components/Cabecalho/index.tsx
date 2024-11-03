@@ -61,30 +61,32 @@ const Cabecalho: React.FC = () => {
         </Link>
       </nav>
 
-      {/* Botão "Área do Cliente" com estilo inline temporário */}
-      <Link
-        href="/AreadoCliente"
-        style={{
-          display: 'inline-block',
-          padding: '0.5rem 1rem',
-          color: '#1E40AF',
-          backgroundColor: 'white',
-          border: '2px solid #1E40AF',
-          borderRadius: '0.5rem',
-          fontWeight: 'bold',
-          transition: 'all 0.3s ease',
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLElement).style.backgroundColor = '#1E40AF';
-          (e.currentTarget as HTMLElement).style.color = 'white';
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLElement).style.backgroundColor = 'white';
-          (e.currentTarget as HTMLElement).style.color = '#1E40AF';
-        }}
-      >
-        Área do Cliente
-      </Link>
+      {/* Botão "Área do Cliente" visível apenas em telas grandes */}
+      {isLargeScreen && !isMenuOpen && (
+        <Link
+          href="/AreadoCliente"
+          style={{
+            display: 'inline-block',
+            padding: '0.5rem 1rem',
+            color: '#1E40AF',
+            backgroundColor: 'white',
+            border: '2px solid #1E40AF',
+            borderRadius: '0.5rem',
+            fontWeight: 'bold',
+            transition: 'all 0.3s ease',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.backgroundColor = '#1E40AF';
+            (e.currentTarget as HTMLElement).style.color = 'white';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.backgroundColor = 'white';
+            (e.currentTarget as HTMLElement).style.color = '#1E40AF';
+          }}
+        >
+          Área do Cliente
+        </Link>
+      )}
 
       {/* Ícone do Menu para telas pequenas */}
       {!isLargeScreen && (
