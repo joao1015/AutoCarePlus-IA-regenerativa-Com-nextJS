@@ -2,33 +2,39 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-// Página de Login da Oficina
-function OficinasLogin() {
+const OficinasLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const router = useRouter();
 
-  const isAdmin = email === 'Admin@admin.com' && senha === '87654321';
+  const oficinasFixas = [
+    { id: 1, nome: 'Oficina AutoTech', email: 'oficina1@example.com', senha: '123' },
+    { id: 2, nome: 'Oficina Mecânica Rápida', email: 'oficina2@example.com', senha: '123' },
+    { id: 3, nome: 'Oficina SuperCar', email: 'oficina3@example.com', senha: '123' },
+  ];
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isAdmin) {
+    const oficinaValida = oficinasFixas.find(
+      (oficina) => oficina.email === email && oficina.senha === senha
+    );
+
+    if (oficinaValida) {
       setErrorMessage('');
-      setSuccessMessage('Acesso concedido para cadastro de oficina!');
+      setSuccessMessage(`Login bem-sucedido! Bem-vindo à ${oficinaValida.nome}`);
       setShowSuccessMessage(true);
+
+      localStorage.setItem('oficinaId', String(oficinaValida.id));
 
       setTimeout(() => {
         setShowSuccessMessage(false);
-        router.push('/cadastro-oficina');
-      }, 2000);
+        router.push('/OficinaLogada');
+      }, 3000);
     } else {
       setSuccessMessage('');
       setShowSuccessMessage(false);
@@ -36,81 +42,56 @@ function OficinasLogin() {
     }
   };
 
-  const handleCadastroClick = () => {
-    if (isAdmin) {
-      setErrorMessage('');
-      setSuccessMessage('Acesso concedido para cadastro de oficina!');
-      setShowSuccessMessage(true);
-
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-        router.push('/ListaOficina');
-      }, 2000);
-    } else {
-      setErrorMessage('Somente administradores têm permissão para acessar o cadastro de oficinas.');
-    }
-  };
-
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100 p-5">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col items-center border border-gray-200"
       >
-        <h2 className="text-2xl font-bold text-center mb-6">Acessar Conta</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-black">Acessar Conta</h2>
         
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-lg font-medium mb-2">Email</label>
+        <div className="mb-4 w-full">
+          <label htmlFor="email" className="block text-lg font-medium mb-2 text-gray-800">
+            Email
+          </label>
           <input
             type="email"
             id="email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-lg text-gray-700"
           />
         </div>
 
-        <div className="mb-4 relative">
-          <label htmlFor="senha" className="block text-lg font-medium mb-2">Senha</label>
+        <div className="mb-4 w-full relative">
+          <label htmlFor="senha" className="block text-lg font-medium mb-2 text-gray-800">
+            Senha
+          </label>
           <input
-            type={mostrarSenha ? 'text' : 'password'}
+            type="password"
             id="senha"
+            name="senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-lg text-gray-700"
           />
-          <button
-            type="button"
-            onClick={() => setMostrarSenha(!mostrarSenha)}
-            className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
-          >
-            <FontAwesomeIcon icon={mostrarSenha ? faEyeSlash : faEye} />
-          </button>
         </div>
 
         {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
         {showSuccessMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
 
-        <div className="flex justify-between">
-          <button
-            type="submit"
-            className="bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-all duration-200"
-          >
-            Logar
-          </button>
-          <button
-            type="button"
-            onClick={handleCadastroClick}
-            className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-all duration-200"
-          >
-            Cadastro de Oficina
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition-transform transform duration-200 hover:translate-y-[-2px]"
+        >
+          Logar
+        </button>
       </form>
     </div>
   );
-}
+};
 
 export default OficinasLogin;
