@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-const OficinasLogin: React.FC = () => {
+// Página de Login da Oficina
+function OficinasLogin() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -18,10 +19,12 @@ const OficinasLogin: React.FC = () => {
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (isAdmin) {
       setErrorMessage('');
       setSuccessMessage('Acesso concedido para cadastro de oficina!');
       setShowSuccessMessage(true);
+
       setTimeout(() => {
         setShowSuccessMessage(false);
         router.push('/cadastro-oficina');
@@ -38,81 +41,76 @@ const OficinasLogin: React.FC = () => {
       setErrorMessage('');
       setSuccessMessage('Acesso concedido para cadastro de oficina!');
       setShowSuccessMessage(true);
+
       setTimeout(() => {
         setShowSuccessMessage(false);
         router.push('/ListaOficina');
       }, 2000);
     } else {
-      setErrorMessage('Somente administradores têm permissão para acessar o cadastro de oficinas. Por favor, insira as credenciais corretas.');
+      setErrorMessage('Somente administradores têm permissão para acessar o cadastro de oficinas.');
     }
   };
 
   return (
-    <div className="flex justify-center items-center w-full h-screen bg-gray-100 p-6">
+    <div className="flex justify-center items-center h-screen bg-gray-100 p-5">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-6 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-md shadow-md"
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
       >
-        <h2 className="mb-5 text-2xl font-semibold text-textDark text-center">
-          Acessa conta - Preencha seus dados da Credenciada
-        </h2>
-        <div className="mb-5 w-full flex flex-col items-center relative">
-          <label htmlFor="email" className="block mb-2 text-lg font-medium text-textGray w-full text-left">
-            Email
-          </label>
+        <h2 className="text-2xl font-bold text-center mb-6">Acessar Conta</h2>
+        
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-lg font-medium mb-2">Email</label>
           <input
             type="email"
             id="email"
-            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
-            placeholder="Insira seu email"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div className="mb-5 w-full flex flex-col items-center relative">
-          <label htmlFor="senha" className="block mb-2 text-lg font-medium text-textGray w-full text-left">
-            Senha
-          </label>
+
+        <div className="mb-4 relative">
+          <label htmlFor="senha" className="block text-lg font-medium mb-2">Senha</label>
           <input
             type={mostrarSenha ? 'text' : 'password'}
             id="senha"
-            name="senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
-            className="w-full h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-textGray outline-none focus:border-blue-700"
-            placeholder="Insira sua senha"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
           />
           <button
             type="button"
             onClick={() => setMostrarSenha(!mostrarSenha)}
-            className="absolute right-4 top-10 bg-transparent border-none text-lg text-textGray"
+            className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
           >
             <FontAwesomeIcon icon={mostrarSenha ? faEyeSlash : faEye} />
           </button>
         </div>
-        <div className="flex gap-4 mt-5 w-full justify-center">
+
+        {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
+        {showSuccessMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+
+        <div className="flex justify-between">
           <button
             type="submit"
-            className="w-1/2 max-w-xs h-12 bg-primary text-white font-semibold rounded-md hover:bg-green-600 transform hover:translate-y-[-3px] transition-all duration-200"
+            className="bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-all duration-200"
           >
             Logar
           </button>
           <button
             type="button"
             onClick={handleCadastroClick}
-            className="w-1/2 max-w-xs h-12 bg-secondary text-white font-semibold rounded-md hover:bg-blue-600 transform hover:translate-y-[-3px] transition-all duration-200"
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-all duration-200"
           >
             Cadastro de Oficina
           </button>
         </div>
-        {errorMessage && <p className="text-red-500 text-lg mt-4 text-center">{errorMessage}</p>}
-        {showSuccessMessage && <p className="text-green-500 text-lg mt-4 text-center">{successMessage}</p>}
       </form>
     </div>
   );
-};
+}
 
 export default OficinasLogin;
