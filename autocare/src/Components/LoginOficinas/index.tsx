@@ -2,156 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
-// Styled Components
-const PageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  background-color: #F3F4F6;
-  padding: 21px;
-`;
-
-const Balao = styled.form`
-  background-color: #ffffff;
-  padding: 20px;
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const Title = styled.h2`
-  margin-bottom: 20px;
-  font-size: 26px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  text-align: center;
-  color: black;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 20px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  font-size: 20px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  color: #333;
-  text-align: left;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: calc(100% - 30px);
-  height: 50px;
-  padding: 0 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 18px;
-  font-family: 'Poppins', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
-  outline: none;
-  transition: border-color 0.3s;
-
-  &::placeholder {
-    color: #999;
-    opacity: 0.8;
-  }
-
-  &:focus {
-    border-color: #0056b3;
-  }
-`;
-
-const TogglePasswordButton = styled.button`
-  position: absolute;
-  right: 20px;
-  top: 48px;
-  background: none;
-  border: none;
-  font-size: 18px;
-  color: #333;
-  cursor: pointer;
-  outline: none;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  width: 100%;
-  justify-content: space-around;
-`;
-
-const Button = styled.button`
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  width: 45%;
-  max-width: 220px;
-  height: 45px;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s, transform 0.2s;
-
-  &:hover {
-    transform: translateY(-3px);
-  }
-`;
-
-const LogarButton = styled(Button)`
-  background-color: #10B981;
-
-  &:hover {
-    background-color: #059669;
-  }
-`;
-
-const CadastroButton = styled(Button)`
-  background-color: #3B82F6;
-
-  &:hover {
-    background-color: #2563EB;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  color: red;
-  font-size: 16px;
-  margin-top: 10px;
-  text-align: center;
-`;
-
-const SuccessMessage = styled.p`
-  color: green;
-  font-size: 16px;
-  margin-top: 10px;
-  text-align: center;
-`;
 
 const OficinasLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -200,49 +52,71 @@ const OficinasLogin: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <Balao onSubmit={handleLogin}>
-        <Title>Acessa conta - Preencha seus dados da Credenciada</Title>
-        <FormGroup>
-          <Label htmlFor="email">Email</Label>
-          <Input
+    <div className="flex justify-center items-center w-full h-screen bg-gray-100 p-6">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-5 w-full max-w-md flex flex-col items-center border border-gray-300 rounded-lg shadow-md"
+      >
+        <h2 className="mb-5 text-2xl font-semibold text-black text-center">
+          Acessa conta - Preencha seus dados da Credenciada
+        </h2>
+        <div className="mb-5 w-full flex flex-col items-center relative">
+          <label htmlFor="email" className="block mb-2 text-lg font-medium text-gray-800 w-full text-left">
+            Email
+          </label>
+          <input
             type="email"
             id="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="w-[calc(100%-30px)] h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-gray-800 outline-none focus:border-blue-700"
+            placeholder="Insira seu email"
           />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="senha">Senha</Label>
-          <Input
+        </div>
+        <div className="mb-5 w-full flex flex-col items-center relative">
+          <label htmlFor="senha" className="block mb-2 text-lg font-medium text-gray-800 w-full text-left">
+            Senha
+          </label>
+          <input
             type={mostrarSenha ? 'text' : 'password'}
             id="senha"
             name="senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
+            className="w-[calc(100%-30px)] h-12 px-4 border border-gray-300 rounded-md text-lg bg-gray-200 text-gray-800 outline-none focus:border-blue-700"
+            placeholder="Insira sua senha"
           />
-          <TogglePasswordButton
+          <button
             type="button"
             onClick={() => setMostrarSenha(!mostrarSenha)}
+            className="absolute right-4 top-10 bg-transparent border-none text-lg text-gray-800"
           >
             <FontAwesomeIcon icon={mostrarSenha ? faEyeSlash : faEye} />
-          </TogglePasswordButton>
-        </FormGroup>
-        <ButtonGroup>
-          <LogarButton type="submit">Logar</LogarButton>
-          <CadastroButton type="button" onClick={handleCadastroClick}>
+          </button>
+        </div>
+        <div className="flex gap-4 mt-5 w-full justify-center">
+          <button
+            type="submit"
+            className="w-1/2 max-w-xs h-12 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transform hover:translate-y-[-3px] transition-all duration-200"
+          >
+            Logar
+          </button>
+          <button
+            type="button"
+            onClick={handleCadastroClick}
+            className="w-1/2 max-w-xs h-12 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transform hover:translate-y-[-3px] transition-all duration-200"
+          >
             Cadastro de Oficina
-          </CadastroButton>
-        </ButtonGroup>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        {showSuccessMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
-      </Balao>
-    </PageContainer>
+          </button>
+        </div>
+        {errorMessage && <p className="text-red-500 text-lg mt-4 text-center">{errorMessage}</p>}
+        {showSuccessMessage && <p className="text-green-500 text-lg mt-4 text-center">{successMessage}</p>}
+      </form>
+    </div>
   );
 };
 
 export default OficinasLogin;
-
