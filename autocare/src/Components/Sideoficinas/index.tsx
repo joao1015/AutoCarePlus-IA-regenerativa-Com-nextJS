@@ -30,8 +30,7 @@ function Side() {
 
       {/* Header for Small Screens */}
       <div className="lg:hidden w-full bg-black text-white mt-[5px]">
-        <div className="flex items-center justify-between px-4 py-2">
-          <h1 className="text-lg font-semibold">Menu</h1>
+        <div className="flex items-center justify-between px-2 py-1">
           <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
@@ -40,19 +39,19 @@ function Side() {
 
       {/* Links in Header for Small Screens */}
       {isOpen && (
-        <div className="flex flex-col items-center bg-black w-full p-4">
+        <div className="flex flex-col items-start bg-black w-full p-2">
           <Link href="/ordensrecebidas" legacyBehavior>
-            <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
+            <a className="block text-white text-lg py-2 px-2 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center">
               <FiFileText size={24} />
             </a>
           </Link>
           <Link href="/Gestao" legacyBehavior>
-            <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center justify-center">
+            <a className="block text-white text-lg py-2 px-2 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center">
               <FiSettings size={24} />
             </a>
           </Link>
           <Link href="/Garantia" legacyBehavior>
-            <a className="block text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center">
+            <a className="block text-white text-lg py-2 px-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center">
               <FiCheckSquare size={24} />
             </a>
           </Link>
