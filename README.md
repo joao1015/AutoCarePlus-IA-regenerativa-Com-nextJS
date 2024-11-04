@@ -115,15 +115,7 @@ Obs: a Barra "/" significa "ou" ex: LS/LT = LS ou LT
 
 ### Acesso ao Figma
 
-1. Link de Acesso ao Figma: https://www.figma.com/design/LqyECsacKv92Y7fyMlZBiU/AutoCarePlus?node-id=0-1&node-type=canvas&t=FLThciAiR1spFadk-0
 
-E-mail: metamindsolutions@hotmail.com Senha:654321Aa!
-
-Obs: Existe 2 Pages:
-
-Page 1 se encontra o projeto antigo totalmente preservado para comparação. 
-
-Page 2 se enconta o estado atual do projeto da pagina devidamente identificado com as paletas de cores e toda estrutura visual do site.
 
 ### Acesso ao Youtube com explicação do Projeto
 
