@@ -65,7 +65,7 @@ const StatusOrdens = () => {
                 placeholder="Digite seu email"
                 value={emailCliente}
                 onChange={(e) => setEmailCliente(e.target.value)}
-                className="w-full pl-[40px] pr-[12px] pt-[12px] pb-[12px] border border-[#dcdfe3] rounded-lg text-[1rem] text-[#2c3e50] outline-none focus:border-[#3498db] focus:ring-2 focus:ring-[#3498db]/20"
+                className="w-full pl-[40px] pr-[12px] pt-[12px] pb-[12px] border border-[#dcdfe3] rounded-lg text-[1rem] text-[#2c3e50] outline-none focus:border-[#3498db] focus:ring-2 focus:ring-[#3498db]/20 bg-white text-black"
               />
             </div>
             <button
