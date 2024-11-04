@@ -42,7 +42,7 @@ function Side() {
         <div className="flex flex-col items-start bg-black w-full p-2">
           <Link href="/Ordensrecebidas" legacyBehavior>
             <a className="block text-white text-lg py-2 px-2 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center">
-              <FiFileText size={24} />
+              <FiFileText size={24.1} />
             </a>
           </Link>
           <Link href="/Gestao" legacyBehavior>
