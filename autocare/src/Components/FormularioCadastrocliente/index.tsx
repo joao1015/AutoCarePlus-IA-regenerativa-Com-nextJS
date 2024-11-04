@@ -8,6 +8,7 @@ function FormularioCadastroCliente() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmSenha, setConfirmSenha] = useState('');
   const [cep, setCep] = useState('');
   const [logradouro, setLogradouro] = useState('');
   const [numero, setNumero] = useState('');
@@ -15,6 +16,7 @@ function FormularioCadastroCliente() {
   const [cidade, setCidade] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<boolean>(false);
+  const [senhaError, setSenhaError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -47,7 +49,12 @@ function FormularioCadastroCliente() {
 
   const handleNext = () => {
     if (step === 6) {
-      handleSubmit();
+      if (senha !== confirmSenha) {
+        setSenhaError("As senhas não coincidem.");
+      } else {
+        setSenhaError(null);
+        handleSubmit();
+      }
     } else {
       setStep(step + 1);
     }
@@ -98,11 +105,9 @@ function FormularioCadastroCliente() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#F8F8FF] flex flex-col items-center pt-20"> {/* Ajuste para garantir que o fundo preencha toda a tela */}
+    <div className="w-full min-h-screen bg-[#F8F8FF] flex flex-col items-center pt-20">
       <div className="py-12 px-4 sm:px-6 lg:px-8 w-full max-w-lg">
-        <div className="max-w-md w-full space-y-">
-          
-        </div>
+        <div className="max-w-md w-full space-y-"></div>
       </div>
 
       <div className="bg-gray-100 w-4/5 max-w-xl p-6 shadow-lg rounded-lg mx-auto font-roboto" style={{ marginTop: '-1cm' }}>
@@ -148,8 +153,6 @@ function FormularioCadastroCliente() {
               </div>
             </div>
           )}
-
-
 
           {/* Etapa 2: Email */}
           {step === 2 && (
@@ -323,7 +326,7 @@ function FormularioCadastroCliente() {
             </>
           )}
 
-          {/* Etapa 6: Senha */}
+          {/* Etapa 6: Senha e Confirmação de Senha */}
           {step === 6 && (
             <div className="mb-6">
               <label htmlFor="senha" className="block text-lg font-medium mb-2 text-gray-700">
@@ -338,6 +341,24 @@ function FormularioCadastroCliente() {
                 required
                 className="w-full h-16 px-4 border border-gray-300 rounded-lg text-lg font-medium bg-gray-50 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              
+              <label htmlFor="confirmSenha" className="block text-lg font-medium mt-4 mb-2 text-gray-700">
+                Confirme a Senha
+              </label>
+              <input
+                type="password"
+                id="confirmSenha"
+                name="confirmSenha"
+                value={confirmSenha}
+                onChange={(e) => setConfirmSenha(e.target.value)}
+                required
+                className="w-full h-16 px-4 border border-gray-300 rounded-lg text-lg font-medium bg-gray-50 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              {senhaError && (
+                <p className="text-red-600 mt-2 text-sm">{senhaError}</p>
+              )}
+
               <div className="flex justify-between mt-4">
                 <button
                   type="button"
@@ -349,7 +370,7 @@ function FormularioCadastroCliente() {
                 <button
                   type="submit"
                   className="bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 transition duration-300"
-                  disabled={!senha}
+                  disabled={!senha || !confirmSenha}
                 >
                   Concluir
                 </button>
