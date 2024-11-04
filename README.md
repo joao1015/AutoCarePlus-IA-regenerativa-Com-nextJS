@@ -55,7 +55,7 @@
 ---
  
 ## <a name="sobre-o-projeto"></a>📑 **Sobre o Projeto:**
-## Link do Projeto na vercel https://autocare-joao-paulo-moreira-dos-santos-projects.vercel.app/:
+## Link do Projeto na vercel https://autocare-theta.vercel.app
 ### 💡 **IA para Diagnóstico de Falhas**  
 Desenvolvemos uma inteligência artificial capaz de identificar falhas em veículos e oferecer soluções detalhadas.
  
@@ -221,6 +221,6 @@ Page 2 se enconta o estado atual do projeto da pagina devidamente identificado c
  
 ### Acesso ao Youtube com explicação do Projeto
  
-1. Link de Acesso ao Youtube:
+1. Link de Acesso ao Youtube: https://youtu.be/BkH3IZdPIrQ?si=HBScshkSWZEy7d2b
  
 [🔝 Voltar ao topo](#)
