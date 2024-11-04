@@ -11,7 +11,7 @@ function Side() {
     <div className="lg:w-60 w-40 bg-black text-white shadow-lg">
       {/* Sidebar for Large Screens */}
       <div className="hidden lg:flex flex-col h-full p-5">
-        <Link href="/Ordensrecebidas" legacyBehavior>
+        <Link href="/ordensrecebidas" legacyBehavior>
           <a className="block w-full text-white text-lg py-2 px-4 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center gap-2">
             <FiFileText /> Orçamentos Recebidos
           </a>
@@ -40,7 +40,7 @@ function Side() {
       {/* Links in Header for Small Screens */}
       {isOpen && (
         <div className="flex flex-col items-start bg-black w-full p-2">
-          <Link href="/Ordensrecebidas" legacyBehavior>
+          <Link href="/ordensrecebidas" legacyBehavior>
             <a className="block text-white text-lg py-2 px-2 rounded-md hover:bg-blue-600 mb-2 transition duration-300 flex items-center">
               <FiFileText size={24.1} />
             </a>
