@@ -55,7 +55,7 @@
 ---
  
 ## <a name="sobre-o-projeto"></a>📑 **Sobre o Projeto:**
- 
+## Link do Projeto na vercel https://autocare-joao-paulo-moreira-dos-santos-projects.vercel.app/:
 ### 💡 **IA para Diagnóstico de Falhas**  
 Desenvolvemos uma inteligência artificial capaz de identificar falhas em veículos e oferecer soluções detalhadas.
  
@@ -178,23 +178,34 @@ O sistema exibirá as atualizações fornecidas pela oficina, mantendo o cliente
 Esses passos guiam o processo desde a recepção de uma ordem até sua finalização, proporcionando uma experiência de gestão fluida e informativa para oficinas e clientes.
  
  
-### Analise de oficinas.
- Sistema de Análise de Oficinas
+Sistema de Análise de Oficinas
 Para acessar o sistema de análise de oficinas, siga os passos abaixo:
 
-Login: No site, clique em "Análise" para acessar o sistema. Em seguida, insira as seguintes credenciais:
+Configuração Prévia:
 
+Inicie o Backend: Certifique-se de rodar o backend em Python no servidor local (localhost). Esse backend é essencial para gerenciar as operações de criação, leitura, atualização e exclusão (CRUD) das oficinas.
+Arquivo de Configuração: Crie um arquivo .env.local na raiz do projeto com o seguinte conteúdo:
+env
+
+Copiar código
+NEXT_PUBLIC_API_URL=http://localhost:5003
+
+Esse arquivo configura a URL de acesso à API, permitindo a comunicação entre o frontend e o backend.
+Acesso ao Sistema:
+
+No site, clique em "Análise" para abrir a área de login.
+Utilize as seguintes credenciais para acessar o sistema:
 Login: admin
 Senha: admin123
-Inicialização do Backend: Para que o sistema funcione corretamente, é necessário iniciar o backend em Python no servidor local (localhost). O backend gerencia as operações de criação, leitura, atualização e exclusão (CRUD) das informações das oficinas.
-
 Funcionalidades:
 
 Adicionar Oficina: Registre novas oficinas no sistema.
 Editar Oficina: Atualize as informações das oficinas existentes.
 Excluir Oficina: Remova oficinas do sistema conforme necessário.
 Ler Oficinas: Consulte e visualize as informações das oficinas cadastradas.
-Esse sistema permite ao administrador gerenciar eficientemente os dados das oficinas, facilitando o controle e atualização das informações em tempo real.
+Esse sistema permite ao administrador gerenciar eficientemente os dados das oficinas, facilitando o controle e a atualização das informações em tempo real.
+
+
  
 ### Acesso ao Figma
  
