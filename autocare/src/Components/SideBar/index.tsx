@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
      
      
      {/* Botões fixos na parte inferior para telas pequenas */}
-<div className="absolute bottom-[-1cm] left-0 right-0 bg-black text-white flex justify-around p-3 md:hidden z-50">
+<div className="absolute bottom-[-3cm] left-0 right-0 bg-black text-white flex justify-around p-3 md:hidden z-50">
   <button onClick={handleLogout} className="flex flex-col items-center text-white">
     <FiLogOut size={24} />
     <span className="text-xs mt-1">Deslogar</span>
