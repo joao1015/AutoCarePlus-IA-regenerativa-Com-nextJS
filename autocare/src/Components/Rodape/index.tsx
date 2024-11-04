@@ -7,20 +7,7 @@ const Rodape = () => {
     <footer className="bg-black text-white font-poppins font-semibold text-sm border-t border-black py-5">
       <div className="max-w-6xl mx-auto px-4 relative text-center">
         {/* Links do rodapé */}
-        <nav className="mb-5">
-          <a href="/sobre-nos" className="mx-2 no-underline hover:underline">
-            Sobre Nós
-          </a>
-          <a href="/contato" className="mx-2 no-underline hover:underline">
-            Contato
-          </a>
-          <a href="/privacidade" className="mx-2 no-underline hover:underline">
-            Política de Privacidade
-          </a>
-          <a href="/termos" className="mx-2 no-underline hover:underline">
-            Termos de Serviço
-          </a>
-        </nav>
+       
 
         {/* Links de redes sociais */}
         <div className="mb-5 text-lg">
