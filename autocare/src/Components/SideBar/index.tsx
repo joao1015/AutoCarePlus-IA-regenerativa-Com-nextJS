@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiLogOut, FiFileText } from 'react-icons/fi';
 
 interface Usuario {
   id: number;
@@ -16,7 +16,6 @@ interface Usuario {
 
 const Sidebar: React.FC = () => {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -37,42 +36,24 @@ const Sidebar: React.FC = () => {
     }
   };
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <>
      
-      <button
-  onClick={toggleSidebar}
-  className="md:hidden absolute top-[24cm] left-1/2 transform -translate-x-1/2 z-50 text-white bg-blue-500 p-2 rounded-full"
->
-  {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-</button>
+     
+     {/* Botões fixos na parte inferior para telas pequenas */}
+<div className="absolute bottom-[-1cm] left-0 right-0 bg-black text-white flex justify-around p-3 md:hidden z-50">
+  <button onClick={handleLogout} className="flex flex-col items-center text-white">
+    <FiLogOut size={24} />
+    <span className="text-xs mt-1">Deslogar</span>
+  </button>
+  <Link href="/Status">
+    <div className="flex flex-col items-center text-white">
+      <FiFileText size={24} />
+      <span className="text-xs mt-1">Status</span>
+    </div>
+  </Link>
+</div>
 
-
-    
-      <div
-        className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center ${
-          isOpen ? 'block' : 'hidden'
-        } md:hidden`}
-      >
-        {/* Em telas pequenas, exibe apenas o botão "Deslogar" quando o menu é aberto */}
-        <div className="text-white text-center">
-          <button
-            onClick={handleLogout}
-            className="bg-[#117500] text-white border-none cursor-pointer rounded-lg transition-colors duration-300 hover:bg-[#0d5b00]"
-            style={{
-              padding: '10px 20px',
-              fontSize: '16px',
-              borderRadius: '8px',
-            }}
-          >
-            Deslogar
-          </button>
-        </div>
-      </div>
 
       {/* Sidebar para telas maiores */}
       <div className="hidden md:flex md:flex-col md:w-[270px] md:h-auto md:bg-black md:text-white md:p-5 md:font-poppins">
